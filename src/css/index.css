@@ -1,6 +1,8 @@
-@import "./globals.css";
-@import "./tailwind.css";
-@import "./fonts.css";
+@import './globals.css';
+@import './tailwind.css';
+@import './fonts.css';
+
 body {
-  font-family: "Pretendard", sans-serif;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 30px;
 }
