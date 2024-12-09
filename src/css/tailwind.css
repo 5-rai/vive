@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .primary-btn {
+    background: #fcc404;
+    color: black;
+  }
+  .primary-btn:hover {
+    background: #fcc404;
+    background: rgba(252, 196, 4, 0.8);
+  }
+  .primary-btn:disabled {
+    background: #e7e7e7;
+  }
+
+  .secondary-btn {
+    background: #fbefbf;
+    color: black;
+  }
+  .secondary-btn:hover {
+    background: #fbefbf;
+    background: rgba(251, 239, 191, 0.8);
+  }
+}

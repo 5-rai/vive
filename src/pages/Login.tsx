@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import Button from '../components/common/Button';
-import InputLabel from '../components/common/InputLabel';
-import Logo from '../assets/logo.svg';
-import { useNavigate } from 'react-router';
+import { useState } from "react";
+import InputLabel from "../components/common/InputLabel";
+import Logo from "../assets/logo.svg";
+import AuthButton from "../components/common/AuthButton";
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState({ value: '', isWarning: false });
-  const [password, setPassword] = useState({ value: '', isWarning: false });
+  const [email, setEmail] = useState({ value: "", isWarning: false });
+  const [password, setPassword] = useState({ value: "", isWarning: false });
 
   const validate = () => {
     if (!email.value) {
@@ -30,16 +28,14 @@ export default function Login() {
   };
 
   return (
-    <section className="flex h-screen items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col w-[400px] gap-[45px]">
+    <section className="flex min-h-screen items-center justify-center p-[70px]">
+      <form onSubmit={handleSubmit} className="flex flex-col w-[400px]">
         <img
           src={Logo}
           alt="로고"
-          className="mx-auto w-[100px] h-[100px]"
+          className="mx-auto w-[100px] h-[100px] mb-10"
         />
-        <div>
+        <div className="flex flex-col gap-[10px]">
           <InputLabel
             label="이메일"
             id="email"
@@ -63,17 +59,11 @@ export default function Login() {
             }
           />
         </div>
-        <div className="flex flex-col gap-5">
-          <Button
-            primary
-            type="submit">
+        <div className="flex flex-col gap-5 mt-24">
+          <AuthButton type="submit" primary>
             로그인
-          </Button>
-          <Button
-            type="button"
-            onClick={() => navigate('/register')}>
-            회원가입
-          </Button>
+          </AuthButton>
+          <AuthButton type="button">회원가입 하러가기</AuthButton>
         </div>
       </form>
     </section>

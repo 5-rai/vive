@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import InputLabel from '../components/common/InputLabel';
-import Button from '../components/common/Button';
-import Logo from '../assets/logo.svg';
+import { useState } from "react";
+import InputLabel from "../components/common/InputLabel";
+import Logo from "../assets/logo.svg";
+import AuthButton from "../components/common/AuthButton";
 
 export default function Register() {
-  const [name, setName] = useState({ value: '', isWarning: false });
-  const [email, setEmail] = useState({ value: '', isWarning: false });
-  const [password, setPassword] = useState({ value: '', isWarning: false });
+  const [name, setName] = useState({ value: "", isWarning: false });
+  const [email, setEmail] = useState({ value: "", isWarning: false });
+  const [password, setPassword] = useState({ value: "", isWarning: false });
 
   const validate = () => {
     if (!name.value) {
@@ -32,16 +32,14 @@ export default function Register() {
   };
 
   return (
-    <section className="flex h-screen items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col w-[400px] gap-[45px]">
+    <section className="flex min-h-screen items-center justify-center p-[70px]">
+      <form onSubmit={handleSubmit} className="flex flex-col w-[400px]">
         <img
           src={Logo}
           alt="로고"
-          className="mx-auto w-[100px] h-[100px]"
+          className="mx-auto w-[100px] h-[100px] mb-10"
         />
-        <div>
+        <div className="flex flex-col gap-[10px]">
           <InputLabel
             label="이름"
             id="name"
@@ -76,20 +74,11 @@ export default function Register() {
             }
           />
         </div>
-        <div className="flex flex-col gap-5">
-          <Button
-            primary
-            type="submit">
+        <div className="flex flex-col gap-5 mt-24">
+          <AuthButton type="submit" primary>
             회원 등록
-          </Button>
-          <Button
-            type="button"
-            onClick={() => {
-              console.log('취소');
-              //TODO: 취소 작업 해야함
-            }}>
-            취소
-          </Button>
+          </AuthButton>
+          <AuthButton type="button">로그인 하러가기</AuthButton>
         </div>
       </form>
     </section>
