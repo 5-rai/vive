@@ -4,7 +4,7 @@ import ProfileSection from "../components/Profile/ProfileSection";
 export default function MyProfile() {
   return (
     <section className="w-fit mx-auto flex flex-col items-center">
-      <ProfileSection />
+      <ProfileSection isMyProfile />
       <PostCardGridSection />
     </section>
   );
