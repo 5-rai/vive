@@ -4,19 +4,17 @@ import NotificationButton from "../components/Header/NotificationButton";
 import SearchButton from "../components/Header/SearchButton";
 import NewPostButton from "../components/Header/NewPostButton";
 import LogInButton from "../components/Header/LogInButton";
-import { Link } from "react-router";
 
 export default function Header() {
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   const isClicked = true;
 
   return (
-    <header>
-      <div className="border-b border-[#eee] w-full absolute left-0 right-0 bg-white/0">
+    <header className="sticky top-0">
+      <div className="border-b border-[#eee] w-full absolute left-0 right-0 bg-transparent">
         <div className="flex justify-between items-center w-[1440px] h-[68px] relative px-10 mx-auto">
-          <Link to="/">
-            <LogoButton />
-          </Link>
+          <LogoButton />
+
           {isLoggedIn ? (
             isClicked ? (
               // 로그인 + 검색 버튼 클릭 시
@@ -28,43 +26,26 @@ export default function Header() {
                     placeholder="검색어를 입력하세요"
                     className="flex-grow w-full h-full outline-none pr-3"
                   />
-                  <Link to="/">
-                    <SearchButton />
-                  </Link>
+                  <SearchButton />
                 </div>
-
                 <NotificationButton />
-                <Link to="/write">
-                  <NewPostButton />
-                </Link>
-                <Link to="/mypage">
-                  <ProfileButton />
-                </Link>
+                <NewPostButton />
+                <ProfileButton />
               </div>
             ) : (
               // 로그인 + 검색창 안 클릭 시
               <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-3">
-                <Link to="/">
-                  <SearchButton />
-                </Link>
+                <SearchButton />
                 <NotificationButton />
-                <Link to="/write">
-                  <NewPostButton />
-                </Link>
-                <Link to="/mypage">
-                  <ProfileButton />
-                </Link>
+                <NewPostButton />
+                <ProfileButton />
               </div>
             )
           ) : (
             // 비로그인 시
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-3">
-              <Link to="/">
-                <SearchButton />
-              </Link>
-              <Link to="/login">
-                <LogInButton />
-              </Link>
+              <SearchButton />
+              <LogInButton />
             </div>
           )}
         </div>
