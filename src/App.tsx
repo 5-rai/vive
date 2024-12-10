@@ -10,6 +10,7 @@ import UserProfile from "./pages/UserProfile";
 import NotFound from "./pages/NotFound";
 import Sidebar from "./layouts/Sidebar";
 import Write from "./pages/Write";
+import ModifyProfile from "./pages/ModifyProfile";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             element={<Post />}
           ></Route>
           <Route path="/mypage" element={<MyProfile />}></Route>
+          <Route path="/mypage/edit" element={<ModifyProfile />}></Route>
           <Route path="/user/:userId" element={<UserProfile />}></Route>
         </Route>
       </Route>
