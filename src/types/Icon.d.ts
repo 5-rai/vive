@@ -1,4 +1,4 @@
 interface IconProps {
-  className: string;
+  className?: string;
   color?: string;
 }
