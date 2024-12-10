@@ -1,5 +1,6 @@
 body {
   font-family: "Pretendard", sans-serif;
+  @apply text-gray-22;
 }
 
 input:focus {

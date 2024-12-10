@@ -5,7 +5,7 @@ export default function RootLayout() {
   return (
     <>
       <Header />
-      <main className="w-full">
+      <main className="flex w-full">
         <Outlet />
       </main>
     </>
