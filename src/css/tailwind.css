@@ -8,7 +8,6 @@
     color: black;
   }
   .primary-btn:hover {
-    background: #fcc404;
     background: rgba(252, 196, 4, 0.8);
   }
   .primary-btn:disabled {
@@ -20,7 +19,6 @@
     color: black;
   }
   .secondary-btn:hover {
-    background: #fbefbf;
     background: rgba(251, 239, 191, 0.8);
   }
 }
