@@ -12,9 +12,9 @@ export default {
         secondary: "#FBEFBF",
         "red-accent": "#FF2929",
         gray: {
-          100: "#222222",
-          50: "#C8C8C8",
-          0: "#EEEEEE",
+          22: "#222222",
+          c8: "#C8C8C8",
+          ee: "#EEEEEE",
         },
       },
     },
