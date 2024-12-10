@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
 import ProfileImg from "../../assets/profileImg.jpg";
 import Temp from "../../assets/youtube-temp.avif";
+import Logo from "../../assets/Logo";
 
 export default function PostCard({
   post,
@@ -55,12 +56,17 @@ export default function PostCard({
                 navigate(`/user/${writer.userId}`);
               }}
             >
-              {/* // TODO: 이미지가 없으면 디폴트 이미지로 대체 => 확정되면 적용! */}
-              <img
-                src={writer.profileImg || ProfileImg} /* 임시 */
-                alt={`${writer.name}-프로필 이미지`}
-                className="w-7 h-7 rounded-full mr-2"
-              />
+              {writer.profileImg ? (
+                <img
+                  src={writer.profileImg || ProfileImg} /* 임시 */
+                  alt={`${writer.name}-프로필 이미지`}
+                  className="w-7 h-7 rounded-full mr-2"
+                />
+              ) : (
+                <div className="w-7 h-7 rounded-full mr-2 border border-gray-ee flex items-center justify-center">
+                  <Logo className="w-3 h-3" />
+                </div>
+              )}
               <p className="text-sm text-[#6c6c6c] group-hover:text-gray-22 font-medium">
                 {writer.name}
               </p>
