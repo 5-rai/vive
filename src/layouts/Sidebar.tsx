@@ -14,7 +14,7 @@ export default function Sidebar() {
           <div className="flex flex-col gap-2.5">
             {[1, 2, 3, 4, 5, 6].map(() => (
               <NavLink
-                to={"/"}
+                to={"/channels/channelName"}
                 className={
                   "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary transition-colors"
                 }
@@ -43,7 +43,7 @@ export default function Sidebar() {
             <div className="flex flex-col h-[270px] overflow-y-auto gap-2.5">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => (
                 <NavLink
-                  to={"/"}
+                  to={"/user/userId"}
                   className={
                     "flex items-center gap-2.5 px-7 py-2 rounded-lg hover:bg-secondary transition-colors"
                   }
