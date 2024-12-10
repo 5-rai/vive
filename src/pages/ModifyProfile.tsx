@@ -53,14 +53,14 @@ export default function ModifyProfile() {
           <div className="imgModifyBtn gap-5">
             <button
               type="button"
-              className="w-[100px] h-[30px] mr-5 rounded-[10px] text-center text-xs bg-primary"
+              className="w-[100px] h-[30px] mr-5 rounded-[10px] text-center text-xs primary-btn"
               onClick={handleButtonClick}
             >
               이미지 선택
             </button>
             <button
               type="button"
-              className="w-[100px] h-[30px] rounded-[10px] bg-[#E7E7E7] text-center text-xs"
+              className="w-[100px] h-[30px] rounded-[10px] bg-[#E7E7E7] hover:bg-gray-c8 text-center text-xs"
               onClick={handleImageDelete}
             >
               이미지 삭제
@@ -85,7 +85,7 @@ export default function ModifyProfile() {
           />
           <button
             type="submit"
-            className="w-[400px] h-[40px] rounded-[50px] bg-primary hover:bg-secondary"
+            className="w-[400px] h-[40px] rounded-[50px] primary-btn"
             onClick={() => {
               navigate("/mypage");
             }}
