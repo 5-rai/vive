@@ -1,9 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function CommentWrite() {
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [comment, setComment] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
     adjustHeight(e.target);
   };
 
@@ -23,7 +25,10 @@ export default function CommentWrite() {
         onChange={handleChange}
         placeholder="댓글을 적어주세요!"
       ></textarea>
-      <button className="bg-primary rounded-[15px] w-[67px] h-[36px]">
+      <button
+        disabled={!comment}
+        className="bg-primary primary-btn rounded-[15px] w-[67px] h-[36px]"
+      >
         등록
       </button>
     </form>
