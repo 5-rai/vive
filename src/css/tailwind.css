@@ -11,7 +11,7 @@
     background: rgba(252, 196, 4, 0.8);
   }
   .primary-btn:disabled {
-    background: #e7e7e7;
+    background: #c8c8c8;
   }
 
   .secondary-btn {
