@@ -12,8 +12,9 @@ export default function Sidebar() {
         <div className="h-[365px]">
           <p className="border-b py-2 border-gray-22 mb-2.5">카테고리</p>
           <div className="flex flex-col gap-2.5">
-            {[1, 2, 3, 4, 5, 6].map(() => (
+            {[1, 2, 3, 4, 5, 6].map((_, idx) => (
               <NavLink
+                key={idx}
                 to={"/channels/channelName"}
                 className={
                   "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary transition-colors"
@@ -41,8 +42,9 @@ export default function Sidebar() {
               />
             </div>
             <div className="flex flex-col h-[270px] overflow-y-auto gap-2.5">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, idx) => (
                 <NavLink
+                  key={idx}
                   to={"/user/userId"}
                   className={
                     "flex items-center gap-2.5 px-7 py-2 rounded-lg hover:bg-secondary transition-colors"
