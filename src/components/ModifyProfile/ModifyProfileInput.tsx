@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 
 interface ModifyProfileInputProps {
   label: string;
@@ -15,18 +15,23 @@ export default function ModifyProfileInput({
   placeholder,
   message,
 }: ModifyProfileInputProps) {
+  const [isEmpty, setIsEmpty] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsEmpty(e.target.value.trim() === "");
+  };
+
   return (
-    <>
-      <div className="flex flex-col gap-[10px] mb-5">
-        <label htmlFor="{id}">{label}</label>
-        <input
-          type={type}
-          id={id}
-          placeholder={placeholder}
-          className="w-[400px] h-10 rounded-[50px] border border-[#fcc404]  text-sm text-gray-22 placeholder:text-[#c8c8c8] pl-[25px]"
-        />
-        <p className="text-xs text-[#FF2929]">{message}</p>
-      </div>
-    </>
+    <div className="flex flex-col gap-[10px] mb-5">
+      <label htmlFor={id}>{label}</label>
+      <input
+        type={type}
+        id={id}
+        placeholder={placeholder}
+        onChange={handleChange}
+        className="w-[400px] h-10 rounded-[50px] border-gray-c8 border text-sm text-gray-22 focus:border-primary placeholder:text-gray-c8 pl-[25px]"
+      />
+      {isEmpty && <p className="text-xs text-red-accent">{message}</p>}
+    </div>
   );
 }

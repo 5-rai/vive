@@ -4,20 +4,14 @@ import ModifyProfileInput from "../components/ModifyProfile/ModifyProfileInput";
 import Logo from "../assets/Logo";
 
 export default function ModifyProfile() {
-  const [preview, setPreview] = useState<JSX.Element>(<Logo />);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setPreview(
-        <img
-          src={imageUrl}
-          alt="프로필 이미지"
-          className="w-full h-full object-cover"
-        />
-      );
+      setSelectedImage(imageUrl);
     }
   };
 
@@ -26,7 +20,7 @@ export default function ModifyProfile() {
   };
 
   const handleImageDelete = () => {
-    setPreview(<Logo />);
+    setSelectedImage(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -36,7 +30,7 @@ export default function ModifyProfile() {
       <section className="flex flex-col items-center justify-items-center-center">
         {/* 프로필 이미지 수정 */}
         <div className="flex flex-col items-center">
-          <div className="">
+          <div>
             <input
               type="file"
               ref={fileInputRef}
@@ -44,14 +38,22 @@ export default function ModifyProfile() {
               onChange={handleImageChange}
               className="hidden"
             />
-            <div className="flex items-center justify-center overflow-hidden w-[296px] h-[298px] mb-5 rounded-full border border-[#c8c8c8]">
-              {preview}
+            <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8]">
+              {selectedImage ? (
+                <img
+                  src={selectedImage}
+                  alt="프로필 이미지"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <Logo />
+              )}
             </div>
           </div>
           <div className="imgModifyBtn gap-5">
             <button
               type="button"
-              className="w-[100px] h-[30px] mr-5 primary-btn rounded-[10px]  text-center text-xs"
+              className="w-[100px] h-[30px] mr-5 rounded-[10px] text-center text-xs bg-primary"
               onClick={handleButtonClick}
             >
               이미지 선택
@@ -83,7 +85,7 @@ export default function ModifyProfile() {
           />
           <button
             type="submit"
-            className="w-[400px] h-[40px] rounded-[50px] primary-btn"
+            className="w-[400px] h-[40px] rounded-[50px] bg-primary hover:bg-secondary"
             onClick={() => {
               navigate("/mypage");
             }}
