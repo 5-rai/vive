@@ -1,7 +1,7 @@
 import { useState } from "react";
 import InputLabel from "../components/common/InputLabel";
-import Logo from "../assets/logo.svg";
 import AuthButton from "../components/common/AuthButton";
+import Logo from "../assets/Logo";
 
 export default function Register() {
   const [name, setName] = useState({ value: "", isWarning: false });
@@ -34,9 +34,7 @@ export default function Register() {
   return (
     <section className="flex min-h-screen items-center justify-center p-[70px]">
       <form onSubmit={handleSubmit} className="flex flex-col w-[400px]">
-        <img
-          src={Logo}
-          alt="로고"
+        <Logo
           className="mx-auto w-[100px] h-[100px] mb-10"
         />
         <div className="flex flex-col gap-[10px]">
