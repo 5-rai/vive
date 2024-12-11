@@ -19,7 +19,7 @@ export default function PostCard({
 
   return (
     <article
-      className="rounded-lg overflow-hidden border border-gray-ee flex w-[447px] h-[163px] cursor-pointer"
+      className="rounded-lg overflow-hidden border border-gray-ee dark:border-gray-ee/20 flex w-[447px] h-[163px] cursor-pointer"
       onClick={() => {
         navigate(`/channels/${post.channelName}/${post.postId}`);
       }}
@@ -29,17 +29,19 @@ export default function PostCard({
         alt={`${post.title}-썸네일 이미지`}
         className="w-[170px] object-cover flex-shrink-0"
       />
-      <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee">
+      <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
         <section
           className={twMerge(
             "flex flex-col h-full",
             isWriter && "justify-around"
           )}
         >
-          <p className="font-semibold mb-1 line-clamp-1">{post.title}</p>
+          <p className="font-semibold mb-1 line-clamp-1 dark:text-white">
+            {post.title}
+          </p>
           <p
             className={twMerge(
-              "text-sm text-gray-c8",
+              "text-sm text-gray-c8 dark:text-gray-ee",
               isWriter ? "line-clamp-4 h-20" : "line-clamp-3"
             )}
           >
@@ -67,13 +69,13 @@ export default function PostCard({
                   <Logo className="w-3 h-3" />
                 </div>
               )}
-              <p className="text-sm text-[#6c6c6c] group-hover:text-gray-22 font-medium">
+              <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover:text-gray-22 font-medium">
                 {writer.name}
               </p>
             </button>
             <button
               type="button"
-              className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50"
+              className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
               onClick={(e) => {
                 e.stopPropagation();
                 setIsCurrentLiked((prev) => !prev);

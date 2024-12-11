@@ -3,14 +3,12 @@ import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
 import { loginApi } from "../api/auth";
-import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const { login } = useAuthStore();
 
   const validate = (): boolean => {
     let isValid = true;
@@ -27,17 +25,19 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage("");
     if (!validate()) return;
 
-    const data = await loginApi({
+    const result = await loginApi({
       email: email.value,
       password: password.value,
     }); // LoginRequest 타입의 객체 전달
 
-    if (!data)
-      setErrorMessage("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
-    else console.log("로그인 성공");
+    if (!result) {
+      alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+      return;
+    } else {
+      console.log("로그인 성공");
+    }
   };
 
   return (
@@ -68,14 +68,13 @@ export default function Login() {
             }
           />
         </div>
-        {errorMessage && (
-          <p className="text-red-500 mt-2 text-sm">{errorMessage}</p>
-        )}
         <div className="flex flex-col gap-5 mt-24">
           <AuthButton type="submit" primary>
             로그인
           </AuthButton>
-          <AuthButton type="button">회원가입 하러가기</AuthButton>
+          <AuthButton type="button" onClick={() => navigate("/register")}>
+            회원가입 하러가기
+          </AuthButton>
         </div>
       </form>
     </section>

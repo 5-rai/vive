@@ -17,18 +17,18 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 border-b-[1px] border-[#eee] min-w-[1440px] w-screen h-fit z-50 bg-white">
+    <header className="sticky top-0 border-b border-gray-ee dark:border-gray-ee/50 min-w-[1440px] w-screen h-fit z-50 bg-white dark:bg-gray-22">
       <div className="flex justify-between items-center w-[1440px] h-[68px] px-10 mx-auto">
         <LogoButton />
         {isLoggedIn ? (
           isClicked ? (
             // 로그인 + 검색 버튼 클릭 시
             <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-3">
-              <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 w-[514px] h-[43px] gap-2.5 px-[25px] py-[5px] rounded-full border border-black">
+              <div className="flex justify-center items-center flex-grow-0 flex-shrink-0 w-[514px] h-[43px] gap-2.5 px-[25px] py-[5px] rounded-full border border-gray-22 dark:border-gray-c8/50 bg-white dark:bg-white/10">
                 <input
                   type="text"
                   placeholder="검색어를 입력하세요"
-                  className="flex-grow w-full h-full outline-none pr-3"
+                  className="w-full h-full pr-3 bg-transparent focus:outline-none dark:text-gray-ee"
                 />
                 <button className="flex items-center justify-center w-[36px] h-[36px]">
                   <SearchIcon className="w-[19px] h-[19px]" />
@@ -41,7 +41,7 @@ export default function Header() {
             </div>
           ) : (
             // 로그인 + 검색창 안 클릭 시
-            <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-3">
+            <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-3">
               <SearchButton onClick={handleSearchButtonClick} />
               <NotificationButton />
               <NewPostButton />

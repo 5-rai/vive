@@ -18,18 +18,18 @@ export default function Write() {
       <form className="flex flex-col gap-4">
         <Dropdown />
         <input
-          className="border-b py-3 px-2 focus:border-primary text-2xl placeholder:text-gray-c8 border-gray-c8"
+          className="border-b p-3 focus:border-primary text-2xl border-gray-c8 dark:border-gray-c8/50"
           placeholder="제목을 입력하세요"
         />
-        <div className="border focus-within:border-primary rounded-lg border-gray-c8 overflow-hidden p-6 bg-white">
+        <div className="border focus-within:border-primary rounded-lg border-gray-c8 dark:border-gray-c8/50 overflow-hidden p-6 bg-white dark:bg-white/10">
           <textarea
-            className="w-full placeholder:text-gray-c8 h-[280px] resize-none"
+            className="w-full h-[280px] resize-none bg-transparent"
             placeholder="내용을 입력해주세요"
           />
         </div>
         <input
           type="url"
-          className="border placeholder:text-gray-c8 focus:border-primary rounded-lg py-3 px-5 border-gray-c8"
+          className="border focus:border-primary rounded-lg py-3 px-5 border-gray-c8 dark:border-gray-c8/50"
           placeholder="유튜브 url를 입력하세요"
         />
         {isBookmark && (

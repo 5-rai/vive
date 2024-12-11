@@ -30,22 +30,28 @@ export default function Dropdown() {
     <section ref={ref} className="w-40 relative">
       <button
         type="button"
-        className="flex w-full rounded-lg border border-gray-c8 py-1 pl-3 pr-1 justify-between bg-white"
+        className="flex w-full rounded-lg border border-gray-c8 dark:border-gray-c8/50 py-1 pl-3 pr-1 justify-between bg-white dark:bg-gray-22"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <p className={twMerge(!selected && "text-[#777]")}>
+        <p
+          className={twMerge(
+            selected
+              ? "text-gray-22 dark:text-gray-ee"
+              : "text-[#777] dark:text-gray-c8"
+          )}
+        >
           {selected ?? "카테고리"}
         </p>
         <DropdownArrowIcon />
       </button>
       {isOpen && (
-        <ul className="flex flex-col py-3 px-3 absolute bg-white w-full rounded-lg border border-gray-c8 top-10">
+        <ul className="flex flex-col py-3 px-3 absolute bg-white dark:bg-gray-22 w-full rounded-lg border border-gray-c8 dark:border-gray-c8/50 top-10">
           {CHANNEL.map((channel) => (
             <li key={channel} className="w-full">
               <button
                 type="button"
                 onClick={() => handleOptionClick(channel)}
-                className="hover:bg-secondary py-1 w-full text-left px-2 rounded-md"
+                className="hover:bg-secondary py-1 w-full text-left px-2 rounded-md hover:dark:text-gray-22"
               >
                 {channel}
               </button>

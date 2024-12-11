@@ -3,15 +3,19 @@ import profileImg from "../assets/profileImg.jpg";
 import { useState } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { CHANNEL } from "../constants/channel";
+import { useThemeStore } from "../store/themeStore";
 
 export default function Sidebar() {
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
   return (
     <>
-      <aside className="flex flex-col sticky top-[68px] screen-100vh w-[300px] p-7 gap-5 justify-between border-r border-gray-ee bg-white">
+      <aside className="flex flex-col sticky top-[68px] screen-100vh w-[300px] min-w-[300px] p-7 gap-5 justify-between border-r border-gray-ee dark:border-gray-ee/50">
         <div className="h-fit">
-          <p className="border-b border-gray-22 py-2 mb-2.5">카테고리</p>
+          <p className="border-b border-gray-22 dark:border-gray-ee py-2 mb-2.5 dark:text-gray-ee">
+            카테고리
+          </p>
           <div className="flex flex-col gap-1">
             {CHANNEL.map((channel) => (
               <NavLink
@@ -27,15 +31,24 @@ export default function Sidebar() {
           </div>
         </div>
         <div className="grow overflow-y-hidden flex flex-col">
-          <p className="border-b border-gray-22 py-2 mb-4">접속자 (N명)</p>
+          <p className="border-b border-gray-22 dark:border-gray-ee py-2 mb-4 dark:text-gray-ee">
+            접속자 (N명)
+          </p>
           <div className="relative mb-4">
             <SearchIcon
-              color={isInputFocused ? "#FCC404" : "#c8c8c8"}
+              color={
+                isInputFocused
+                  ? "#FCC404"
+                  : isDarkMode
+                  ? "rgba(200, 200, 200, 0.5)"
+                  : "#c8c8c8"
+              }
               className={`h-4 absolute left-4 top-3 transition-colors`}
             />
             <input
-              className="group w-full h-10 border border-gray-c8 rounded-full pl-12 focus:border-primary transition-colors"
+              className="group w-full h-10 border border-gray-c8 dark:border-gray-c8/50 rounded-full pl-12 focus:border-primary transition-colors"
               type="text"
+              placeholder="유저 검색"
               autoCorrect="off"
               onFocus={toggledInputFocused}
               onBlur={toggledInputFocused}

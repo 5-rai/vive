@@ -22,9 +22,9 @@ export default function RecentPosts({
   return (
     <article
       onClick={postClick}
-      className="cursor-pointer w-[208px] backdrop:rounded-lg flex-col"
+      className="cursor-pointer w-[208px] flex-col rounded-lg overflow-hidden border border-gray-ee dark:border-gray-ee/20"
     >
-      <section className="relative h-[178px] rounded-tl-lg rounded-tr-lg border-r border-gray-ee overflow-hidden">
+      <section className="relative h-[178px]">
         <img
           className="w-[208px] h-[178px] object-cover"
           src={youtubeThumbnail}
@@ -41,8 +41,8 @@ export default function RecentPosts({
           </p>
         </div>
       </section>
-      <section className="self-stretch p-2 bg-white rounded-bl-lg rounded-br-lg border-l border-r border-b border-gray-ee flex flex-col gap-2">
-        <p className="self-stretch text-gray-22 text-base font-semibold">
+      <section className="self-stretch p-2 bg-white dark:bg-white/5 flex flex-col gap-2 border-t border-gray-ee dark:border-gray-ee/20">
+        <p className="self-stretch text-base font-semibold dark:text-white">
           {title}
         </p>
         <p className="line-clamp-2 text-gray-c8 text-sm font-normal h-10">

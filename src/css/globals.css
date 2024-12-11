@@ -7,8 +7,12 @@ body {
 
 input,
 textarea {
-  @apply dark:!text-gray-22;
-  @apply dark:bg-[#f2f2f2];
+  @apply dark:bg-white/10;
+}
+
+input::placeholder,
+textarea::placeholder {
+  @apply !text-gray-c8;
 }
 
 label {
