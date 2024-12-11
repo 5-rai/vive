@@ -1,7 +1,7 @@
 import PostCard from "../components/common/PostCard";
 import UserAvatar from "../components/common/UserAvatar";
 import ProfileTemp from "../assets/profileImg.jpg";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 const TEMP_USER_AVATAR = {
   name: "음악하는 다람쥐",
@@ -25,7 +25,6 @@ const SEARCH_RESULT_TEMP_POST = {
 };
 
 export default function SearchResult() {
-  const navigate = useNavigate();
   return (
     <>
       <section className="px-[29px]">
@@ -34,12 +33,11 @@ export default function SearchResult() {
           <h2 className="text-[32px] font-bold my-10">
             <span className="text-[#F38304]">겨울</span>의 유저 검색 결과 5개
           </h2>
-          <div
-            className="flex gap-[96px] flex-wrap cursor-pointer"
-            onClick={() => navigate("/user/:userId")}
-          >
+          <div className="flex gap-[96px] flex-wrap">
             {[1, 2, 3, 4, 5].map((i) => (
-              <UserAvatar key={i} {...TEMP_USER_AVATAR} />
+              <Link to="/user/:userId">
+                <UserAvatar key={i} {...TEMP_USER_AVATAR} />
+              </Link>
             ))}
           </div>
         </article>
