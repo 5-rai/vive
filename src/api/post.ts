@@ -1,11 +1,11 @@
 import { axiosInstance } from "./axios";
 
-interface createPostProps {
+interface CreatePostProps {
   title: string;
   channelId: string;
 }
 
-export const createPost = async (body: createPostProps) => {
+export const createPost = async (body: CreatePostProps) => {
   try {
     const { data } = await axiosInstance.post<Post>("/posts/create", body);
     return data;
