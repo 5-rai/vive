@@ -23,7 +23,7 @@ export default function Write() {
         />
         <div className="border focus-within:border-primary rounded-lg border-gray-c8 dark:border-gray-c8/50 overflow-hidden p-6 bg-white dark:bg-white/10">
           <textarea
-            className="w-full h-[280px] resize-none bg-transparent"
+            className="w-full h-[280px] resize-none bg-transparent custom-scrollbar"
             placeholder="내용을 입력해주세요"
           />
         </div>

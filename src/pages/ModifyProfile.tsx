@@ -53,14 +53,14 @@ export default function ModifyProfile() {
           <div className="imgModifyBtn gap-5">
             <button
               type="button"
-              className="w-[100px] h-[30px] mr-5 rounded-[10px] text-center text-xs primary-btn"
+              className="w-[100px] py-1.5 mr-5 rounded-[10px] text-center text-xs primary-btn font-medium"
               onClick={handleButtonClick}
             >
               이미지 선택
             </button>
             <button
               type="button"
-              className="w-[100px] h-[30px] rounded-[10px] bg-[#E7E7E7] hover:bg-gray-c8 text-center text-xs"
+              className="w-[100px] py-1.5 rounded-[10px] bg-[#E7E7E7] hover:bg-gray-c8 text-center text-xs dark:text-gray-22 font-medium"
               onClick={handleImageDelete}
             >
               이미지 삭제

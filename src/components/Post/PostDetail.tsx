@@ -5,7 +5,7 @@ import profileImg from "../../assets/profileImg.jpg";
 
 export default function PostDetail() {
   return (
-    <section className="w-[720px] p-[60px]">
+    <section className="grow p-[60px]">
       <YouTubeContainer videoId={"EtiPbWzUY9o"} />
       <h1 className="font-semibold text-2xl mt-5 mb-3">
         AKMU - '낙하 (NAKKA) (with IU)' OFFICIAL VIDEO
@@ -21,14 +21,16 @@ export default function PostDetail() {
         </NavLink>
         <button
           type="button"
-          className="flex justify-center items-center gap-3 border rounded-full border-gray-c8 w-[72px] h-[30px]"
+          className="flex justify-center items-center gap-3 border rounded-full border-gray-c8 w-[72px] h-[30px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
         >
           <LikeEmptyIcon className="w-[14px] h-[14px]" />
           <p>20</p>
         </button>
       </div>
-      <hr className="bg-gray-22 my-5" />
-      <div className="text-[#6C6C6C]">취업 성공해서 너무 신나요~</div>
+      <hr className="bg-gray-22 dark:bg-gray-ee/50 my-5 border-none h-[1px]" />
+      <div className="text-[#6C6C6C] dark:text-gray-c8">
+        취업 성공해서 너무 신나요~
+      </div>
     </section>
   );
 }

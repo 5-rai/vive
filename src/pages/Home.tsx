@@ -4,7 +4,7 @@ import WeeklyArtist from "../components/Home/WeeklyArtist";
 
 export default function Home() {
   return (
-    <div className="mx-auto py-10 flex-col justify-start flex w-[952px] gap-24">
+    <div className="mx-auto py-10 flex-col justify-start flex w-[952px] gap-24 overflow-y-auto">
       <section>
         <div className="mb-3">
           <span className="text-2xl font-semibold">금주의 </span>
@@ -12,7 +12,7 @@ export default function Home() {
             아티스트
           </span>
         </div>
-        <div className="flex flex-wrap justify-between">
+        <div className="flex flex-wrap justify-between px-2">
           {[1, 2, 3, 4, 5].map((item) => (
             <WeeklyArtist
               key={item}

@@ -69,7 +69,7 @@ export default function PostCard({
                   <Logo className="w-3 h-3" />
                 </div>
               )}
-              <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover:text-gray-22 font-medium">
+              <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover:text-gray-22 dark:group-hover:text-gray-c8/80 font-medium">
                 {writer.name}
               </p>
             </button>

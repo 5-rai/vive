@@ -17,7 +17,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 border-b border-gray-ee dark:border-gray-ee/50 min-w-[1440px] w-screen h-fit z-50 bg-white dark:bg-gray-22">
+    <header className="sticky top-0 border-b border-gray-ee dark:border-gray-ee/50 min-w-[1440px] w-full h-fit z-50 bg-white dark:bg-gray-22">
       <div className="flex justify-between items-center w-[1440px] h-[68px] px-10 mx-auto">
         <LogoButton />
         {isLoggedIn ? (

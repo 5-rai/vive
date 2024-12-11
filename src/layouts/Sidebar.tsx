@@ -9,11 +9,12 @@ export default function Sidebar() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
+
   return (
     <>
       <aside className="flex flex-col sticky top-[68px] screen-100vh w-[300px] min-w-[300px] p-7 gap-5 justify-between border-r border-gray-ee dark:border-gray-ee/50">
         <div className="h-fit">
-          <p className="border-b border-gray-22 dark:border-gray-ee py-2 mb-2.5 dark:text-gray-ee">
+          <p className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-2.5 dark:text-gray-ee">
             카테고리
           </p>
           <div className="flex flex-col gap-1">
@@ -31,7 +32,7 @@ export default function Sidebar() {
           </div>
         </div>
         <div className="grow overflow-y-hidden flex flex-col">
-          <p className="border-b border-gray-22 dark:border-gray-ee py-2 mb-4 dark:text-gray-ee">
+          <p className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-4 dark:text-gray-ee">
             접속자 (N명)
           </p>
           <div className="relative mb-4">
@@ -54,7 +55,7 @@ export default function Sidebar() {
               onBlur={toggledInputFocused}
             />
           </div>
-          <div className="h-full flex flex-col overflow-y-auto gap-2.5 ">
+          <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, idx) => (
               <NavLink
                 key={idx}

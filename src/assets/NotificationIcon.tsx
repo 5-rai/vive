@@ -2,8 +2,6 @@ import { useThemeStore } from "../store/themeStore";
 
 export default function NotificationIcon({ className, color }: IconProps) {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
-  console.log(color);
-  console.log(color ? color : isDarkMode ? "#eeeeee" : "222222");
 
   return (
     <svg

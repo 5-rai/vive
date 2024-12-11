@@ -31,11 +31,27 @@
       180deg,
       rgba(0, 0, 0, 0) 0%,
       rgba(0, 0, 0, 0) 50%,
-      #000000 100%
+      rgba(0, 0, 0, 0.8) 100%
     );
   }
 
   .screen-100vh {
-    height: calc(100vh - 69px);
+    height: calc(100vh - 70px);
+  }
+
+  /* CUSTOM SCROLL BAR */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 9px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0;
   }
 }
