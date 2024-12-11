@@ -52,31 +52,27 @@ export default function Home() {
 
       <div className="w-[952px] flex flex-wrap justify-between">
         <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
+          title="이무진-청춘만화(COVER)"
           youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
+          youtubeThumbnail="/src/assets/profileImg.jpg"
           avatarImg="/src/assets/profileImg.jpg"
         />
         <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
+          title="이무진-청춘만화(COVER)"
           youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
+          youtubeThumbnail=""
           avatarImg="/src/assets/profileImg.jpg"
         />
         <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
+          title="이무진-청춘만화(COVER)"
           youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
+          youtubeThumbnail=""
           avatarImg="/src/assets/profileImg.jpg"
         />
         <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
+          title="이무진-청춘만화(COVER)"
           youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
+          youtubeThumbnail=""
           avatarImg="/src/assets/profileImg.jpg"
         />
       </div>
@@ -96,32 +92,27 @@ export default function Home() {
 
       <div className="w-[952px] flex flex-wrap justify-between">
         <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
+          title="이무진-청춘만화(COVER)"
           youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
-          avatarImg="/src/assets/profileImg.jpg"
-        />
-
-        <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
-          youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
+          youtubeThumbnail=""
           avatarImg="/src/assets/profileImg.jpg"
         />
         <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
-          youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
+          title="이무진-청춘만화(COVER)"
+          youtubeTitle="유튜브 영상 제목,유튜브 영상 제목, 유튜브 영상 제목, 유튜브 영상 제목"
+          youtubeThumbnail=""
           avatarImg="/src/assets/profileImg.jpg"
         />
         <RecentPosts
-          artist="이무진"
-          songTitle="청춘만화(COVER)"
+          title="이무진-청춘만화(COVER)"
           youtubeTitle="유튜브 영상 제목"
-          youtubeThumbnail="/src/assets/Thumbnail.jpg"
+          youtubeThumbnail=""
+          avatarImg="/src/assets/profileImg.jpg"
+        />
+        <RecentPosts
+          title="이무진-청춘만화(COVER)"
+          youtubeTitle="유튜브 영상 제목"
+          youtubeThumbnail=""
           avatarImg="/src/assets/profileImg.jpg"
         />
       </div>

@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router";
+
 export default function WeeklyArtist({
   name,
   images,
@@ -5,8 +7,15 @@ export default function WeeklyArtist({
   name: string;
   images: string;
 }) {
+  const navigate = useNavigate();
+  const artistClick = () => {
+    navigate("");
+  };
   return (
-    <div className="border-t-[24px] border-t-transparent h-[162px] justify-between items-start inline-flex">
+    <div
+      onClick={artistClick}
+      className=" hover:cursor-pointer border-t-[24px] border-t-transparent h-[162px] justify-between items-start inline-flex"
+    >
       <div className="w-[122px] relative">
         <img
           className="w-[122px] h-[122px] left-0 top-0 absolute rounded-full shadow"
