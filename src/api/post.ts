@@ -13,3 +13,14 @@ export const createPost = async (body: createPostProps) => {
     console.error(err);
   }
 };
+
+export const getOnePost = async (postId?: string) => {
+  try {
+    if (!postId) throw new Error("postId가 undefined입니다!");
+
+    const { data } = await axiosInstance.get<Post>(`/posts/${postId}`);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
