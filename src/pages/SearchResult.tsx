@@ -27,24 +27,22 @@ const SEARCH_RESULT_TEMP_POST = {
 export default function SearchResult() {
   return (
     <>
-      <section className="px-[29px]">
-        {/* User검색결과 */}
-        <article className="mt-[110px]">
-          <h2 className="text-[32px] font-bold my-10">
-            <span className="text-[#F38304]">겨울</span>의 유저 검색 결과 5개
+      <section className="px-10 mx-auto pb-10">
+        <article className="mb-28">
+          <h2 className="text-3xl font-bold my-10">
+            <span className="text-highlight">겨울</span>의 유저 검색 결과 5개
           </h2>
-          <div className="flex gap-[96px] flex-wrap">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Link to="/user/:userId">
+          <div className="w-full grid grid-cols-6 gap-10 justify-between">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <Link to="/user/userId">
                 <UserAvatar key={i} {...TEMP_USER_AVATAR} />
               </Link>
             ))}
           </div>
         </article>
-        {/* Post 검색결과 */}
         <article>
-          <h2 className="text-[32px] font-bold my-10">
-            <span className="text-[#F38304]">겨울</span>의 포스팅 검색 결과 6개
+          <h2 className="text-3xl font-bold my-10">
+            <span className="text-highlight">겨울</span>의 포스팅 검색 결과 6개
           </h2>
           <div className="grid grid-cols-2 gap-10">
             {[1, 2, 3, 4, 5, 6].map((i) => (

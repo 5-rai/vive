@@ -8,7 +8,7 @@ export default function Home() {
       <section>
         <div className="mb-3">
           <span className="text-2xl font-semibold">금주의 </span>
-          <span className="text-[#f38304] text-2xl font-semibold">
+          <span className="text-highlight text-2xl font-semibold">
             아티스트
           </span>
         </div>
