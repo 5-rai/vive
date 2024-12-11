@@ -1,3 +1,10 @@
+/* 아래의 Post의 title값을 JSON.parse(title) 해서 나오는 객체의 인터페이스입니다!! */
+interface CustomTitle {
+  title: string;
+  contents: string;
+  youtubeUrl: string;
+}
+
 interface Channel {
   posts: string[];
   _id: string;
