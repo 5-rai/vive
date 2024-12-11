@@ -1,14 +1,40 @@
 import { Outlet, NavLink } from "react-router";
 import profileImg from "../assets/profileImg.jpg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchIcon from "../assets/SearchIcon";
-import { CHANNEL } from "../constants/channel";
 import { useThemeStore } from "../store/themeStore";
+import { axiosInstance } from "../api/axios";
+
+interface Channel {
+  _id: string;
+  name: string;
+  description: string;
+  authRequired: boolean;
+}
 
 export default function Sidebar() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
+
+  useEffect(() => {
+    const fetchChannels = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosInstance.get("/channels");
+        setChannels(response.data);
+      } catch (error) {
+        console.error("Failed to fetch channels", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChannels();
+  }, []);
 
   return (
     <>
@@ -17,19 +43,24 @@ export default function Sidebar() {
           <p className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-2.5 dark:text-gray-ee">
             카테고리
           </p>
-          <div className="flex flex-col gap-1">
-            {CHANNEL.map((channel) => (
-              <NavLink
-                key={channel}
-                to={`/channels/${channel}`}
-                className={
-                  "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
-                }
-              >
-                {channel}
-              </NavLink>
-            ))}
-          </div>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="flex flex-col gap-1">
+              {/* 상위 3개를 제외한 나머지 항목만 표시 */}
+              {channels.slice(3).map((channel) => (
+                <NavLink
+                  key={channel._id}
+                  to={`/channels/${channel.name}`}
+                  className={
+                    "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
+                  }
+                >
+                  {channel.name}
+                </NavLink>
+              ))}
+            </div>
+          )}
         </div>
         <div className="grow overflow-y-hidden flex flex-col">
           <p className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-4 dark:text-gray-ee">
@@ -56,7 +87,7 @@ export default function Sidebar() {
             />
           </div>
           <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((_, idx) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, idx) => (
               <NavLink
                 key={idx}
                 to={"/user/userId"}

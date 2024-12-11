@@ -32,11 +32,13 @@ export default function Login() {
       password: password.value,
     }); // LoginRequest 타입의 객체 전달
 
-    if (!result) {
-      alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+    if (result) {
+      navigate("/");
+      console.log("로그인 성공");
       return;
     } else {
-      console.log("로그인 성공");
+      alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+      return;
     }
   };
 
