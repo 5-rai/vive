@@ -43,18 +43,20 @@ export default function CommentWrite() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col items-end w-[417px] border-t border-gray-c8 gap-2 mt-5 fixed bottom-[54px]"
+      className="flex flex-col items-end w-full border-t border-gray-ee dark:border-gray-ee/50 gap-3 mt-5 px-6"
     >
-      <textarea
-        ref={textareaRef}
-        rows={1}
-        className="w-full h-[47px] border border-gray-c8 px-6 py-2.5 mt-[23px] rounded-[15px] outline-none resize-none"
-        onChange={handleChange}
-        placeholder="댓글을 적어주세요!"
-      ></textarea>
+      <div className="w-full border border-gray-c8 p-3 mt-[23px] rounded-[15px] bg-white/20 focus-within:border-primary">
+        <textarea
+          ref={textareaRef}
+          rows={1}
+          className="w-full h-[47px] border border-gray-c8 px-6 py-2.5 mt-[23px] rounded-[15px] outline-none resize-none"
+          onChange={handleChange}
+          placeholder="댓글을 적어주세요!"
+        ></textarea>
+      </div>
       <button
         disabled={!comment}
-        className="bg-primary primary-btn rounded-[15px] w-[67px] h-[36px]"
+        className="bg-primary primary-btn rounded-[15px] w-[67px] py-1"
       >
         등록
       </button>

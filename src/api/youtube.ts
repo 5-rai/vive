@@ -6,7 +6,7 @@ const axiosYoutubeInstance = axios.create({
 
 export const getOneYoutubeVideoInfo = async (videoId: string | null) => {
   try {
-    if (!videoId) throw Error("videoId가 null입니다!");
+    if (!videoId) throw new Error("videoId가 null입니다!");
 
     const { data } = await axiosYoutubeInstance.get<YoutubeVideosType>(
       `/videos?part=snippet&id=${videoId}&key=${
@@ -16,7 +16,7 @@ export const getOneYoutubeVideoInfo = async (videoId: string | null) => {
 
     const video = data.items[0];
     if (!video) {
-      throw Error("해당 아이디를 가진 영상이 존재하지 않습니다!");
+      throw new Error("해당 아이디를 가진 영상이 존재하지 않습니다!");
     }
     return video;
   } catch (err) {

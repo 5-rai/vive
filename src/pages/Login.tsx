@@ -6,10 +6,9 @@ import { loginApi } from "../api/auth";
 import { useNavigate } from "react-router";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
-  const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
 
   const validate = (): boolean => {
     let isValid = true;
@@ -26,24 +25,25 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage("");
     if (!validate()) return;
 
-    const data = await loginApi({
+    const result = await loginApi({
       email: email.value,
       password: password.value,
     }); // LoginRequest 타입의 객체 전달
 
-    if (data) {
+    if (result) {
       navigate("/");
       console.log("로그인 성공");
+      return;
     } else {
-      setErrorMessage("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+      alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+      return;
     }
   };
 
   return (
-    <section className="flex min-h-screen items-center justify-center p-[70px]">
+    <section className="mx-auto flex screen-100vh items-center justify-center p-[70px]">
       <form onSubmit={handleSubmit} className="flex flex-col w-[400px]">
         <Logo className="mx-auto w-[100px] h-[100px] mb-10" />
         <div className="flex flex-col gap-[10px]">
@@ -70,14 +70,13 @@ export default function Login() {
             }
           />
         </div>
-        {errorMessage && (
-          <p className="text-red-500 mt-2 text-sm">{errorMessage}</p>
-        )}
         <div className="flex flex-col gap-5 mt-24">
           <AuthButton type="submit" primary>
             로그인
           </AuthButton>
-          <AuthButton type="button">회원가입 하러가기</AuthButton>
+          <AuthButton type="button" onClick={() => navigate("/register")}>
+            회원가입 하러가기
+          </AuthButton>
         </div>
       </form>
     </section>

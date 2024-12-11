@@ -18,7 +18,7 @@ const TEMP_POST = {
 
 export default function PostCardGridSection() {
   return (
-    <section className="grid grid-cols-2 gap-10">
+    <section className="grid grid-cols-2 gap-10 pb-10">
       {[1, 2, 3, 4, 5, 6, 7].map((i) => (
         <PostCard
           key={i}
