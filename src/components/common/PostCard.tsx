@@ -63,7 +63,7 @@ export default function PostCard({
                   className="w-7 h-7 rounded-full mr-2"
                 />
               ) : (
-                <div className="w-7 h-7 rounded-full mr-2 border border-gray-ee flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full mr-2 border border-gray-ee flex items-center justify-center bg-white/20">
                   <Logo className="w-3 h-3" />
                 </div>
               )}

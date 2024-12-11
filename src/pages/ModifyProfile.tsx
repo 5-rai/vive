@@ -27,7 +27,7 @@ export default function ModifyProfile() {
   };
   return (
     <>
-      <section className="flex flex-col items-center justify-items-center-center">
+      <section className="mx-auto flex flex-col items-center justify-center">
         {/* 프로필 이미지 수정 */}
         <div className="flex flex-col items-center">
           <div>
@@ -38,7 +38,7 @@ export default function ModifyProfile() {
               onChange={handleImageChange}
               className="hidden"
             />
-            <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8]">
+            <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8] bg-white/20">
               {selectedImage ? (
                 <img
                   src={selectedImage}

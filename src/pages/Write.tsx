@@ -23,7 +23,7 @@ export default function Write() {
         />
         <div className="border focus-within:border-primary rounded-lg border-gray-c8 overflow-hidden p-6 bg-white">
           <textarea
-            className="w-full placeholder:text-gray-c8 h-[330px] resize-none"
+            className="w-full placeholder:text-gray-c8 h-[280px] resize-none"
             placeholder="내용을 입력해주세요"
           />
         </div>
