@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Sidebar from "./layouts/Sidebar";
 import Write from "./pages/Write";
 import ModifyProfile from "./pages/ModifyProfile";
+import SearchResult from "./pages/SearchResult";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
         <Route path="*" element={<NotFound />}></Route>
         <Route element={<Sidebar />}>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/notfound" element={<NotFound />}></Route>
+          <Route path="/home" element={<Home />}></Route>
           {/* 추후 삭제 */}
           <Route path="/write" element={<Write />}></Route>
           <Route path="/channels/:channelName" element={<Dashboard />}></Route>
@@ -32,6 +33,7 @@ function App() {
           <Route path="/mypage" element={<MyProfile />}></Route>
           <Route path="/mypage/edit" element={<ModifyProfile />}></Route>
           <Route path="/user/:userId" element={<UserProfile />}></Route>
+          <Route path="/search" element={<SearchResult />}></Route>
         </Route>
       </Route>
     </Routes>
