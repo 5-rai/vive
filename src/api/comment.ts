@@ -17,7 +17,7 @@ export const createComment = async (body: CreateCommentProps) => {
     return data;
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      if (err.response?.status === 401) return err.response;
+      return err.response;
     }
   }
 };
