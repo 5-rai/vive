@@ -20,7 +20,7 @@ export default function ThemeButton() {
 
   return (
     <button
-      className="flex justify-center items-center w-12 h-12 fixed bottom-10 right-20 bg-secondary rounded-full"
+      className="flex justify-center items-center w-12 h-12 fixed bottom-10 right-10 bg-secondary rounded-full"
       onClick={toggleTheme}
     >
       {isDarkMode ? <DarkModeIcon /> : <LightModeIcon />}

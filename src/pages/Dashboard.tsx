@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="p-[72px]">
+      <div className="mx-auto">
         {/* Dashboard title */}
         <h2 className="text-[32px] font-bold my-10">카테고리</h2>
         {/* PostCard */}

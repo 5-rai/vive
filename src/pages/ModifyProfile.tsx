@@ -27,7 +27,7 @@ export default function ModifyProfile() {
   };
   return (
     <>
-      <section className="flex flex-col items-center justify-items-center-center">
+      <section className="mx-auto flex flex-col items-center justify-center">
         {/* 프로필 이미지 수정 */}
         <div className="flex flex-col items-center">
           <div>
@@ -38,7 +38,7 @@ export default function ModifyProfile() {
               onChange={handleImageChange}
               className="hidden"
             />
-            <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8]">
+            <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8] bg-white/20">
               {selectedImage ? (
                 <img
                   src={selectedImage}
@@ -53,14 +53,14 @@ export default function ModifyProfile() {
           <div className="imgModifyBtn gap-5">
             <button
               type="button"
-              className="w-[100px] h-[30px] mr-5 rounded-[10px] text-center text-xs primary-btn"
+              className="w-[100px] py-1.5 mr-5 rounded-[10px] text-center text-xs primary-btn font-medium"
               onClick={handleButtonClick}
             >
               이미지 선택
             </button>
             <button
               type="button"
-              className="w-[100px] h-[30px] rounded-[10px] bg-[#E7E7E7] hover:bg-gray-c8 text-center text-xs"
+              className="w-[100px] py-1.5 rounded-[10px] bg-[#E7E7E7] hover:bg-gray-c8 text-center text-xs dark:text-gray-22 font-medium"
               onClick={handleImageDelete}
             >
               이미지 삭제

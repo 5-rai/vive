@@ -66,9 +66,11 @@ export default function Write() {
 
   useEffect(() => {
     console.log(!youtubeUrl.value);
-    !title || !contents || !youtubeUrl.value || !selectedChannel
-      ? setIsDisabled(true)
-      : setIsDisabled(false);
+    if (!title || !contents || !youtubeUrl.value || !selectedChannel) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
   }, [title, contents, youtubeUrl, selectedChannel]);
 
   return (
@@ -76,47 +78,49 @@ export default function Write() {
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Dropdown channel={selectedChannel} setChannel={setSelectedChannel} />
         <input
-          className="border-b py-3 px-2 focus:border-primary border-gray-c8 rounded-lg text-2xl placeholder:text-gray-c8"
+          className="border p-3 focus:border-primary text-2xl border-gray-c8 dark:border-gray-c8/50 rounded-lg"
           placeholder="제목을 입력하세요"
           onChange={(e) => setTitle(e.target.value)}
         />
-        <div className="border focus-within:border-primary border-gray-c8 rounded-lg overflow-hidden bg-white">
+        <div className="border focus-within:border-primary rounded-lg border-gray-c8 dark:border-gray-c8/50 overflow-hidden p-6 bg-white dark:bg-white/10">
           <textarea
-            className="w-full placeholder:text-gray-c8 h-[330px] p-6 resize-none"
+            className="w-full h-[280px] resize-none bg-transparent custom-scrollbar"
             placeholder="내용을 입력해주세요"
             onChange={(e) => setContents(e.target.value)}
           />
         </div>
-        <input
-          type="url"
-          className={twMerge(
-            "border placeholder:text-gray-c8 focus:border-primary rounded-lg py-3 px-5",
-            youtubeUrl.isWarning ? "border-red-accent" : "border-gray-c8"
-          )}
-          placeholder="유튜브 url를 입력하세요"
-          autoCorrect="off"
-          onKeyDown={(e) =>
-            e.key === "Enter" && createBookmark(e.currentTarget.value)
-          }
-          onPaste={(e) => createBookmark(e.clipboardData.getData("text"))}
-          onChange={(e) =>
-            setYoutubeUrl({
-              ...youtubeUrl,
-              value: e.target.value,
-              isWarning: false,
-            })
-          }
-        />
-        <p
-          className={twMerge(
-            "text-xs leading-7",
-            youtubeUrl.isWarning
-              ? "text-red-accent"
-              : "text-transparent select-none"
-          )}
-        >
-          올바른 유튜브 URL을 입력해주세요.
-        </p>
+        <div>
+          <input
+            type="url"
+            className={twMerge(
+              "border focus:border-primary rounded-lg w-full py-3 px-5 dark:border-gray-c8/50",
+              youtubeUrl.isWarning ? "border-red-accent" : "border-gray-c8"
+            )}
+            placeholder="유튜브 url를 입력하세요"
+            autoCorrect="off"
+            onKeyDown={(e) =>
+              e.key === "Enter" && createBookmark(e.currentTarget.value)
+            }
+            onPaste={(e) => createBookmark(e.clipboardData.getData("text"))}
+            onChange={(e) =>
+              setYoutubeUrl({
+                ...youtubeUrl,
+                value: e.target.value,
+                isWarning: false,
+              })
+            }
+          />
+          <p
+            className={twMerge(
+              "text-xs leading-7",
+              youtubeUrl.isWarning
+                ? "text-red-accent"
+                : "text-transparent select-none"
+            )}
+          >
+            올바른 유튜브 URL을 입력해주세요.
+          </p>
+        </div>
         {videoInfo && (
           <Bookmark
             title={videoInfo.snippet!.title}

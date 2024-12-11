@@ -23,7 +23,7 @@ export default function ProfileSection({
   const [isFollow, setIsFollow] = useState(false);
 
   return (
-    <article className="border-b border-gray-ee flex justify-center items-center gap-20 mb-10 p-10 w-full">
+    <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
       {/* 정훈님 컴포넌트 재사용? */}
       <div className="flex flex-col gap-2 items-center">
         {TEMP_USER.image ? (
@@ -37,7 +37,7 @@ export default function ProfileSection({
             <Logo className="h-16 w-16" />
           </div>
         )}
-        <p className="text-lg mt-[10px]">{TEMP_USER.name}</p>
+        <p className="text-lg mt-[10px] dark:text-white">{TEMP_USER.name}</p>
       </div>
       <section className="w-max">
         <div className="flex w-[208px] justify-between mb-4">
@@ -57,7 +57,7 @@ export default function ProfileSection({
             <Link to="/mypage/edit">
               <button
                 type="button"
-                className="primary-btn w-full py-1 rounded-full text-sm"
+                className="primary-btn w-full py-1 rounded-full text-sm font-medium"
               >
                 프로필 수정
               </button>
@@ -68,7 +68,7 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-full text-sm",
+                "w-full py-1 rounded-full text-sm font-medium",
                 isFollow ? "secondary-btn" : "primary-btn"
               )}
               onClick={() => setIsFollow((prev) => !prev)}
@@ -77,7 +77,7 @@ export default function ProfileSection({
             </button>
             <button
               type="button"
-              className="primary-btn w-full py-1 rounded-full text-sm"
+              className="primary-btn w-full py-1 rounded-full text-sm font-medium"
             >
               메세지 보내기
             </button>

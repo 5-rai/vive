@@ -1,21 +1,20 @@
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 import profileImg from "../../assets/profileImg.jpg";
 
 export default function CommentItem() {
   return (
     <div className="flex flex-col gap-2">
-      <NavLink
-        to={"/user/userId"}
-        className={"flex items-center w-fit gap-[13px] rounded-lg"}
-      >
+      <Link to={"/user/userId"} className={"flex items-center gap-[13px]"}>
         <img
-          className="w-[25px] h-[25px] rounded-full"
+          className="w-7 h-7 rounded-full object-cover"
           src={profileImg}
           alt="유저 프로필 이미지"
         />
-        <span>닉네임</span>
-      </NavLink>
-      <p className="text-[#666666]">와 너무 축하드려요~</p>
+        <span className="dark:text-white">닉네임</span>
+      </Link>
+      <p className="text-[#666666] dark:text-gray-c8 whitespace-pre-wrap">
+        '와 너무 축하드려요~'
+      </p>
     </div>
   );
 }

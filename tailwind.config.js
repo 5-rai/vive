@@ -11,6 +11,7 @@ export default {
       colors: {
         primary: "#FCC404",
         secondary: "#FBEFBF",
+        highlight: "#F38304",
         "red-accent": "#FF2929",
         gray: {
           22: "#222222",
