@@ -1,12 +1,26 @@
 import { useEffect, useRef, useState } from "react";
-import { CHANNEL } from "../../constants/channel";
 import { twMerge } from "tailwind-merge";
 import DropdownArrowIcon from "../../assets/DropdownArrowIcon";
+import { getAllChannels } from "../../api/write";
 
-export default function Dropdown() {
+interface DropdownProps {
+  channel?: Channel;
+  setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>;
+}
+
+export default function Dropdown({ channel, setChannel }: DropdownProps) {
+  const [channels, setChannels] = useState<Channel[]>();
   const [isOpen, setIsOpen] = useState(!false);
-  const [selected, setSelected] = useState<string | null>(null);
   const ref = useRef<HTMLElement>(null);
+
+  const getChannels = async () => {
+    const channels = await getAllChannels();
+    setChannels(channels);
+  };
+
+  useEffect(() => {
+    getChannels();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -21,8 +35,8 @@ export default function Dropdown() {
     };
   }, []);
 
-  const handleOptionClick = (channel: string) => {
-    setSelected(channel);
+  const handleOptionClick = (channel: Channel) => {
+    setChannel(channel);
     setIsOpen(false);
   };
 
@@ -30,24 +44,29 @@ export default function Dropdown() {
     <section ref={ref} className="w-40 relative">
       <button
         type="button"
-        className="flex w-full rounded-lg border border-gray-c8 py-1 pl-3 pr-1 justify-between bg-white"
+        className="flex w-full rounded-lg border py-1 pl-3 pr-1 justify-between bg-white"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <p className={twMerge(!selected && "text-[#777]")}>
-          {selected ?? "카테고리"}
+        <p
+          className={twMerge(
+            !channel && "text-[#777]",
+            channel && "dark:text-gray-22"
+          )}
+        >
+          {channel?.name ?? "카테고리"}
         </p>
         <DropdownArrowIcon />
       </button>
       {isOpen && (
         <ul className="flex flex-col py-3 px-3 absolute bg-white w-full rounded-lg border border-gray-c8 top-10">
-          {CHANNEL.map((channel) => (
-            <li key={channel} className="w-full">
+          {channels?.slice(3).map((channel) => (
+            <li key={channel._id} className="w-full">
               <button
                 type="button"
                 onClick={() => handleOptionClick(channel)}
-                className="hover:bg-secondary py-1 w-full text-left px-2 rounded-md"
+                className="hover:bg-secondary py-1 w-full text-left px-2 rounded-md dark:text-gray-22"
               >
-                {channel}
+                {channel.name}
               </button>
             </li>
           ))}

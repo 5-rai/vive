@@ -28,7 +28,9 @@ export default function PostDetail() {
         </button>
       </div>
       <hr className="bg-gray-22 my-5" />
-      <div className="text-[#6C6C6C]">취업 성공해서 너무 신나요~</div>
+      <div className="text-[#6C6C6C]">
+        <p>취업 성공해서 너무 신나요~</p>
+      </div>
     </section>
   );
 }
