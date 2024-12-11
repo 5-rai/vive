@@ -99,7 +99,7 @@ export default function Home() {
         />
         <RecentPosts
           title="이무진-청춘만화(COVER)"
-          youtubeTitle="유튜브 영상 제목,유튜브 영상 제목, 유튜브 영상 제목, 유튜브 영상 제목"
+          youtubeTitle="유튜브 영상 제목,유튜브 영상 제목, 유튜브 영상 제목, 유튜브 영상 제목, 유튜브 영상 제목, 유튜브 영상 제목"
           youtubeThumbnail=""
           avatarImg="/src/assets/profileImg.jpg"
         />

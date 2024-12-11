@@ -21,7 +21,7 @@ export default function RecentPosts({
   return (
     <div
       onClick={postClick}
-      className="hover:cursor-pointer border-t-[24px] border-t-transparent w-[208px] h-[276px] rounded-lg flex-col justify-start items-start inline-flex"
+      className="hover:cursor-pointer border-t-[24px] border-t-transparent w-[208px] backdrop:rounded-lg flex-col justify-start items-start inline-flex"
     >
       <div className="relative h-[178px] rounded-tl-lg rounded-tr-lg border-r border-[#ededed] overflow-hidden">
         {/* 유튜브 썸네일 이미지 */}
@@ -47,14 +47,12 @@ export default function RecentPosts({
         </div>
       </div>
 
-      <div className="self-stretch h-[98px] p-2 bg-white rounded-bl-lg rounded-br-lg border-l border-r border-b border-[#ededed] flex-col justify-start items-start gap-2 flex">
+      <div className="self-stretch p-2 bg-white rounded-bl-lg rounded-br-lg border-l border-r border-b border-[#ededed] flex-col justify-start items-start gap-2 flex">
         <div className="self-stretch text-[#222222] text-base font-semibold uppercase leading-[30px]">
           {title}
         </div>
-        <div className="self-stretch text-[#c8c8c8] text-sm font-normal uppercase leading-snug">
-          {youtubeTitle.length > 13
-            ? `${youtubeTitle.slice(0, 13)}...`
-            : youtubeTitle}
+        <div className="line-clamp-1 self-stretch text-[#c8c8c8] text-sm font-normal uppercase leading-snug">
+          {youtubeTitle}
         </div>
       </div>
     </div>
