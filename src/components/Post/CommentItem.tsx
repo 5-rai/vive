@@ -15,7 +15,7 @@ export default function CommentItem({ comment }: { comment: Comment }) {
         />
         <span className="dark:text-white">{comment.author.fullName}</span>
       </NavLink>
-      <p className="text-[#666666] dark:text-gray-c8 whitespace-pre-wrap">
+      <p className="text-[#666666] dark:text-gray-c8 whitespace-pre-wrap break-words">
         {comment.comment}
       </p>
     </div>
