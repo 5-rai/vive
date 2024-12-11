@@ -33,7 +33,7 @@ function App() {
           <Route path="/mypage" element={<MyProfile />}></Route>
           <Route path="/mypage/edit" element={<ModifyProfile />}></Route>
           <Route path="/user/:userId" element={<UserProfile />}></Route>
-          <Route path="/searchresult" element={<SearchResult />}></Route>
+          <Route path="/search" element={<SearchResult />}></Route>
         </Route>
       </Route>
     </Routes>
