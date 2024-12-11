@@ -3,14 +3,13 @@ import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
 import { loginApi } from "../api/auth";
-import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router";
 
 export default function Login() {
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
   const [errorMessage, setErrorMessage] = useState("");
-
-  const { login } = useAuthStore();
+  const navigate = useNavigate();
 
   const validate = (): boolean => {
     let isValid = true;
@@ -35,9 +34,12 @@ export default function Login() {
       password: password.value,
     }); // LoginRequest 타입의 객체 전달
 
-    if (!data)
+    if (data) {
+      navigate("/");
+      console.log("로그인 성공");
+    } else {
       setErrorMessage("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
-    else console.log("로그인 성공");
+    }
   };
 
   return (
