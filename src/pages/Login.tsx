@@ -2,7 +2,7 @@ import { useState } from "react";
 import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
-import { axiosInstance } from "../api/axios";
+import { loginApi } from "../api/auth";
 import { useAuthStore } from "../store/authStore";
 
 export default function Login() {
@@ -10,9 +10,9 @@ export default function Login() {
   const [password, setPassword] = useState({ value: "", isWarning: false });
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { login } = useAuthStore(); // Zustand store에서 로그인 함수 가져오기
+  const { login } = useAuthStore();
 
-  const validate = () => {
+  const validate = (): boolean => {
     let isValid = true;
     if (!email.value) {
       setEmail({ ...email, isWarning: true });
@@ -27,18 +27,16 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage(""); // 이전 에러 메시지 초기화
+    setErrorMessage("");
     if (!validate()) return;
 
     try {
-      const response = await axiosInstance.post("/login", {
+      const data = await loginApi({
         email: email.value,
         password: password.value,
-      });
-
-      const { token } = response.data;
-      login(token); // Zustand store에 로그인 상태 업데이트
-      console.log("로그인 성공:", response.data);
+      }); // LoginRequest 타입의 객체 전달
+      login(data.token);
+      console.log("로그인 성공:", data);
       // TODO: 로그인 성공 시 페이지 이동 로직 추가
     } catch (error: any) {
       console.error("로그인 실패:", error);
