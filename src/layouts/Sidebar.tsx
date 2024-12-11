@@ -8,16 +8,16 @@ export default function Sidebar() {
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
   return (
     <>
-      <aside className="flex flex-col sticky top-[68px] h-[90vh] w-[300px] min-w-[300px] p-7 gap-16 border-r border-gray-ee">
+      <aside className="flex flex-col sticky top-[68px] h-[calc(100vh-68px)] w-[300px] min-w-[300px] p-7 gap-16 border-r border-gray-ee">
         <div className="h-[365px]">
-          <p className="border-b py-2 border-gray-22 mb-2.5">카테고리</p>
+          <p className="border-b py-2 mb-2.5">카테고리</p>
           <div className="flex flex-col gap-2.5">
             {[1, 2, 3, 4, 5, 6].map((_, idx) => (
               <NavLink
                 key={idx}
                 to={"/channels/channelName"}
                 className={
-                  "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary transition-colors"
+                  "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
                 }
               >
                 K-POP
@@ -26,7 +26,7 @@ export default function Sidebar() {
           </div>
         </div>
         <div>
-          <p className="border-b py-2 border-gray-22 mb-4">접속자 (N명)</p>
+          <p className="border-b py-2 mb-4">접속자 (N명)</p>
           <div>
             <div className="relative mb-4">
               <SearchIcon
@@ -47,7 +47,7 @@ export default function Sidebar() {
                   key={idx}
                   to={"/user/userId"}
                   className={
-                    "flex items-center gap-2.5 px-7 py-2 rounded-lg hover:bg-secondary transition-colors"
+                    "flex items-center gap-2.5 px-7 py-2 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
                   }
                 >
                   <img
