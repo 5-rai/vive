@@ -2,29 +2,42 @@ import { useState } from "react";
 import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
+import { loginApi } from "../api/auth";
+import { useAuthStore } from "../store/authStore";
 
 export default function Login() {
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const validate = () => {
+  const { login } = useAuthStore();
+
+  const validate = (): boolean => {
+    let isValid = true;
     if (!email.value) {
       setEmail({ ...email, isWarning: true });
+      isValid = false;
     }
     if (!password.value) {
       setPassword({ ...password, isWarning: true });
+      isValid = false;
     }
-
-    if (!email.value || !password.value) {
-      return false;
-    }
-    return true;
+    return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrorMessage("");
     if (!validate()) return;
-    console.log(email, password); // TODO: 로그인 API 연동
+
+    const data = await loginApi({
+      email: email.value,
+      password: password.value,
+    }); // LoginRequest 타입의 객체 전달
+
+    if (!data)
+      setErrorMessage("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+    else console.log("로그인 성공");
   };
 
   return (
@@ -55,6 +68,9 @@ export default function Login() {
             }
           />
         </div>
+        {errorMessage && (
+          <p className="text-red-500 mt-2 text-sm">{errorMessage}</p>
+        )}
         <div className="flex flex-col gap-5 mt-24">
           <AuthButton type="submit" primary>
             로그인
