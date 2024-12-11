@@ -1602,7 +1602,7 @@ react-router@^7.0.2:
 
 react-youtube@^10.1.0:
   version "10.1.0"
-  resolved "https://registry.npmjs.org/react-youtube/-/react-youtube-10.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-youtube/-/react-youtube-10.1.0.tgz#7e5670c764f12eb408166e8eb438d788dc64e8b5"
   integrity sha512-ZfGtcVpk0SSZtWCSTYOQKhfx5/1cfyEW1JN/mugGNfAxT3rmVJeMbGpA9+e78yG21ls5nc/5uZJETE3cm3knBg==
   dependencies:
     fast-deep-equal "3.1.3"
