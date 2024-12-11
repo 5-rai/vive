@@ -13,48 +13,42 @@ export default function RecentPosts({
 }) {
   const navigate = useNavigate();
   const postClick = () => {
-    navigate("");
+    navigate("/channels/channelName/postId");
   };
-  const avatarClick = () => {
-    navigate("");
+  const avatarClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.stopPropagation();
+    navigate("/user/userId");
   };
   return (
-    <div
+    <article
       onClick={postClick}
-      className="hover:cursor-pointer border-t-[24px] border-t-transparent w-[208px] backdrop:rounded-lg flex-col justify-start items-start inline-flex"
+      className="cursor-pointer w-[208px] backdrop:rounded-lg flex-col"
     >
-      <div className="relative h-[178px] rounded-tl-lg rounded-tr-lg border-r border-[#ededed] overflow-hidden">
-        {/* 유튜브 썸네일 이미지 */}
+      <section className="relative h-[178px] rounded-tl-lg rounded-tr-lg border-r border-gray-ee overflow-hidden">
         <img
           className="w-[208px] h-[178px] object-cover"
           src={youtubeThumbnail}
+          alt={title}
         />
-
-        {/* 그라데이션 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black"></div>
-
-        {/* 아바타와 텍스트 */}
+        <div className="absolute inset-0 image-shadow"></div>
         <div
           onClick={avatarClick}
-          className="absolute left-2 bottom-2 flex items-center gap-2"
+          className="group absolute left-2 bottom-2 flex items-center gap-2"
         >
-          <div className="w-6 h-6 justify-center items-center flex">
-            <img className="w-6 h-6 rounded-full" src={avatarImg} />
-          </div>
-          <div className="text-gray-c8 text-sm font-medium leading-snug">
+          <img className="w-6 h-6 rounded-full" src={avatarImg} />
+          <p className="text-gray-c8 text-sm font-medium group-hover:text-gray-ee">
             avatar
-          </div>
+          </p>
         </div>
-      </div>
-
-      <div className="self-stretch p-2 bg-white rounded-bl-lg rounded-br-lg border-l border-r border-b border-[#ededed] flex-col justify-start items-start gap-2 flex">
-        <div className="self-stretch text-[#222222] text-base font-semibold uppercase leading-[30px]">
+      </section>
+      <section className="self-stretch p-2 bg-white rounded-bl-lg rounded-br-lg border-l border-r border-b border-gray-ee flex flex-col gap-2">
+        <p className="self-stretch text-gray-22 text-base font-semibold">
           {title}
-        </div>
-        <div className="line-clamp-1 self-stretch text-[#c8c8c8] text-sm font-normal uppercase leading-snug">
+        </p>
+        <p className="line-clamp-2 text-gray-c8 text-sm font-normal h-10">
           {youtubeTitle}
-        </div>
-      </div>
-    </div>
+        </p>
+      </section>
+    </article>
   );
 }

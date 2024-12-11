@@ -14,17 +14,16 @@ export default function WeeklyArtist({
   return (
     <div
       onClick={artistClick}
-      className=" hover:cursor-pointer border-t-[24px] border-t-transparent h-[162px] justify-between items-start inline-flex"
+      className="hover:cursor-pointer justify-between items-start inline-flex"
     >
-      <div className="w-[122px] relative">
+      <div className="w-[122px]">
         <img
-          className="w-[122px] h-[122px] left-0 top-0 absolute rounded-full shadow"
+          className="w-[122px] h-[122px] rounded-full profile-shadow mb-[10px]"
           src={images}
+          alt={`${name} 프로필 이미지`}
         />
-        <div className="w-[122px] h-[30px] left-0 top-[132px] absolute justify-start items-center gap-[30px] inline-flex">
-          <div className="whitespace-nowrap w-[261px] text-[#222222] text-lg font-normal uppercase leading-[30px]">
-            {name}
-          </div>
+        <div className="whitespace-nowrap text-lg truncate font-normal text-center">
+          {name}
         </div>
       </div>
     </div>
