@@ -30,22 +30,14 @@ export default function Login() {
     setErrorMessage("");
     if (!validate()) return;
 
-    try {
-      const data = await loginApi({
-        email: email.value,
-        password: password.value,
-      }); // LoginRequest 타입의 객체 전달
-      login(data.token);
-      console.log("로그인 성공:", data);
-      // TODO: 로그인 성공 시 페이지 이동 로직 추가
-    } catch (error: any) {
-      console.error("로그인 실패:", error);
-      if (error.response?.data?.message) {
-        setErrorMessage(error.response.data.message);
-      } else {
-        setErrorMessage("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
-      }
-    }
+    const data = await loginApi({
+      email: email.value,
+      password: password.value,
+    }); // LoginRequest 타입의 객체 전달
+
+    if (!data)
+      setErrorMessage("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+    else console.log("로그인 성공");
   };
 
   return (
