@@ -1,43 +1,132 @@
 import Bookmark from "../components/Write/Bookmark";
-import Temp from "../assets/youtube-temp.avif";
 import Dropdown from "../components/Write/Dropdown";
+import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
+import { getOneYoutubeVideoInfo } from "../api/youtube";
+import { createPost } from "../api/post";
+import { useNavigate } from "react-router";
 
-const DUMMY_DATA = {
-  title: "WONDER STAGE - G-DRAGON",
-  description: "설명 어쩌고 저쩌고",
-  url: "https://www.youtube.com/watch?v=5BA7MoSSHTA",
-  thumbnail: Temp,
-};
+const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 
 export default function Write() {
-  const isBookmark = true; // 임시
-  const isDisabled = true; // 임시
+  const navigate = useNavigate();
+  const [videoInfo, setVideoInfo] = useState<Partial<YoutubeVideoType>>();
+
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [selectedChannel, setSelectedChannel] = useState<Channel>();
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState({
+    value: "",
+    validUrl: "",
+    isWarning: false,
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const post = await createPost({
+      title: JSON.stringify({
+        title,
+        contents,
+        youtubeUrl: youtubeUrl.validUrl,
+      }),
+      channelId: selectedChannel!._id,
+    });
+    navigate(`/channels/${selectedChannel!.name}/${post!._id}`);
+  };
+
+  const createBookmark = async (url: string) => {
+    if (!youtubeLinkRegex.test(url)) {
+      setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
+      setVideoInfo(undefined);
+      return;
+    }
+
+    const parsedUrl = new URL(url);
+    const videoId = new URLSearchParams(parsedUrl.search).get("v");
+    const videoInfo = await getOneYoutubeVideoInfo(videoId);
+
+    if (videoInfo) {
+      setVideoInfo(videoInfo);
+      setYoutubeUrl({ ...youtubeUrl, value: url, validUrl: url });
+    } else {
+      setVideoInfo(undefined);
+      setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
+    }
+  };
+
+  const validate = () => {
+    if (!title || !contents || !videoInfo || !selectedChannel) {
+      return false;
+    }
+    return true;
+  };
+
+  useEffect(() => {
+    console.log(!youtubeUrl.value);
+    if (!title || !contents || !youtubeUrl.value || !selectedChannel) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [title, contents, youtubeUrl, selectedChannel]);
 
   return (
     <section className="w-full px-16 py-7">
-      <form className="flex flex-col gap-4">
-        <Dropdown />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <Dropdown channel={selectedChannel} setChannel={setSelectedChannel} />
         <input
-          className="border-b p-3 focus:border-primary text-2xl border-gray-c8 dark:border-gray-c8/50"
+          className="border p-3 focus:border-primary text-2xl border-gray-c8 dark:border-gray-c8/50 rounded-lg"
           placeholder="제목을 입력하세요"
+          onChange={(e) => setTitle(e.target.value)}
         />
         <div className="border focus-within:border-primary rounded-lg border-gray-c8 dark:border-gray-c8/50 overflow-hidden p-6 bg-white dark:bg-white/10">
           <textarea
             className="w-full h-[280px] resize-none bg-transparent custom-scrollbar"
             placeholder="내용을 입력해주세요"
+            onChange={(e) => setContents(e.target.value)}
           />
         </div>
-        <input
-          type="url"
-          className="border focus:border-primary rounded-lg py-3 px-5 border-gray-c8 dark:border-gray-c8/50"
-          placeholder="유튜브 url를 입력하세요"
-        />
-        {isBookmark && (
+        <div>
+          <input
+            type="url"
+            className={twMerge(
+              "border focus:border-primary rounded-lg w-full py-3 px-5 dark:border-gray-c8/50",
+              youtubeUrl.isWarning ? "border-red-accent" : "border-gray-c8"
+            )}
+            placeholder="유튜브 url를 입력하세요"
+            autoCorrect="off"
+            onKeyDown={(e) =>
+              e.key === "Enter" && createBookmark(e.currentTarget.value)
+            }
+            onPaste={(e) => createBookmark(e.clipboardData.getData("text"))}
+            onChange={(e) =>
+              setYoutubeUrl({
+                ...youtubeUrl,
+                value: e.target.value,
+                isWarning: false,
+              })
+            }
+          />
+          <p
+            className={twMerge(
+              "text-xs leading-7",
+              youtubeUrl.isWarning
+                ? "text-red-accent"
+                : "text-transparent select-none"
+            )}
+          >
+            올바른 유튜브 URL을 입력해주세요.
+          </p>
+        </div>
+        {videoInfo && (
           <Bookmark
-            title={DUMMY_DATA.title}
-            description={DUMMY_DATA.description}
-            url={DUMMY_DATA.url}
-            thumbnail={DUMMY_DATA.thumbnail}
+            title={videoInfo.snippet!.title}
+            description={videoInfo.snippet!.description}
+            url={youtubeUrl.validUrl}
+            thumbnail={videoInfo.snippet!.thumbnails.default.url}
           />
         )}
         <button

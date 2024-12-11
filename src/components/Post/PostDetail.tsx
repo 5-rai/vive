@@ -28,9 +28,9 @@ export default function PostDetail() {
         </button>
       </div>
       <hr className="bg-gray-22 dark:bg-gray-ee/50 my-5 border-none h-[1px]" />
-      <div className="text-[#6C6C6C] dark:text-gray-c8">
+      <p className="text-[#6C6C6C] dark:text-gray-c8">
         취업 성공해서 너무 신나요~
-      </div>
+      </p>
     </section>
   );
 }

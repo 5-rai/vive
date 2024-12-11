@@ -4,7 +4,7 @@ import CommentWrite from "./CommentWrite";
 export default function Comment() {
   const commentLength = 0;
   return (
-    <section className="flex flex-col w-[420px] screen-100vh py-[28px] border-l border-r border-gray-ee dark:border-gray-ee/50">
+    <section className="flex flex-col w-[420px] screen-100vh py-[28px] border-l border-gray-ee dark:border-gray-ee/50">
       <p className="mb-[22px] font-medium text-xl px-6">댓글 N개</p>
       <div className="flex flex-col w-full grow overflow-hidden">
         {commentLength === 0 ? (
