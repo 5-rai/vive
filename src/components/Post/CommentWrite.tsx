@@ -49,7 +49,7 @@ export default function CommentWrite() {
         <textarea
           ref={textareaRef}
           rows={1}
-          className="w-full h-[47px] border border-gray-c8 px-6 py-2.5 mt-[23px] rounded-[15px] outline-none resize-none"
+          className="block w-full h-[47px] bg-transparent resize-none custom-scrollbar"
           onChange={handleChange}
           placeholder="댓글을 적어주세요!"
         ></textarea>
