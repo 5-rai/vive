@@ -10,7 +10,7 @@ export default function Header() {
   const isClicked = true;
 
   return (
-    <header className="sticky top-0">
+    <header className="sticky top-0 h-[68px]">
       <div className="border-b border-[#eee] w-full absolute left-0 right-0 bg-transparent">
         <div className="flex justify-between items-center w-[1440px] h-[68px] relative px-10 mx-auto">
           <LogoButton />
