@@ -1,3 +1,14 @@
+import { useParams } from "react-router";
+import PostDetail from "../components/Post/PostDetail";
+import Comment from "../components/Post/Comment";
+
 export default function Post() {
-  return <div>Post</div>;
+  const { channelName, postId } = useParams();
+
+  return (
+    <div className="flex">
+      <PostDetail />
+      <Comment />
+    </div>
+  );
 }
