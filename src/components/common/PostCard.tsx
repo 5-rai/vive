@@ -1,32 +1,54 @@
 import LikeIcon from "../../assets/LikeIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LikeEmptyIcon from "../../assets/LikeEmptyIcon";
 import { useNavigate } from "react-router";
 import { twMerge } from "tailwind-merge";
-import ProfileImg from "../../assets/profileImg.jpg";
 import Temp from "../../assets/youtube-temp.avif";
-import Logo from "../../assets/Logo";
+import DefaultProfileImage from "./DefaultProfileImage";
+import { useAllUserStore } from "../../store/allUserStore";
 
-export default function PostCard({
-  post,
-  writer,
-  like,
-  isLiked,
-}: PostCardProps) {
+export default function PostCard({ post }: { post: Post | SearchPost }) {
   const navigate = useNavigate();
-  const [isCurrentLiked, setIsCurrentLiked] = useState(isLiked);
-  const isWriter = !true;
+  const [isCurrentLiked, setIsCurrentLiked] = useState(false);
+  const [author, setAuthor] = useState<User | undefined>();
+  const postInformation = JSON.parse(post.title);
+  const { findUserById } = useAllUserStore();
+  const isWriter = !true; // zustand로 유저 id 관리 + 현 로그인 id와 작성자 id 비교
+
+  useEffect(() => {
+    if (typeof post.author === "string") {
+      const user = findUserById(post.author, useAllUserStore.getState());
+      setAuthor(user);
+    } else {
+      setAuthor(post.author);
+    }
+  }, [findUserById, post.author]);
+
+  const handleCardClick = () => {
+    if (typeof post.channel === "string") {
+      navigate(`/channels/${post.channel}/${post._id}`);
+      return;
+    }
+    navigate(`/channels/${post.channel._id}/${post._id}`);
+  };
+
+  const handleProfileClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (typeof post.author === "string") {
+      navigate(`/user/${post.author}`);
+      return;
+    }
+    navigate(`/user/${post.author._id}`);
+  };
 
   return (
     <article
       className="rounded-lg overflow-hidden border border-gray-ee dark:border-gray-ee/20 flex w-[447px] h-[163px] cursor-pointer"
-      onClick={() => {
-        navigate(`/channels/${post.channelName}/${post.postId}`);
-      }}
+      onClick={handleCardClick}
     >
       <img
-        src={post.thumbnail || Temp} /* 임시 */
-        alt={`${post.title}-썸네일 이미지`}
+        src={post.image || Temp} /* 임시 */
+        alt={`${postInformation.title}-썸네일 이미지`}
         className="w-[170px] object-cover flex-shrink-0"
       />
       <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
@@ -37,7 +59,7 @@ export default function PostCard({
           )}
         >
           <p className="font-semibold mb-1 line-clamp-1 dark:text-white">
-            {post.title}
+            {postInformation.title}
           </p>
           <p
             className={twMerge(
@@ -45,7 +67,7 @@ export default function PostCard({
               isWriter ? "line-clamp-4 h-20" : "line-clamp-3"
             )}
           >
-            {post.content}
+            {postInformation.contents}
           </p>
         </section>
         {!isWriter && (
@@ -53,24 +75,19 @@ export default function PostCard({
             <button
               type="button"
               className="flex items-center group"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/user/${writer.userId}`);
-              }}
+              onClick={handleProfileClick}
             >
-              {writer.profileImg ? (
+              {author?.image ? (
                 <img
-                  src={writer.profileImg || ProfileImg} /* 임시 */
-                  alt={`${writer.name}-프로필 이미지`}
+                  src={author.image} /* 임시 */
+                  alt={`${author.fullName}-프로필 이미지`}
                   className="w-7 h-7 rounded-full mr-2"
                 />
               ) : (
-                <div className="w-7 h-7 rounded-full mr-2 border border-gray-ee flex items-center justify-center bg-white/20">
-                  <Logo className="w-3 h-3" />
-                </div>
+                <DefaultProfileImage className="w-7 h-7 p-1.5 mr-2 border border-gray-ee dark:border-[#4B4B4B]" />
               )}
               <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover:text-gray-22 dark:group-hover:text-gray-c8/80 font-medium">
-                {writer.name}
+                {author?.fullName}
               </p>
             </button>
             <button
@@ -88,7 +105,7 @@ export default function PostCard({
               ) : (
                 <LikeEmptyIcon className="w-4 h-4" />
               )}
-              <p>{like}</p>
+              <p>{post.likes.length}</p>
             </button>
           </section>
         )}
