@@ -1,6 +1,10 @@
 import YouTube, { YouTubeProps } from "react-youtube";
 
-export default function YouTubeContainer({ videoId }: { videoId?: string }) {
+export default function YouTubeContainer({
+  videoId,
+}: {
+  videoId: string | null;
+}) {
   const opts: YouTubeProps["opts"] = {
     height: "334",
     width: "596",
@@ -10,6 +14,5 @@ export default function YouTubeContainer({ videoId }: { videoId?: string }) {
     },
   };
 
-  if (!videoId) return null;
   return <YouTube videoId={videoId} opts={opts} />;
 }
