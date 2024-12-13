@@ -15,7 +15,7 @@ export default function Bookmark({
 }: BookmarkProps) {
   return (
     <a href={url} target="_blank" rel="noreferrer noopener" className="">
-      <article className="border border-gray-c8 dark:border-gray-c8/50 rounded-lg bg-white dark:bg-white/5 p-5 flex gap-20 justify-between">
+      <article className="border border-gray-c8 dark:border-gray-c8/50 rounded-lg hover:bg-gray-ee dark:hover:bg-gray-ee/10 bg-white dark:bg-white/5 p-5 flex gap-20 justify-between">
         <section className="w-full max-w-[1000px] flex flex-col justify-between">
           <div>
             <p className="font-semibold text-xl dark:text-white">{title}</p>

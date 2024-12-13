@@ -3,6 +3,7 @@ interface CustomTitle {
   title: string;
   contents: string;
   youtubeUrl: string;
+  image: string;
 }
 
 interface Channel {
@@ -22,16 +23,20 @@ interface User {
   posts: Post[];
   likes: Like[];
   comments: string[];
-  followers: [];
-  following: [
-    {
-      _id: string;
-      user: string;
-      follower: string;
-      createdAt: string;
-      updatedAt: string;
-    }
-  ];
+  followers: {
+    _id: string;
+    user: string;
+    follower: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  following: {
+    _id: string;
+    user: string;
+    follower: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
   notifications: Notification[];
   messages: Message[];
   _id: string;
@@ -113,4 +118,17 @@ interface Message {
 
 interface YoutubeVideosType {
   items: YoutubeVideoType[];
+}
+
+interface SearchPost {
+  likes: Like[];
+  comments: string[];
+  _id: string;
+  title: string;
+  image: string;
+  imagePublicId: string;
+  channel: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
 }
