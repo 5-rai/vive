@@ -8,7 +8,7 @@ interface ModifyProfileInputProps {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
-  message: string;
+  message?: string;
 }
 
 export default function ModifyProfileInput({
@@ -38,15 +38,16 @@ export default function ModifyProfileInput({
       <input
         type={type}
         id={id}
-        value={value} // 부모에서 전달된 value를 그대로 사용
+        value={value}
         placeholder={placeholder}
-        onChange={handleChange}
+        onChange={handleChange} // handleChange로 변경
         className="w-[400px] h-10 rounded-[50px] border-gray-c8 dark:border-gray-c8/50 border text-sm text-gray-22 focus:border-primary pl-[25px]"
       />
+      {/* message가 있을 때만 text-red-accent로 표시 */}
       <p
         className={twMerge(
           "text-xs text-red-accent h-4",
-          !isEmpty && "text-transparent select-none"
+          message === "" && "text-transparent select-none" // message가 없으면 투명하게 처리
         )}
       >
         {message}
