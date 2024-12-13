@@ -5,6 +5,7 @@ import Logo from "../assets/Logo"; // 로고 이미지 컴포넌트
 import { axiosInstance } from "../api/axios";
 import { useAuthStore } from "../store/authStore";
 import { userStore } from "../store/userStore";
+import logoImage from "../assets/logo.png";
 
 export default function ModifyProfile() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -53,7 +54,7 @@ export default function ModifyProfile() {
 
   // 이미지 삭제 핸들러 (logo.png로 설정)
   const handleImageDelete = () => {
-    setSelectedImage("../assets/logo.png");
+    setSelectedImage(logoImage);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -69,12 +70,13 @@ export default function ModifyProfile() {
         console.error("User is not authenticated");
         return;
       }
-
+      const formData = new FormData();
+      formData.append("isCover", "false");
       // 프로필 이미지 업데이트
-      if (selectedImage === "/assets/logo.png") {
+      if (selectedImage === logoImage) {
         // 기본 로고 이미지로 설정
-        const formData = new FormData();
-        const logoFile = new File([], "logo.png");
+
+        const logoFile = logoImage;
         formData.append("image", logoFile);
 
         await axiosInstance.post("/users/upload-photo", formData, {
@@ -82,7 +84,6 @@ export default function ModifyProfile() {
         });
       } else if (fileInputRef.current?.files?.[0]) {
         const file = fileInputRef.current.files[0];
-        const formData = new FormData();
         formData.append("image", file);
 
         await axiosInstance.post("/users/upload-photo", formData, {
@@ -115,7 +116,7 @@ export default function ModifyProfile() {
             className="hidden"
           />
           <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8] bg-white/20">
-            {selectedImage && selectedImage !== "../assets/logo.png" ? (
+            {selectedImage && selectedImage !== logoImage ? (
               <img
                 src={selectedImage}
                 alt="프로필 이미지"
