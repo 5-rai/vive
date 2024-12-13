@@ -8,7 +8,11 @@ export default function SearchBar() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate(`/search?keyword=${keyword}`);
+
+    // 에러가 발생하는 케이스라 일단 방어 처리
+    if (keyword.trim() === "") return;
+
+    navigate(`/search?keyword=${keyword.trim()}`);
   };
 
   return (

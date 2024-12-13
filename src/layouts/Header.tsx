@@ -7,14 +7,13 @@ import NotificationButton from "../components/Header/NotificationButton";
 import NewPostButton from "../components/Header/NewPostButton";
 import ProfileButton from "../components/Header/ProfileButton";
 import LogoutButton from "../components/Header/LogoutButton";
-import SearchBar from "../components/Header/Searchbar";
+import SearchBar from "../components/Header/SearchBar";
 
 export default function Header() {
   const { isLoggedIn } = useAuthStore();
   const [isClicked, setIsClicked] = useState(false);
 
   const handleSearchClick = () => {
-    console.log("클릭");
     setIsClicked(true); // 검색 버튼 클릭 시 isClicked 상태를 true로 변경
   };
 
