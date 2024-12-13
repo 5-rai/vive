@@ -6,23 +6,54 @@ import { twMerge } from "tailwind-merge";
 import Temp from "../../assets/youtube-temp.avif";
 import DefaultProfileImage from "./DefaultProfileImage";
 import { useAllUserStore } from "../../store/allUserStore";
+import { deleteLike, postLike } from "../../api/like";
+
+const TEMP_ID = "6756d174f51b1507588c1bcf";
 
 export default function PostCard({ post }: { post: Post | SearchPost }) {
   const navigate = useNavigate();
-  const [isCurrentLiked, setIsCurrentLiked] = useState(false);
+  const [likeInformation, setLikeInformation] = useState<Like | undefined>();
+  const [likeCount, setLikeCount] = useState(post.likes.length);
   const [author, setAuthor] = useState<User | undefined>();
-  const postInformation = JSON.parse(post.title);
+  const [isWriter, setIsWriter] = useState(false); // TODO: zustand로 유저 id 관리 + 현 로그인 id와 작성자 id 비교
+  const [postInformation, setPostInformation] = useState<
+    CustomTitle | undefined | null
+  >(null);
   const { findUserById } = useAllUserStore();
-  const isWriter = !true; // zustand로 유저 id 관리 + 현 로그인 id와 작성자 id 비교
 
   useEffect(() => {
+    // 이전 테스트로 생성된 데이터로 인해 추가된 코드
+    // parsed가 CustomTitle 타입이 아닐 경우를 대비하여 타입 체크
+    try {
+      const parsed = JSON.parse(post.title);
+      if (
+        typeof parsed.youtubeUrl !== "string" ||
+        typeof parsed.title !== "string" ||
+        typeof parsed.contents !== "string"
+      ) {
+        setPostInformation(null);
+        return;
+      }
+      setPostInformation(parsed);
+    } catch (err) {
+      console.error(err);
+      setPostInformation(null);
+    }
+
     if (typeof post.author === "string") {
       const user = findUserById(post.author, useAllUserStore.getState());
       setAuthor(user);
+      setIsWriter(user?._id === TEMP_ID);
     } else {
       setAuthor(post.author);
+      console.log(post.author);
+      setIsWriter(post.author._id === TEMP_ID);
     }
-  }, [findUserById, post.author]);
+
+    // 좋아요 정보 찾기
+    const likeInformation = post.likes.find((like) => like.user === TEMP_ID);
+    setLikeInformation(likeInformation);
+  }, []);
 
   const handleCardClick = () => {
     if (typeof post.channel === "string") {
@@ -41,16 +72,40 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
     navigate(`/user/${post.author._id}`);
   };
 
+  const handleLikeClick = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    if (likeInformation) {
+      const result = await deleteLike(likeInformation._id);
+      if (result) {
+        setLikeInformation(undefined);
+        setLikeCount((prev) => prev - 1);
+      }
+    } else {
+      const result = await postLike(post._id);
+      if (result) {
+        setLikeInformation(result);
+        setLikeCount((prev) => prev + 1);
+      }
+    }
+  };
+
+  // 이전 테스트로 생성된 데이터로 인해 추가된 코드
+  if (!postInformation) return null;
+
   return (
     <article
       className="rounded-lg overflow-hidden border border-gray-ee dark:border-gray-ee/20 flex w-[447px] h-[163px] cursor-pointer"
       onClick={handleCardClick}
     >
-      <img
-        src={post.image || Temp} /* 임시 */
-        alt={`${postInformation.title}-썸네일 이미지`}
-        className="w-[170px] object-cover flex-shrink-0"
-      />
+      <div className="flex-shrink-0 relative w-[170px] h-full overflow-hidden">
+        <img
+          src={post.image || Temp} /* 임시 */
+          alt={`${postInformation.title}-썸네일 이미지`}
+          className="w-full h-full object-cover"
+        />
+      </div>
       <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
         <section
           className={twMerge(
@@ -63,7 +118,7 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
           </p>
           <p
             className={twMerge(
-              "text-sm text-gray-c8 dark:text-gray-ee",
+              "text-sm text-[#545454] dark:text-gray-c8",
               isWriter ? "line-clamp-4 h-20" : "line-clamp-3"
             )}
           >
@@ -74,7 +129,7 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
           <section className="flex justify-between w-full">
             <button
               type="button"
-              className="flex items-center group"
+              className="flex items-center group/author"
               onClick={handleProfileClick}
             >
               {author?.image ? (
@@ -86,26 +141,21 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
               ) : (
                 <DefaultProfileImage className="w-7 h-7 p-1.5 mr-2 border border-gray-ee dark:border-[#4B4B4B]" />
               )}
-              <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover:text-gray-22 dark:group-hover:text-gray-c8/80 font-medium">
+              <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium">
                 {author?.fullName}
               </p>
             </button>
             <button
               type="button"
               className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsCurrentLiked((prev) => !prev);
-                // TODO: 좋아요 API 호출
-                // TODO: 좋아요 수 업데이트
-              }}
+              onClick={handleLikeClick}
             >
-              {isCurrentLiked ? (
+              {likeInformation ? (
                 <LikeIcon className="w-4 h-4" />
               ) : (
                 <LikeEmptyIcon className="w-4 h-4" />
               )}
-              <p>{post.likes.length}</p>
+              <p>{likeCount}</p>
             </button>
           </section>
         )}

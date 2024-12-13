@@ -11,7 +11,6 @@ const useGetSearchKeyword = (keyword: string) => {
       try {
         setLoading(true);
         const { data } = await axiosInstance.get(`/search/all/${keyword}`);
-        console.log(data);
         setData(data);
       } catch (err) {
         if (err instanceof Error) setError(err.message);
