@@ -11,6 +11,7 @@ interface AuthStore {
   isLoggedIn: boolean;
   accessToken: string | null;
   user: RequiredUser | null;
+  checkIsMyUserId: (id: string) => boolean;
   login: (accessToken: string, user: RequiredUser) => void;
   logout: () => void;
   updateUserImage: (image: string) => void;
@@ -19,10 +20,11 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       isLoggedIn: false,
       accessToken: null,
       user: null,
+      checkIsMyUserId: (id) => id === get().user?._id,
       login: (accessToken: string, user: RequiredUser) =>
         set({ isLoggedIn: true, accessToken, user }),
       logout: () => set({ isLoggedIn: false, accessToken: null, user: null }),

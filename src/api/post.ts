@@ -24,3 +24,18 @@ export const getOnePost = async (postId?: string) => {
     console.error(err);
   }
 };
+
+interface UpdatePostProps {
+  postId: string;
+  title: String;
+  imageToDeletePublicId?: string;
+  channelId: String;
+}
+export const updatePost = async (body: UpdatePostProps) => {
+  try {
+    const { data } = await axiosInstance.put<Post>("/posts/update", body);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
