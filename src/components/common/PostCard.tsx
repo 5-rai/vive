@@ -2,7 +2,6 @@ import LikeIcon from "../../assets/LikeIcon";
 import { useEffect, useState } from "react";
 import LikeEmptyIcon from "../../assets/LikeEmptyIcon";
 import { useNavigate } from "react-router";
-import Temp from "../../assets/youtube-temp.avif";
 import DefaultProfileImage from "./DefaultProfileImage";
 import { useAllUserStore } from "../../store/allUserStore";
 import { deleteLike, postLike } from "../../api/like";
@@ -34,7 +33,8 @@ export default function PostCard({ post, keyword }: PostCardProps) {
       if (
         typeof parsed.youtubeUrl !== "string" ||
         typeof parsed.title !== "string" ||
-        typeof parsed.contents !== "string"
+        typeof parsed.contents !== "string" ||
+        typeof parsed.image !== "string"
       ) {
         setPostInformation(null);
         return;
@@ -126,7 +126,7 @@ export default function PostCard({ post, keyword }: PostCardProps) {
     >
       <div className="flex-shrink-0 relative w-[170px] h-full overflow-hidden">
         <img
-          src={post.image || Temp} /* 임시 */
+          src={postInformation.image}
           alt={`${postInformation.title}-썸네일 이미지`}
           className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover/all:scale-105"
         />
@@ -148,7 +148,7 @@ export default function PostCard({ post, keyword }: PostCardProps) {
           >
             {author?.image ? (
               <img
-                src={author.image} /* 임시 */
+                src={author.image}
                 alt={`${author.fullName}-프로필 이미지`}
                 className="w-7 h-7 rounded-full mr-2"
               />
