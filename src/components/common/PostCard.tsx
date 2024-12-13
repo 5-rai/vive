@@ -2,7 +2,6 @@ import LikeIcon from "../../assets/LikeIcon";
 import { useEffect, useState } from "react";
 import LikeEmptyIcon from "../../assets/LikeEmptyIcon";
 import { useNavigate } from "react-router";
-import { twMerge } from "tailwind-merge";
 import Temp from "../../assets/youtube-temp.avif";
 import DefaultProfileImage from "./DefaultProfileImage";
 import { useAllUserStore } from "../../store/allUserStore";
@@ -15,7 +14,6 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
   const [likeInformation, setLikeInformation] = useState<Like | undefined>();
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [author, setAuthor] = useState<User | undefined>();
-  const [isWriter, setIsWriter] = useState(false); // TODO: zustand로 유저 id 관리 + 현 로그인 id와 작성자 id 비교
   const [postInformation, setPostInformation] = useState<
     CustomTitle | undefined | null
   >(null);
@@ -43,11 +41,9 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
     if (typeof post.author === "string") {
       const user = findUserById(post.author, useAllUserStore.getState());
       setAuthor(user);
-      setIsWriter(user?._id === TEMP_ID);
     } else {
       setAuthor(post.author);
       console.log(post.author);
-      setIsWriter(post.author._id === TEMP_ID);
     }
 
     // 좋아요 정보 찾기
@@ -107,58 +103,46 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
         />
       </div>
       <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
-        <section
-          className={twMerge(
-            "flex flex-col h-full",
-            isWriter && "justify-around"
-          )}
-        >
+        <section className="flex flex-col h-full">
           <p className="font-semibold mb-1 line-clamp-1 dark:text-white">
             {postInformation.title}
           </p>
-          <p
-            className={twMerge(
-              "text-sm text-[#545454] dark:text-gray-c8",
-              isWriter ? "line-clamp-4 h-20" : "line-clamp-3"
-            )}
-          >
+          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3">
             {postInformation.contents}
           </p>
         </section>
-        {!isWriter && (
-          <section className="flex justify-between w-full">
-            <button
-              type="button"
-              className="flex items-center group/author"
-              onClick={handleProfileClick}
-            >
-              {author?.image ? (
-                <img
-                  src={author.image} /* 임시 */
-                  alt={`${author.fullName}-프로필 이미지`}
-                  className="w-7 h-7 rounded-full mr-2"
-                />
-              ) : (
-                <DefaultProfileImage className="w-7 h-7 p-1.5 mr-2 border border-gray-ee dark:border-[#4B4B4B]" />
-              )}
-              <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium">
-                {author?.fullName}
-              </p>
-            </button>
-            <button
-              type="button"
-              className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
-              onClick={handleLikeClick}
-            >
-              {likeInformation ? (
-                <LikeIcon className="w-4 h-4" />
-              ) : (
-                <LikeEmptyIcon className="w-4 h-4" />
-              )}
-              <p>{likeCount}</p>
-            </button>
-          </section>
-        )}
+        <section className="flex justify-between w-full">
+          <button
+            type="button"
+            className="flex items-center group/author"
+            onClick={handleProfileClick}
+          >
+            {author?.image ? (
+              <img
+                src={author.image} /* 임시 */
+                alt={`${author.fullName}-프로필 이미지`}
+                className="w-7 h-7 rounded-full mr-2"
+              />
+            ) : (
+              <DefaultProfileImage className="w-7 h-7 p-1.5 mr-2 border border-gray-ee dark:border-[#4B4B4B]" />
+            )}
+            <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium">
+              {author?.fullName}
+            </p>
+          </button>
+          <button
+            type="button"
+            className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
+            onClick={handleLikeClick}
+          >
+            {likeInformation ? (
+              <LikeIcon className="w-4 h-4" />
+            ) : (
+              <LikeEmptyIcon className="w-4 h-4" />
+            )}
+            <p>{likeCount}</p>
+          </button>
+        </section>
       </section>
     </article>
   );
