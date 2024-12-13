@@ -4,6 +4,7 @@ import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
 import UserNavLink from "../components/common/UserNavLink";
+import { useAllUserStore } from "../store/allUserStore";
 
 interface Channel {
   _id: string;
@@ -20,7 +21,7 @@ export default function Sidebar() {
   const [searchName, setSearchName] = useState(""); // 검색할 이름 상태 관리
   const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
   const debounceTimeout = useRef<number | null>(null); // 디바운스 타이머 관리
-  const [allUsers, setAllUsers] = useState<User[]>([]); // 전체 유저 상태 관리
+  const allUsers = useAllUserStore((state) => state.users);
 
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
 
@@ -32,16 +33,6 @@ export default function Sidebar() {
       console.log("유저 찾기 성공🎉", response.data);
     } catch (error) {
       console.error("Error:", error);
-    }
-  };
-
-  // 전체 유저값 갖고오기
-  const fetchAllUsers = async () => {
-    try {
-      const response = await axiosInstance.get("/users/get-users"); // 전체 유저 가져오는 API
-      setAllUsers(response.data); // 전체 유저 상태에 저장
-    } catch (error) {
-      console.error("전체 유저 가져오기 실패:", error);
     }
   };
 
@@ -58,7 +49,6 @@ export default function Sidebar() {
         setLoading(false);
       }
     };
-    fetchAllUsers();
     fetchChannels();
   }, []);
 

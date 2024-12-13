@@ -9,6 +9,7 @@ import { useAuthStore } from "../../store/authStore";
 
 interface PostCardProps {
   post: Post | SearchPost;
+  isSearch?: boolean;
 }
 
 interface Author {
@@ -17,7 +18,7 @@ interface Author {
   image: string | null;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post.likes.length);
@@ -25,13 +26,17 @@ export default function PostCard({ post }: PostCardProps) {
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
   );
-  const { users } = useAllUserStore();
-  const { user } = useAuthStore();
+  const getUser = useAllUserStore((state) => state.getUser);
+  const loggedInUser = useAuthStore((state) => state.user);
 
   useEffect(() => {
     parsePostTitle();
-    setAuthorInformation();
     findLikeInformation();
+    if (isSearch) {
+      setSearchPostAuthor();
+    } else {
+      setPostAuthor();
+    }
   }, []);
 
   const parsePostTitle = () => {
@@ -48,36 +53,38 @@ export default function PostCard({ post }: PostCardProps) {
     }
   };
 
-  const setAuthorInformation = () => {
-    if (typeof post.author === "string") {
-      if (post.author === user?._id) {
-        setAuthor({
-          fullName: user?.fullName,
-          image: user?.image,
-          _id: user?._id,
-        });
-      } else {
-        const author = users.find((user) => user._id === post.author);
-        setAuthor({
-          fullName: author?.fullName || "",
-          image: user?.image || "",
-          _id: post.author,
-        });
-      }
-    } else {
-      setAuthor({
-        fullName: post.author.fullName,
-        image: post.author.image,
-        _id: post.author._id,
-      });
-    }
+  const findLikeInformation = () => {
+    const likeInformation =
+      post.likes.find((like) => like.user === loggedInUser?._id) ?? null;
+    setLikeInformation(likeInformation);
   };
 
-  const findLikeInformation = () => {
-    // 좋아요 정보 찾기
-    const likeInformation =
-      post.likes.find((like) => like.user === user?._id) ?? null;
-    setLikeInformation(likeInformation);
+  const setPostAuthor = () => {
+    const author = post.author as User;
+    setAuthor({
+      fullName: author.fullName,
+      image: author.image,
+      _id: author._id,
+    });
+  };
+
+  const setSearchPostAuthor = () => {
+    const authorId = post.author as string;
+
+    if (authorId === loggedInUser?._id) {
+      setAuthor({
+        fullName: loggedInUser?.fullName,
+        image: loggedInUser?.image,
+        _id: loggedInUser?._id,
+      });
+    } else {
+      const author = getUser(authorId);
+      setAuthor({
+        fullName: author?.fullName || "",
+        image: author?.image || "",
+        _id: authorId,
+      });
+    }
   };
 
   const handleCardClick = () => {
@@ -112,7 +119,6 @@ export default function PostCard({ post }: PostCardProps) {
     }
   };
 
-  // 이전 테스트로 생성된 데이터로 인해 추가된 코드
   if (!postInformation) return null;
 
   return (
