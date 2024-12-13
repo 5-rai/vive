@@ -12,9 +12,15 @@ import Sidebar from "./layouts/Sidebar";
 import Write from "./pages/Write";
 import ModifyProfile from "./pages/ModifyProfile";
 import SearchResult from "./pages/SearchResult";
+import { useEffect } from "react";
+import { getAllUsers } from "./api/user";
 import ModifyPassword from "./pages/ModifyPassword";
 
 function App() {
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
   return (
     <Routes>
       <Route element={<RootLayout />}>
