@@ -43,9 +43,11 @@ export default function SearchResult() {
     <>
       <section className="w-full px-[60px] pb-10">
         <article className="mb-28">
-          <h2 className="text-2xl font-bold my-10">
-            <span className="text-highlight">{keyword}</span>의 유저 검색 결과{" "}
-            {userResult.length}개
+          <h2 className="text-2xl font-bold my-10 flex">
+            <span className="text-highlight inline-block max-w-[500px] overflow-hidden text-ellipsis whitespace-nowrap">
+              {keyword}
+            </span>
+            의 유저 검색 결과 {userResult.length}개
           </h2>
           {userResult.length > 0 ? (
             <div className="w-full grid grid-cols-6 gap-10 justify-between">
@@ -66,9 +68,11 @@ export default function SearchResult() {
           )}
         </article>
         <article>
-          <h2 className="text-2xl font-bold my-10">
-            <span className="text-highlight">{keyword}</span>의 포스팅 검색 결과{" "}
-            {postResult.length}개
+          <h2 className="text-2xl font-bold my-10 flex">
+            <span className="text-highlight inline-block max-w-[500px] overflow-hidden text-ellipsis whitespace-nowrap">
+              {keyword}
+            </span>
+            의 포스팅 검색 결과 {postResult.length}개
           </h2>
           {postResult.length > 0 ? (
             <div className="grid grid-cols-2 gap-10">
