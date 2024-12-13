@@ -5,7 +5,7 @@ import { usePostStore } from "../../store/postStore";
 export default function Comment() {
   const comments = usePostStore((state) => state.comments);
   return (
-    <section className="flex flex-col min-w-[420px] w-[420px] screen-100vh py-[28px] border-l border-gray-ee dark:border-gray-ee/50">
+    <section className="sticky top-[69px] flex flex-col min-w-[420px] w-[420px] screen-100vh py-[28px] border-l border-gray-ee dark:border-gray-ee/50">
       <p className="mb-[22px] font-medium text-xl px-6">
         댓글 {comments.length}개
       </p>
