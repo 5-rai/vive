@@ -2,7 +2,6 @@ import LikeIcon from "../../assets/LikeIcon";
 import { useEffect, useState } from "react";
 import LikeEmptyIcon from "../../assets/LikeEmptyIcon";
 import { useNavigate } from "react-router";
-import DefaultProfileImage from "./DefaultProfileImage";
 import { useAllUserStore } from "../../store/allUserStore";
 import { deleteLike, postLike } from "../../api/like";
 import { isCustomTitle } from "../../utils/typeGuards";
@@ -155,15 +154,11 @@ export default function PostCard({ post, keyword }: PostCardProps) {
             className="flex items-center group/author"
             onClick={handleProfileClick}
           >
-            {author?.image ? (
-              <img
-                src={author.image}
-                alt={`${author.fullName}-프로필 이미지`}
-                className="w-7 h-7 rounded-full mr-2"
-              />
-            ) : (
-              <DefaultProfileImage className="w-7 h-7 p-1.5 mr-2 border border-gray-ee dark:border-[#4B4B4B]" />
-            )}
+            <img
+              src={author?.image || "/logo.png"}
+              alt={`${author?.fullName}-프로필 이미지`}
+              className="w-7 h-7 rounded-full mr-2 bg-white/20"
+            />
             <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium">
               {author?.fullName}
             </p>

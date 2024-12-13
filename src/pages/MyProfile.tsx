@@ -34,7 +34,7 @@ export default function MyProfile() {
           </div>
         )}
         {error && <p className="text-lg font-medium">{error}</p>}
-        {!user && (
+        {!loading && !user && (
           <p className="text-lg font-medium">사용자 정보를 찾을 수 없습니다.</p>
         )}
       </section>
