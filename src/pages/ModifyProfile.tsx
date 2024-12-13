@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router";
 import { useState, useRef, useEffect } from "react";
 import ModifyProfileInput from "../components/ModifyProfile/ModifyProfileInput";
-import Logo from "../assets/Logo"; // 로고 이미지 컴포넌트
-import { axiosInstance } from "../api/axios";
-import { useAuthStore } from "../store/authStore";
 import { userStore } from "../store/userStore";
-import logoImage from "../assets/logo.png";
+import defaultProfileImg from "../assets/logo.png";
+import { updateUser } from "../api/user";
 
 export default function ModifyProfile() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<SelectedImage>();
   const [fullName, setFullName] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const defaultImgRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
   // 컴포넌트 마운트 시 사용자 정보 불러오기
@@ -19,13 +18,11 @@ export default function ModifyProfile() {
 
     fetchUserProfile().then(() => {
       const { profileImage, fullName } = userStore.getState();
-
-      if (profileImage) {
-        setSelectedImage(profileImage);
-      }
-
       if (fullName) {
         setFullName(fullName);
+      }
+      if (profileImage) {
+        setSelectedImage({ src: profileImage, file: null });
       }
     });
   }, []);
@@ -38,14 +35,10 @@ export default function ModifyProfile() {
   // 이미지 업로드 핸들러 (미리 상태만 변경)
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log(file);
-    if (file) {
-      const formData = new FormData();
-      formData.append("image", file);
+    if (!file) return;
 
-      // 서버 전송은 하지 않고 미리 상태만 변경
-      setSelectedImage(URL.createObjectURL(file)); // 로컬 이미지 미리 보기
-    }
+    const fileURL = URL.createObjectURL(file);
+    setSelectedImage({ src: fileURL, file }); // 로컬 이미지 미리 보기
   };
 
   const handleButtonClick = () => {
@@ -54,53 +47,23 @@ export default function ModifyProfile() {
 
   // 이미지 삭제 핸들러 (logo.png로 설정)
   const handleImageDelete = () => {
-    setSelectedImage(logoImage);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    selectDefaultImage();
+  };
+
+  const selectDefaultImage = async () => {
+    const response = await fetch("/logo.png");
+    const blob = await response.blob();
+    const file = new File([blob], "default-profile.png", { type: blob.type });
+    setSelectedImage({ src: defaultProfileImg, file });
   };
 
   // 프로필 수정 요청 함수 (수정 버튼 클릭 시만 서버에 반영)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedImage) return;
 
-    try {
-      const token = useAuthStore.getState().accessToken;
-      if (!token) {
-        console.error("User is not authenticated");
-        return;
-      }
-      const formData = new FormData();
-      formData.append("isCover", "false");
-      // 프로필 이미지 업데이트
-      if (selectedImage === logoImage) {
-        // 기본 로고 이미지로 설정
-
-        const logoFile = logoImage;
-        formData.append("image", logoFile);
-
-        await axiosInstance.post("/users/upload-photo", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } else if (fileInputRef.current?.files?.[0]) {
-        const file = fileInputRef.current.files[0];
-        formData.append("image", file);
-
-        await axiosInstance.post("/users/upload-photo", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      }
-
-      // 이름 업데이트
-      await axiosInstance.put("/settings/update-user", { fullName });
-
-      const { fetchUserProfile } = userStore.getState();
-      await fetchUserProfile(); // 업데이트된 프로필 정보 가져오기
-
-      navigate("/mypage");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
+    await updateUser(selectedImage, fullName);
+    navigate("/mypage");
   };
 
   return (
@@ -115,16 +78,18 @@ export default function ModifyProfile() {
             onChange={handleImageChange}
             className="hidden"
           />
+          <input
+            ref={defaultImgRef}
+            type="file"
+            src={defaultProfileImg}
+            hidden
+          />
           <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8] bg-white/20">
-            {selectedImage && selectedImage !== logoImage ? (
-              <img
-                src={selectedImage}
-                alt="프로필 이미지"
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <Logo />
-            )}
+            <img
+              src={selectedImage?.src ?? defaultProfileImg}
+              alt="프로필 이미지"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
         <div className="imgModifyBtn gap-5">
