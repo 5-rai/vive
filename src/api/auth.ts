@@ -9,16 +9,25 @@ interface LoginRequest {
 
 // 로그인 응답 데이터의 타입 정의
 interface LoginResponse {
+  user: User;
   token: string;
 }
 
 // 로그인 API 함수
-export const loginApi = async (data: LoginRequest) => {
+export const loginApi = async (userInfo: LoginRequest) => {
   try {
-    const response = await axiosInstance.post<LoginResponse>("/login", data);
+    const { data } = await axiosInstance.post<LoginResponse>(
+      "/login",
+      userInfo
+    );
     useAuthStore.setState({
-      accessToken: response.data.token,
+      accessToken: data.token,
       isLoggedIn: true,
+      user: {
+        _id: data.user._id,
+        image: data.user.image,
+        fullName: data.user.fullName,
+      },
     });
     return true;
   } catch (err) {
