@@ -31,6 +31,7 @@ export default function Write() {
         title,
         contents,
         youtubeUrl: youtubeUrl.validUrl,
+        image: videoInfo!.snippet!.thumbnails.default.url,
       }),
       channelId: selectedChannel!._id,
     });
