@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
+import UserNavLink from "../components/common/userNavLink";
 
 interface Channel {
   _id: string;
@@ -34,23 +35,6 @@ export default function Sidebar() {
     }
   };
 
-  // 채널 get
-  useEffect(() => {
-    const fetchChannels = async () => {
-      try {
-        setLoading(true);
-        const response = await axiosInstance.get("/channels");
-        setChannels(response.data);
-      } catch (error) {
-        console.error("Failed to fetch channels", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChannels();
-  }, []);
-
   // 전체 유저값 갖고오기
   const fetchAllUsers = async () => {
     try {
@@ -61,7 +45,23 @@ export default function Sidebar() {
     }
   };
 
-  fetchAllUsers();
+  // 채널 get
+  useEffect(() => {
+    const fetchChannels = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosInstance.get("/channels");
+        setChannels(response.data);
+        fetchAllUsers();
+      } catch (error) {
+        console.error("Failed to fetch channels", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChannels();
+  }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -137,32 +137,18 @@ export default function Sidebar() {
           <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
             {searchResults.length > 0
               ? searchResults.map((user) => (
-                  <NavLink
+                  <UserNavLink
                     key={user._id}
-                    to={`/user/${user._id}`}
-                    className="flex items-center gap-2.5 px-7 py-2 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
-                  >
-                    <img
-                      className="w-7 h-7 rounded-full"
-                      src={user.image || profileImg}
-                      alt={`${user.fullName}의 프로필`}
-                    />
-                    <span>{user.fullName}</span>
-                  </NavLink>
+                    user={user}
+                    profileImg={profileImg}
+                  />
                 ))
               : allUsers.map((user) => (
-                  <NavLink
+                  <UserNavLink
                     key={user._id}
-                    to={`/user/${user._id}`}
-                    className="flex items-center gap-2.5 px-7 py-2 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
-                  >
-                    <img
-                      className="w-7 h-7 rounded-full"
-                      src={user.image || profileImg}
-                      alt={`${user.fullName}의 프로필`}
-                    />
-                    <span>{user.fullName}</span>
-                  </NavLink>
+                    user={user}
+                    profileImg={profileImg}
+                  />
                 ))}
           </div>
         </div>
