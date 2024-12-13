@@ -77,7 +77,7 @@ export default function SearchResult() {
           {postResult.length > 0 ? (
             <div className="grid grid-cols-2 gap-10">
               {postResult.map((post) => (
-                <PostCard key={post._id} post={post} />
+                <PostCard key={post._id} post={post} keyword={keyword} />
               ))}
             </div>
           ) : (

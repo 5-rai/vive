@@ -9,7 +9,12 @@ import { deleteLike, postLike } from "../../api/like";
 
 const TEMP_ID = "6756d174f51b1507588c1bcf";
 
-export default function PostCard({ post }: { post: Post | SearchPost }) {
+interface PostCardProps {
+  post: Post | SearchPost;
+  keyword?: string;
+}
+
+export default function PostCard({ post, keyword }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | undefined>();
   const [likeCount, setLikeCount] = useState(post.likes.length);
@@ -89,6 +94,17 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
 
   // 이전 테스트로 생성된 데이터로 인해 추가된 코드
   if (!postInformation) return null;
+
+  if (
+    keyword &&
+    ![
+      postInformation.title,
+      postInformation.contents,
+      postInformation.youtubeUrl,
+    ].some((field) => field.includes(keyword))
+  ) {
+    return null;
+  }
 
   return (
     <article
