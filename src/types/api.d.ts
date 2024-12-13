@@ -3,6 +3,7 @@ interface CustomTitle {
   title: string;
   contents: string;
   youtubeUrl: string;
+  image: string;
 }
 
 interface Channel {
@@ -117,4 +118,17 @@ interface Message {
 
 interface YoutubeVideosType {
   items: YoutubeVideoType[];
+}
+
+interface SearchPost {
+  likes: Like[];
+  comments: string[];
+  _id: string;
+  title: string;
+  image: string;
+  imagePublicId: string;
+  channel: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
 }

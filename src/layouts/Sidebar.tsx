@@ -1,9 +1,10 @@
 import { Outlet, NavLink } from "react-router";
 import profileImg from "../assets/profileImg.jpg";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
+import UserNavLink from "../components/common/userNavLink";
 
 interface Channel {
   _id: string;
@@ -17,9 +18,34 @@ export default function Sidebar() {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [channels, setChannels] = useState<Channel[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [searchName, setSearchName] = useState(""); // 검색할 이름 상태 관리
+  const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
+  const debounceTimeout = useRef<number | null>(null); // 디바운스 타이머 관리
+  const [allUsers, setAllUsers] = useState<User[]>([]); // 전체 유저 상태 관리
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
 
+  // API GET 함수 (검색값 가져오기)
+  const fetchUsers = async (searchName: string) => {
+    try {
+      const response = await axiosInstance.get(`/search/users/${searchName}`);
+      setSearchResults(response.data); // 검색 결과 저장
+      console.log("유저 찾기 성공🎉", response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // 전체 유저값 갖고오기
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axiosInstance.get("/users/get-users"); // 전체 유저 가져오는 API
+      setAllUsers(response.data); // 전체 유저 상태에 저장
+    } catch (error) {
+      console.error("전체 유저 가져오기 실패:", error);
+    }
+  };
+
+  // 채널 get
   useEffect(() => {
     const fetchChannels = async () => {
       try {
@@ -32,9 +58,26 @@ export default function Sidebar() {
         setLoading(false);
       }
     };
-
+    fetchAllUsers();
     fetchChannels();
   }, []);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchName(value);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current); // 기존 타이머를 취소
+    }
+
+    if (value.trim() !== "") {
+      debounceTimeout.current = setTimeout(() => {
+        fetchUsers(value); // 0.5초 후 검색 실행
+      }, 500);
+    } else {
+      setSearchResults([]);
+    }
+  };
 
   return (
     <>
@@ -64,7 +107,9 @@ export default function Sidebar() {
         </div>
         <div className="grow overflow-y-hidden flex flex-col">
           <p className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-4 dark:text-gray-ee">
-            접속자 (N명)
+            유저{" "}
+            {searchResults.length > 0 ? searchResults.length : allUsers.length}{" "}
+            명
           </p>
           <div className="relative mb-4">
             <SearchIcon
@@ -84,25 +129,26 @@ export default function Sidebar() {
               autoCorrect="off"
               onFocus={toggledInputFocused}
               onBlur={toggledInputFocused}
+              value={searchName}
+              onChange={handleSearch} // 검색 이벤트 핸들러
             />
           </div>
           <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, idx) => (
-              <NavLink
-                key={idx}
-                to={"/user/userId"}
-                className={
-                  "flex items-center gap-2.5 px-7 py-2 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
-                }
-              >
-                <img
-                  className="w-7 h-7 rounded-full"
-                  src={profileImg}
-                  alt="유저 프로필 이미지"
-                />
-                <span>닉네임</span>
-              </NavLink>
-            ))}
+            {searchResults.length > 0
+              ? searchResults.map((user) => (
+                  <UserNavLink
+                    key={user._id}
+                    user={user}
+                    profileImg={profileImg}
+                  />
+                ))
+              : allUsers.map((user) => (
+                  <UserNavLink
+                    key={user._id}
+                    user={user}
+                    profileImg={profileImg}
+                  />
+                ))}
           </div>
         </div>
       </aside>

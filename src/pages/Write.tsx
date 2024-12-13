@@ -31,6 +31,7 @@ export default function Write() {
         title,
         contents,
         youtubeUrl: youtubeUrl.validUrl,
+        image: videoInfo!.snippet!.thumbnails.default.url,
       }),
       channelId: selectedChannel!._id,
     });
@@ -50,7 +51,12 @@ export default function Write() {
 
     if (videoInfo) {
       setVideoInfo(videoInfo);
-      setYoutubeUrl({ ...youtubeUrl, value: url, validUrl: url });
+      setYoutubeUrl({
+        ...youtubeUrl,
+        value: url,
+        validUrl: url,
+        isWarning: false,
+      });
     } else {
       setVideoInfo(undefined);
       setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
@@ -65,7 +71,6 @@ export default function Write() {
   };
 
   useEffect(() => {
-    console.log(!youtubeUrl.value);
     if (!title || !contents || !youtubeUrl.value || !selectedChannel) {
       setIsDisabled(true);
     } else {
@@ -98,10 +103,14 @@ export default function Write() {
             )}
             placeholder="유튜브 url를 입력하세요"
             autoCorrect="off"
-            onKeyDown={(e) =>
-              e.key === "Enter" && createBookmark(e.currentTarget.value)
-            }
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                createBookmark(e.currentTarget.value);
+              }
+            }}
             onPaste={(e) => createBookmark(e.clipboardData.getData("text"))}
+            onBlur={(e) => createBookmark(e.currentTarget.value)}
             onChange={(e) =>
               setYoutubeUrl({
                 ...youtubeUrl,
