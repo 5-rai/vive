@@ -2,6 +2,7 @@ import UserAvatar from "../components/common/UserAvatar";
 import { Link, useSearchParams } from "react-router";
 import useGetSearchKeyword from "../hooks/useGetSearchKeyword";
 import PostCard from "../components/common/PostCard";
+import { isCustomTitle } from "../utils/typeGuards";
 
 export default function SearchResult() {
   const [searchParams] = useSearchParams();
@@ -22,6 +23,20 @@ export default function SearchResult() {
     },
     { userResult: [], postResult: [] }
   ) || { userResult: [], postResult: [] };
+
+  const filteredPostResult = postResult.filter((post) => {
+    try {
+      const postTitle = JSON.parse(post.title);
+      return (
+        isCustomTitle(postTitle) &&
+        [postTitle.title, postTitle.contents, postTitle.youtubeUrl].some(
+          (field) => field.includes(keyword)
+        )
+      );
+    } catch {
+      return false;
+    }
+  });
 
   if (loading || error)
     return (
@@ -72,12 +87,12 @@ export default function SearchResult() {
             <span className="text-highlight inline-block max-w-[500px] overflow-hidden text-ellipsis whitespace-nowrap">
               {keyword}
             </span>
-            의 포스팅 검색 결과 {postResult.length}개
+            의 포스팅 검색 결과 {filteredPostResult.length}개
           </h2>
-          {postResult.length > 0 ? (
+          {filteredPostResult.length > 0 ? (
             <div className="grid grid-cols-2 gap-10">
-              {postResult.map((post) => (
-                <PostCard key={post._id} post={post} keyword={keyword} />
+              {filteredPostResult.map((post) => (
+                <PostCard key={post._id} post={post} />
               ))}
             </div>
           ) : (

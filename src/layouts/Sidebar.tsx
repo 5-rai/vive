@@ -1,5 +1,4 @@
 import { Outlet, NavLink } from "react-router";
-import profileImg from "../assets/profileImg.jpg";
 import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
@@ -137,8 +136,12 @@ export default function Sidebar() {
 
           <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
             {searchResults.length > 0
-              ? searchResults.map((user) => <UserNavLink user={user} />)
-              : allUsers.map((user) => <UserNavLink user={user} />)}
+              ? searchResults.map((user) => (
+                  <UserNavLink key={user._id} user={user} />
+                ))
+              : allUsers.map((user) => (
+                  <UserNavLink key={user._id} user={user} />
+                ))}
           </div>
         </div>
       </aside>
