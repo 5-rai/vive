@@ -24,12 +24,6 @@ export default function ModifyPassword() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 비밀번호 조건 검증
-    if (password.length < 8) {
-      //setErrorMessage("비밀번호는 8자리 이상이어야 합니다.");
-      return;
-    }
-
     if (password !== passwordCheck) {
       //setErrorMessage("비밀번호가 일치하지 않습니다.");
       return;
@@ -75,11 +69,6 @@ export default function ModifyPassword() {
           value={password}
           onChange={handlePasswordChange}
           placeholder="비밀번호를 입력해주세요"
-          message={
-            password.length > 0 && password.length < 8
-              ? "비밀번호는 8자리 이상이어야 합니다."
-              : ""
-          }
         />
         <ModifyProfileInput
           label="비밀번호 확인"

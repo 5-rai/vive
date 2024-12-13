@@ -8,7 +8,7 @@ interface ModifyProfileInputProps {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
-  message: string;
+  message?: string;
 }
 
 export default function ModifyProfileInput({
