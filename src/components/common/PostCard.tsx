@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import DefaultProfileImage from "./DefaultProfileImage";
 import { useAllUserStore } from "../../store/allUserStore";
 import { deleteLike, postLike } from "../../api/like";
+import { isCustomTitle } from "../../utils/typeGuards";
 
 const TEMP_ID = "6756d174f51b1507588c1bcf";
 
@@ -13,38 +14,43 @@ interface PostCardProps {
   keyword?: string;
 }
 
+interface Author {
+  _id: string;
+  fullName: string;
+  image: string;
+}
+
 export default function PostCard({ post, keyword }: PostCardProps) {
   const navigate = useNavigate();
-  const [likeInformation, setLikeInformation] = useState<Like | undefined>();
+  const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post.likes.length);
-  const [author, setAuthor] = useState<
-    { fullName: string; image: string; _id: string } | undefined
-  >();
-  const [postInformation, setPostInformation] = useState<
-    CustomTitle | undefined | null
-  >(null);
+  const [author, setAuthor] = useState<Author | null>(null);
+  const [postInformation, setPostInformation] = useState<CustomTitle | null>(
+    null
+  );
   const { users } = useAllUserStore();
 
   useEffect(() => {
-    // 이전 테스트로 생성된 데이터로 인해 추가된 코드
-    // parsed가 CustomTitle 타입이 아닐 경우를 대비하여 타입 체크
+    parsePostTitle();
+    setAuthorInformation();
+    findLikeInformation();
+  }, []);
+
+  const parsePostTitle = () => {
     try {
       const parsed = JSON.parse(post.title);
-      if (
-        typeof parsed.youtubeUrl !== "string" ||
-        typeof parsed.title !== "string" ||
-        typeof parsed.contents !== "string" ||
-        typeof parsed.image !== "string"
-      ) {
+      if (isCustomTitle(parsed)) {
+        setPostInformation(parsed);
+      } else {
         setPostInformation(null);
-        return;
       }
-      setPostInformation(parsed);
     } catch (err) {
       console.error(err);
       setPostInformation(null);
     }
+  };
 
+  const setAuthorInformation = () => {
     if (typeof post.author === "string") {
       if (post.author === TEMP_ID) {
         setAuthor({
@@ -67,11 +73,14 @@ export default function PostCard({ post, keyword }: PostCardProps) {
         _id: post.author._id,
       });
     }
+  };
 
+  const findLikeInformation = () => {
     // 좋아요 정보 찾기
-    const likeInformation = post.likes.find((like) => like.user === TEMP_ID);
+    const likeInformation =
+      post.likes.find((like) => like.user === TEMP_ID) ?? null;
     setLikeInformation(likeInformation);
-  }, []);
+  };
 
   const handleCardClick = () => {
     if (typeof post.channel === "string") {
@@ -93,7 +102,7 @@ export default function PostCard({ post, keyword }: PostCardProps) {
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
       if (result) {
-        setLikeInformation(undefined);
+        setLikeInformation(null);
         setLikeCount((prev) => prev - 1);
       }
     } else {
