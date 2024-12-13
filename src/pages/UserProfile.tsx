@@ -4,12 +4,8 @@ import PostCardGridSection from "../components/Profile/PostCardGridSection";
 import ProfileSection from "../components/Profile/ProfileSection";
 import { axiosInstance } from "../api/axios";
 
-interface UserWithPosts extends User {
-  posts: Post[];
-}
-
 export default function UserProfile() {
-  const [profileUser, setProfileUser] = useState<UserWithPosts | null>(null);
+  const [profileUser, setProfileUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { userId } = useParams();
@@ -19,12 +15,8 @@ export default function UserProfile() {
       try {
         setLoading(true);
         const userResponse = await axiosInstance.get<User>(`/users/${userId}`);
-        const postsResponse = await axiosInstance.get<Post[]>(
-          `/posts/author/${userId}`
-        );
         setProfileUser({
           ...userResponse.data,
-          posts: postsResponse.data,
         });
       } catch (err) {
         console.error(err);
