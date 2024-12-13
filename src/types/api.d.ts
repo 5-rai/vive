@@ -3,6 +3,7 @@ interface CustomTitle {
   title: string;
   contents: string;
   youtubeUrl: string;
+  image: string;
 }
 
 interface Channel {
