@@ -15,6 +15,7 @@ export default function MyProfile() {
         setLoading(true);
         const response = await axiosInstance.get<User>("/auth-user");
         setUser(response.data);
+        console.log(response.data);
       } catch (err) {
         console.error(err);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
