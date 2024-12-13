@@ -1,27 +1,25 @@
-import ProfileTemp from "../../assets/profileImg.jpg";
-import Logo from "../../assets/Logo";
+import DefaultProfileImage from "./DefaultProfileImage";
 
-const TEMP_USER_AVATAR = {
-  name: "음악하는 다람쥐",
-  image: ProfileTemp,
-};
+interface UserAvatarProps {
+  id?: string;
+  name: string;
+  image: string | null;
+}
 
-export default function UserAvatar() {
+export default function UserAvatar({ name, image }: UserAvatarProps) {
   return (
     <>
       <div className="flex flex-col gap-2 items-center w-[122px] h-[162px]">
-        {TEMP_USER_AVATAR.image ? (
+        {image ? (
           <img
-            src={TEMP_USER_AVATAR.image}
+            src={image}
             alt="프로필 이미지"
-            className="w-[122px] h-[122px] rounded-full profile-shadow border border-gray-ee bg-cover"
+            className="w-[122px] h-[122px] rounded-full profile-shadow border border-gray-ee bg-cover dark:border-gray-ee/20"
           />
         ) : (
-          <div className="w-[122px] h-[122px] rounded-full flex items-center justify-center border border-gray-ee profile-shadow bg-cover">
-            <Logo className="h-16 w-16" />
-          </div>
+          <DefaultProfileImage className="w-[122px] h-[122px] p-6 profile-shadow border border-gray-ee bg-cover dark:border-[#4B4B4B]" />
         )}
-        <p className="text-lg mt-[10px]">{TEMP_USER_AVATAR.name}</p>
+        <p className="text-lg mt-[10px]">{name}</p>
       </div>
     </>
   );
