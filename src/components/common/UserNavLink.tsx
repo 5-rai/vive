@@ -10,7 +10,7 @@ const UserNavLink = ({ user }: { user: User }) => {
       <div className="relative w-7 h-7">
         <img className="w-7 h-7 rounded-full border" src={user.image} />
         {user.isOnline && (
-          <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#21e10f] rounded-full border border-white" />
+          <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#21e10f] rounded-full border border-transparent" />
         )}
       </div>
 

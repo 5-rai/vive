@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
-import UserNavLink from "../components/common/userNavLink";
+import UserNavLink from "../components/common/UserNavLink";
 
 interface Channel {
   _id: string;
@@ -137,12 +137,8 @@ export default function Sidebar() {
 
           <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
             {searchResults.length > 0
-              ? searchResults.map((user) => (
-                  <UserNavLink key={user._id} user={user} />
-                ))
-              : allUsers.map((user) => (
-                  <UserNavLink key={user._id} user={user} />
-                ))}
+              ? searchResults.map((user) => <UserNavLink user={user} />)
+              : allUsers.map((user) => <UserNavLink user={user} />)}
           </div>
         </div>
       </aside>
