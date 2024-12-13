@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
-import UserNavLink from "../components/common/userNavLink";
+import UserNavLink from "../components/common/UserNavLink";
 
 interface Channel {
   _id: string;
@@ -22,6 +22,7 @@ export default function Sidebar() {
   const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
   const debounceTimeout = useRef<number | null>(null); // 디바운스 타이머 관리
   const [allUsers, setAllUsers] = useState<User[]>([]); // 전체 유저 상태 관리
+
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
 
   // API GET 함수 (검색값 가져오기)
@@ -133,22 +134,11 @@ export default function Sidebar() {
               onChange={handleSearch} // 검색 이벤트 핸들러
             />
           </div>
+
           <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
             {searchResults.length > 0
-              ? searchResults.map((user) => (
-                  <UserNavLink
-                    key={user._id}
-                    user={user}
-                    profileImg={profileImg}
-                  />
-                ))
-              : allUsers.map((user) => (
-                  <UserNavLink
-                    key={user._id}
-                    user={user}
-                    profileImg={profileImg}
-                  />
-                ))}
+              ? searchResults.map((user) => <UserNavLink user={user} />)
+              : allUsers.map((user) => <UserNavLink user={user} />)}
           </div>
         </div>
       </aside>
