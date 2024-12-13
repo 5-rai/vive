@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LogoButton from "../components/Header/LogoButton";
 import SearchButton from "../components/Header/SearchButton";
 import LogInButton from "../components/Header/LogInButton";
@@ -7,11 +7,20 @@ import NotificationButton from "../components/Header/NotificationButton";
 import NewPostButton from "../components/Header/NewPostButton";
 import ProfileButton from "../components/Header/ProfileButton";
 import LogoutButton from "../components/Header/LogoutButton";
+import { userStore } from "../store/userStore";
 import SearchBar from "../components/Header/SearchBar";
 
 export default function Header() {
   const { isLoggedIn } = useAuthStore();
   const [isClicked, setIsClicked] = useState(false);
+  const { fetchUserProfile, profileImage } = userStore();
+
+  useEffect(() => {
+    // 로그인 상태일 때만 프로필 가져오기
+    if (isLoggedIn) {
+      fetchUserProfile();
+    }
+  }, [isLoggedIn]);
 
   const handleSearchClick = () => {
     setIsClicked(true); // 검색 버튼 클릭 시 isClicked 상태를 true로 변경
@@ -33,7 +42,7 @@ export default function Header() {
             <NotificationButton />
             <NewPostButton />
             <LogoutButton />
-            <ProfileButton />
+            <ProfileButton profileImage={profileImage} />
           </div>
         ) : (
           // 비로그인 시
