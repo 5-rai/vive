@@ -15,6 +15,7 @@ import SearchResult from "./pages/SearchResult";
 import { useEffect } from "react";
 import { getAllUsers } from "./api/user";
 import ModifyPassword from "./pages/ModifyPassword";
+import Private from "./layouts/Private";
 
 function App() {
   useEffect(() => {
@@ -24,25 +25,23 @@ function App() {
   return (
     <Routes>
       <Route element={<RootLayout />}>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
+
         <Route element={<Sidebar />}>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/write" element={<Write />}></Route>
-          <Route path="/channels/:channelName" element={<Dashboard />}></Route>
-          <Route
-            path="/channels/:channelName/:postId"
-            element={<Post />}
-          ></Route>
-          <Route path="/mypage" element={<MyProfile />}></Route>
-          <Route path="/mypage/edit" element={<ModifyProfile />}></Route>
-          <Route
-            path="/mypage/edit/password"
-            element={<ModifyPassword />}
-          ></Route>
-          <Route path="/user/:userId" element={<UserProfile />}></Route>
-          <Route path="/search" element={<SearchResult />}></Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/channels/:channelName" element={<Dashboard />} />
+          <Route path="/channels/:channelName/:postId" element={<Post />} />
+          <Route path="/search" element={<SearchResult />} />
+          <Route path="/user/:userId" element={<UserProfile />} />
+
+          <Route element={<Private />}>
+            <Route path="/write" element={<Write />} />
+            <Route path="/mypage" element={<MyProfile />} />
+            <Route path="/mypage/edit" element={<ModifyProfile />} />
+            <Route path="/mypage/edit/password" element={<ModifyPassword />} />
+          </Route>
         </Route>
       </Route>
     </Routes>
