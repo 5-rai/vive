@@ -92,14 +92,14 @@ export default function PostCard({ post }: { post: Post | SearchPost }) {
 
   return (
     <article
-      className="rounded-lg overflow-hidden border border-gray-ee dark:border-gray-ee/20 flex w-[447px] h-[163px] cursor-pointer"
+      className="group/all rounded-lg overflow-hidden border border-gray-ee dark:border-gray-ee/20 flex w-[447px] h-[163px] cursor-pointer"
       onClick={handleCardClick}
     >
       <div className="flex-shrink-0 relative w-[170px] h-full overflow-hidden">
         <img
           src={post.image || Temp} /* 임시 */
           alt={`${postInformation.title}-썸네일 이미지`}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover/all:scale-105"
         />
       </div>
       <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
