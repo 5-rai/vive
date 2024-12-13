@@ -1,6 +1,5 @@
 import { useAllUserStore } from "../store/allUserStore";
 import { useAuthStore } from "../store/authStore";
-import { userStore } from "../store/userStore";
 import { axiosInstance } from "./axios";
 
 export const getAllUsers = async () => {
@@ -15,9 +14,12 @@ export const getAllUsers = async () => {
 };
 
 export const updateUser = async (
-  selectedImage: SelectedImage,
-  fullName: string
+  selectedImage: SelectedImage | null,
+  fullName: string | null
 ) => {
+  const updateUserImage = useAuthStore.getState().updateUserImage;
+  const updateUserFullName = useAuthStore.getState().updateUserFullName;
+
   try {
     const token = useAuthStore.getState().accessToken;
     if (!token) {
@@ -31,19 +33,27 @@ export const updateUser = async (
       formData.append("isCover", "false");
       formData.append("image", selectedImage?.file);
 
-      await axiosInstance.post("/users/upload-photo", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const { data } = await axiosInstance.post(
+        "/users/upload-photo",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      updateUserImage(data.image);
     }
 
     // 이름 업데이트
     if (fullName) {
-      await axiosInstance.put("/settings/update-user", { fullName });
-
-      const { fetchUserProfile } = userStore.getState();
-      await fetchUserProfile(); // 업데이트된 프로필 정보 가져오기
+      const { data } = await axiosInstance.put("/settings/update-user", {
+        fullName,
+      });
+      updateUserFullName(data.fullName);
     }
+
+    return true;
   } catch (error) {
     console.error("Error updating profile:", error);
+    return false;
   }
 };
