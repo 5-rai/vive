@@ -83,6 +83,7 @@ interface Notification {
   user: User | string;
   post?: string; // 포스트 id
   follow?: string; // 사용자 id
+  like?: string;
   comment?: Comment;
   message?: string; // 메시지 id
   createdAt: string;
