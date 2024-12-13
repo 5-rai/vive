@@ -14,6 +14,7 @@ import ModifyProfile from "./pages/ModifyProfile";
 import SearchResult from "./pages/SearchResult";
 import { useEffect } from "react";
 import { getAllUsers } from "./api/user";
+import ModifyPassword from "./pages/ModifyPassword";
 
 function App() {
   useEffect(() => {
@@ -36,6 +37,10 @@ function App() {
           ></Route>
           <Route path="/mypage" element={<MyProfile />}></Route>
           <Route path="/mypage/edit" element={<ModifyProfile />}></Route>
+          <Route
+            path="/mypage/edit/password"
+            element={<ModifyPassword />}
+          ></Route>
           <Route path="/user/:userId" element={<UserProfile />}></Route>
           <Route path="/search" element={<SearchResult />}></Route>
         </Route>
