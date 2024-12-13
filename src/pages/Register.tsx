@@ -2,12 +2,14 @@ import { useState } from "react";
 import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
+import { useNavigate } from "react-router";
+import { axiosInstance } from "../api/axios";
 
 export default function Register() {
   const [name, setName] = useState({ value: "", isWarning: false });
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
-
+  const navigate = useNavigate();
   const validate = () => {
     if (!name.value) {
       setName({ ...name, isWarning: true });
@@ -29,6 +31,19 @@ export default function Register() {
     e.preventDefault();
     if (!validate()) return;
     console.log(name, email, password); // TODO: 회원등록 API 연동
+
+    try {
+      axiosInstance.post("/signup", {
+        email: email.value,
+        fullName: name.value,
+        password: password.value,
+      });
+      alert("회원가입 완료🎉");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("회원가입 실패 ❌ 다시 시도해주세요.");
+    }
   };
 
   return (
