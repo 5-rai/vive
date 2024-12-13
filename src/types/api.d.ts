@@ -22,16 +22,20 @@ interface User {
   posts: Post[];
   likes: Like[];
   comments: string[];
-  followers: [];
-  following: [
-    {
-      _id: string;
-      user: string;
-      follower: string;
-      createdAt: string;
-      updatedAt: string;
-    }
-  ];
+  followers: {
+    _id: string;
+    user: string;
+    follower: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  following: {
+    _id: string;
+    user: string;
+    follower: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
   notifications: Notification[];
   messages: Message[];
   _id: string;
