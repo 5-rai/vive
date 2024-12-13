@@ -53,13 +53,21 @@ export default function ProfileSection({
           ))}
         </div>
         {isMyProfile ? (
-          <div>
-            <Link to="/mypage/edit">
+          <div className="flex gap-[10px]">
+            <Link to="/mypage/edit" className="w-full">
               <button
                 type="button"
                 className="primary-btn w-full py-1 rounded-full text-sm font-medium"
               >
                 프로필 수정
+              </button>
+            </Link>
+            <Link to="/mypage/edit/password" className="w-full">
+              <button
+                type="button"
+                className="primary-btn w-full py-1 rounded-full text-sm font-medium"
+              >
+                비밀번호 변경
               </button>
             </Link>
           </div>

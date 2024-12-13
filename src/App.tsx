@@ -12,6 +12,7 @@ import Sidebar from "./layouts/Sidebar";
 import Write from "./pages/Write";
 import ModifyProfile from "./pages/ModifyProfile";
 import SearchResult from "./pages/SearchResult";
+import ModifyPassword from "./pages/ModifyPassword";
 
 function App() {
   return (
@@ -30,6 +31,10 @@ function App() {
           ></Route>
           <Route path="/mypage" element={<MyProfile />}></Route>
           <Route path="/mypage/edit" element={<ModifyProfile />}></Route>
+          <Route
+            path="/mypage/edit/password"
+            element={<ModifyPassword />}
+          ></Route>
           <Route path="/user/:userId" element={<UserProfile />}></Route>
           <Route path="/search" element={<SearchResult />}></Route>
         </Route>
