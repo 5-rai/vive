@@ -5,6 +5,8 @@ interface ModifyProfileInputProps {
   label: string;
   type: string;
   id: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   message: string;
 }
@@ -13,12 +15,20 @@ export default function ModifyProfileInput({
   label,
   type,
   id,
+  value,
+  onChange,
   placeholder,
   message,
 }: ModifyProfileInputProps) {
   const [isEmpty, setIsEmpty] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 부모에서 전달받은 onChange를 호출하여 부모 컴포넌트의 상태를 업데이트
+    if (onChange) {
+      onChange(e);
+    }
+
+    // 필드가 비어있는지 체크
     setIsEmpty(e.target.value.trim() === "");
   };
 
@@ -28,6 +38,7 @@ export default function ModifyProfileInput({
       <input
         type={type}
         id={id}
+        value={value} // 부모에서 전달된 value를 그대로 사용
         placeholder={placeholder}
         onChange={handleChange}
         className="w-[400px] h-10 rounded-[50px] border-gray-c8 dark:border-gray-c8/50 border text-sm text-gray-22 focus:border-primary pl-[25px]"
