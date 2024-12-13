@@ -1,13 +1,10 @@
-import { useAllUserStore } from "../store/allUserStore";
 import { useAuthStore } from "../store/authStore";
 import { axiosInstance } from "./axios";
 
 export const getAllUsers = async () => {
-  const setUsers = useAllUserStore.getState().setUsers;
-
   try {
     const { data } = await axiosInstance.get<User[]>("/users/get-users");
-    setUsers(data);
+    return data;
   } catch (error) {
     console.error(error);
   }

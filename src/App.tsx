@@ -13,13 +13,15 @@ import Write from "./pages/Write";
 import ModifyProfile from "./pages/ModifyProfile";
 import SearchResult from "./pages/SearchResult";
 import { useEffect } from "react";
-import { getAllUsers } from "./api/user";
 import ModifyPassword from "./pages/ModifyPassword";
 import Private from "./layouts/Private";
+import { useAllUserStore } from "./store/allUserStore";
 
 function App() {
+  const fetchUsers = useAllUserStore((state) => state.fetchUsers);
+
   useEffect(() => {
-    getAllUsers();
+    fetchUsers();
   }, []);
 
   return (

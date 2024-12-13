@@ -25,8 +25,8 @@ export default function PostCard({ post }: PostCardProps) {
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
   );
-  const { users } = useAllUserStore();
-  const { user } = useAuthStore();
+  const getUser = useAllUserStore((state) => state.getUser);
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     parsePostTitle();
@@ -57,7 +57,7 @@ export default function PostCard({ post }: PostCardProps) {
           _id: user?._id,
         });
       } else {
-        const author = users.find((user) => user._id === post.author);
+        const author = getUser(post.author);
         setAuthor({
           fullName: author?.fullName || "",
           image: user?.image || "",
