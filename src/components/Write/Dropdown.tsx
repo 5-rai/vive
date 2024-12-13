@@ -61,7 +61,7 @@ export default function Dropdown({ channel, setChannel }: DropdownProps) {
       {isOpen && (
         <ul className="flex flex-col py-3 px-3 absolute bg-white dark:bg-gray-22 w-full rounded-lg border border-gray-c8 dark:border-gray-c8/50 top-10">
           {channels?.slice(3).map((channel) => (
-            <li className="w-full">
+            <li key={`channels-${channel._id}`} className="w-full">
               <button
                 type="button"
                 onClick={() => handleOptionClick(channel)}
