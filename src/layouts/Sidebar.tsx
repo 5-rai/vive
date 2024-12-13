@@ -52,14 +52,13 @@ export default function Sidebar() {
         setLoading(true);
         const response = await axiosInstance.get("/channels");
         setChannels(response.data);
-        fetchAllUsers();
       } catch (error) {
         console.error("Failed to fetch channels", error);
       } finally {
         setLoading(false);
       }
     };
-
+    fetchAllUsers();
     fetchChannels();
   }, []);
 
