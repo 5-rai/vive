@@ -18,11 +18,13 @@ export default function PostCard({ post, keyword }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | undefined>();
   const [likeCount, setLikeCount] = useState(post.likes.length);
-  const [author, setAuthor] = useState<User | undefined>();
+  const [author, setAuthor] = useState<
+    { fullName: string; image: string; _id: string } | undefined
+  >();
   const [postInformation, setPostInformation] = useState<
     CustomTitle | undefined | null
   >(null);
-  const { findUserById } = useAllUserStore();
+  const { users } = useAllUserStore();
 
   useEffect(() => {
     // 이전 테스트로 생성된 데이터로 인해 추가된 코드
@@ -44,11 +46,26 @@ export default function PostCard({ post, keyword }: PostCardProps) {
     }
 
     if (typeof post.author === "string") {
-      const user = findUserById(post.author, useAllUserStore.getState());
-      setAuthor(user);
+      if (post.author === TEMP_ID) {
+        setAuthor({
+          fullName: "임시 사용자",
+          image: "",
+          _id: TEMP_ID,
+        });
+      } else {
+        const user = users.find((user) => user._id === post.author);
+        setAuthor({
+          fullName: user?.fullName || "삭제된 사용자",
+          image: user?.image || "",
+          _id: post.author,
+        });
+      }
     } else {
-      setAuthor(post.author);
-      console.log(post.author);
+      setAuthor({
+        fullName: post.author.fullName,
+        image: post.author.image,
+        _id: post.author._id,
+      });
     }
 
     // 좋아요 정보 찾기
@@ -66,11 +83,7 @@ export default function PostCard({ post, keyword }: PostCardProps) {
 
   const handleProfileClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (typeof post.author === "string") {
-      navigate(`/user/${post.author}`);
-      return;
-    }
-    navigate(`/user/${post.author._id}`);
+    navigate(`/user/${author?._id}`);
   };
 
   const handleLikeClick = async (

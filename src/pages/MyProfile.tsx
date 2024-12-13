@@ -16,7 +16,7 @@ export default function MyProfile() {
         const response = await axiosInstance.get<User>("/auth-user");
         setUser(response.data);
       } catch (err) {
-        console.error(err); 
+        console.error(err);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);
@@ -32,7 +32,7 @@ export default function MyProfile() {
   return (
     <section className="w-fit mx-auto flex flex-col items-center">
       <ProfileSection user={user} isMyProfile={true} />
-      <PostCardGridSection />
+      <PostCardGridSection posts={user.posts} />
     </section>
   );
 }
