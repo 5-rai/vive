@@ -16,10 +16,23 @@ import { useEffect } from "react";
 import { getAllUsers } from "./api/user";
 import ModifyPassword from "./pages/ModifyPassword";
 import Private from "./layouts/Private";
+import { axiosInstance } from "./api/axios";
+import { useChannelStore } from "./store/channelStore";
+
 
 function App() {
+  const setChannels = useChannelStore((state) => state.setChannels);
   useEffect(() => {
     getAllUsers();
+    const fetchChannels = async () => {
+      try {
+        const response = await axiosInstance.get("/channels");
+        setChannels(response.data);
+      } catch (error) {
+        console.error("채널 정보를 가져오는데 실패했습니다", error);
+      }
+    };
+    fetchChannels();
   }, []);
 
   return (
