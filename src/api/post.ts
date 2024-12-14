@@ -4,7 +4,6 @@ interface CreatePostProps {
   title: string;
   channelId: string;
 }
-
 export const createPost = async (body: CreatePostProps) => {
   try {
     const { data } = await axiosInstance.post<Post>("/posts/create", body);
@@ -34,6 +33,17 @@ interface UpdatePostProps {
 export const updatePost = async (body: UpdatePostProps) => {
   try {
     const { data } = await axiosInstance.put<Post>("/posts/update", body);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deletePost = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.delete<Post>("/posts/delete", {
+      data: { id },
+    });
     return data;
   } catch (err) {
     console.error(err);

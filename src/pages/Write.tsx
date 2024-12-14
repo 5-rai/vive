@@ -39,6 +39,7 @@ export default function Write() {
   };
 
   const createBookmark = async (url: string) => {
+    url = url.trim();
     if (!youtubeLinkRegex.test(url)) {
       setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
       setVideoInfo(undefined);
@@ -97,6 +98,7 @@ export default function Write() {
         <div>
           <input
             type="url"
+            value={youtubeUrl.value}
             className={twMerge(
               "border focus:border-primary rounded-lg w-full py-3 px-5 dark:border-gray-c8/50",
               youtubeUrl.isWarning ? "border-red-accent" : "border-gray-c8"
