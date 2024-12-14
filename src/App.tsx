@@ -17,12 +17,24 @@ import ModifyPassword from "./pages/ModifyPassword";
 import Private from "./layouts/Private";
 import { useAllUserStore } from "./store/allUserStore";
 import ModifyPost from "./pages/ModifyPost";
+import { axiosInstance } from "./api/axios";
+import { useChannelStore } from "./store/channelStore";
+
 
 function App() {
   const fetchUsers = useAllUserStore((state) => state.fetchUsers);
-
+  const setChannels = useChannelStore((state) => state.setChannels);
   useEffect(() => {
+    const fetchChannels = async () => {
+      try {
+        const response = await axiosInstance.get("/channels");
+        setChannels(response.data);
+      } catch (error) {
+        console.error("채널 정보를 가져오는데 실패했습니다", error);
+      }
+    };
     fetchUsers();
+    fetchChannels();
   }, []);
 
   return (
