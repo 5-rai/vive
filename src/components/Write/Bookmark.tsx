@@ -28,7 +28,7 @@ export default function Bookmark({
             <p className="text-gray-22/70 dark:text-gray-c8">{url}</p>
           </div>
         </section>
-        <img src={thumbnail} alt="temp" className="h-32" />
+        <img src={thumbnail} alt={url} className="h-32" />
       </article>
     </a>
   );

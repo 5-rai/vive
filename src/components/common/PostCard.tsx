@@ -2,25 +2,23 @@ import LikeIcon from "../../assets/LikeIcon";
 import { useEffect, useState } from "react";
 import LikeEmptyIcon from "../../assets/LikeEmptyIcon";
 import { useNavigate } from "react-router";
-import DefaultProfileImage from "./DefaultProfileImage";
 import { useAllUserStore } from "../../store/allUserStore";
 import { deleteLike, postLike } from "../../api/like";
 import { isCustomTitle } from "../../utils/typeGuards";
-
-const TEMP_ID = "6756d174f51b1507588c1bcf";
+import { useAuthStore } from "../../store/authStore";
 
 interface PostCardProps {
   post: Post | SearchPost;
-  keyword?: string;
+  isSearch?: boolean;
 }
 
 interface Author {
   _id: string;
   fullName: string;
-  image: string;
+  image: string | null;
 }
 
-export default function PostCard({ post, keyword }: PostCardProps) {
+export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post.likes.length);
@@ -28,12 +26,17 @@ export default function PostCard({ post, keyword }: PostCardProps) {
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
   );
-  const { users } = useAllUserStore();
+  const getUser = useAllUserStore((state) => state.getUser);
+  const loggedInUser = useAuthStore((state) => state.user);
 
   useEffect(() => {
     parsePostTitle();
-    setAuthorInformation();
     findLikeInformation();
+    if (isSearch) {
+      setSearchPostAuthor();
+    } else {
+      setPostAuthor();
+    }
   }, []);
 
   const parsePostTitle = () => {
@@ -50,36 +53,38 @@ export default function PostCard({ post, keyword }: PostCardProps) {
     }
   };
 
-  const setAuthorInformation = () => {
-    if (typeof post.author === "string") {
-      if (post.author === TEMP_ID) {
-        setAuthor({
-          fullName: "임시 사용자",
-          image: "",
-          _id: TEMP_ID,
-        });
-      } else {
-        const user = users.find((user) => user._id === post.author);
-        setAuthor({
-          fullName: user?.fullName || "삭제된 사용자",
-          image: user?.image || "",
-          _id: post.author,
-        });
-      }
-    } else {
-      setAuthor({
-        fullName: post.author.fullName,
-        image: post.author.image,
-        _id: post.author._id,
-      });
-    }
+  const findLikeInformation = () => {
+    const likeInformation =
+      post.likes.find((like) => like.user === loggedInUser?._id) ?? null;
+    setLikeInformation(likeInformation);
   };
 
-  const findLikeInformation = () => {
-    // 좋아요 정보 찾기
-    const likeInformation =
-      post.likes.find((like) => like.user === TEMP_ID) ?? null;
-    setLikeInformation(likeInformation);
+  const setPostAuthor = () => {
+    const author = post.author as User;
+    setAuthor({
+      fullName: author.fullName,
+      image: author.image,
+      _id: author._id,
+    });
+  };
+
+  const setSearchPostAuthor = () => {
+    const authorId = post.author as string;
+
+    if (authorId === loggedInUser?._id) {
+      setAuthor({
+        fullName: loggedInUser?.fullName,
+        image: loggedInUser?.image,
+        _id: loggedInUser?._id,
+      });
+    } else {
+      const author = getUser(authorId);
+      setAuthor({
+        fullName: author?.fullName || "",
+        image: author?.image || "",
+        _id: authorId,
+      });
+    }
   };
 
   const handleCardClick = () => {
@@ -114,19 +119,7 @@ export default function PostCard({ post, keyword }: PostCardProps) {
     }
   };
 
-  // 이전 테스트로 생성된 데이터로 인해 추가된 코드
   if (!postInformation) return null;
-
-  if (
-    keyword &&
-    ![
-      postInformation.title,
-      postInformation.contents,
-      postInformation.youtubeUrl,
-    ].some((field) => field.includes(keyword))
-  ) {
-    return null;
-  }
 
   return (
     <article
@@ -145,7 +138,7 @@ export default function PostCard({ post, keyword }: PostCardProps) {
           <p className="font-semibold mb-1 line-clamp-1 dark:text-white">
             {postInformation.title}
           </p>
-          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3">
+          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap">
             {postInformation.contents}
           </p>
         </section>
@@ -155,16 +148,12 @@ export default function PostCard({ post, keyword }: PostCardProps) {
             className="flex items-center group/author"
             onClick={handleProfileClick}
           >
-            {author?.image ? (
-              <img
-                src={author.image}
-                alt={`${author.fullName}-프로필 이미지`}
-                className="w-7 h-7 rounded-full mr-2"
-              />
-            ) : (
-              <DefaultProfileImage className="w-7 h-7 p-1.5 mr-2 border border-gray-ee dark:border-[#4B4B4B]" />
-            )}
-            <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium">
+            <img
+              src={author?.image || "/logo.png"}
+              alt={`${author?.fullName}-프로필 이미지`}
+              className="w-7 h-7 rounded-full mr-2 bg-white/20 border border-gray-ee"
+            />
+            <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">
               {author?.fullName}
             </p>
           </button>

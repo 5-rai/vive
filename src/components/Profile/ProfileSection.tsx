@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import Logo from "../../assets/Logo";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -18,17 +17,11 @@ export default function ProfileSection({
     <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
       {/* 정훈님 컴포넌트 재사용? */}
       <div className="flex flex-col gap-2 items-center">
-        {user?.image ? (
-          <img
-            src={user?.image}
-            alt="프로필 이미지"
-            className="w-[124px] h-[124px] rounded-full profile-shadow border border-gray-ee"
-          />
-        ) : (
-          <div className="w-[124px] h-[124px] rounded-full flex items-center justify-center border border-gray-ee profile-shadow">
-            <Logo className="h-16 w-16" />
-          </div>
-        )}
+        <img
+          src={user?.image || "/logo.png"}
+          alt="프로필 이미지"
+          className="w-[124px] h-[124px] rounded-full profile-shadow border border-gray-ee bg-white/20"
+        />
         <p className="text-lg mt-[10px] dark:text-white">{user?.fullName}</p>
       </div>
       <section className="w-max">

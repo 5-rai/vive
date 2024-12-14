@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import PostDetail from "../components/Post/PostDetail";
 import Comment from "../components/Post/Comment";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getOnePost } from "../api/post";
 import { usePostStore } from "../store/postStore";
 

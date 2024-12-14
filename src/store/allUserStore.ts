@@ -1,16 +1,23 @@
 import { create } from "zustand";
+import { getAllUsers } from "../api/user";
 
 // TODO: 유저 업데이트 로직 추가
 
 interface AllUserStore {
   users: User[];
-  setUsers: (users: User[]) => void;
-  addUser: (user: User) => void;
+  fetchUsers: () => Promise<void>;
+  getUser: (id: string) => User | undefined;
 }
 
-export const useAllUserStore = create<AllUserStore>((set) => ({
+export const useAllUserStore = create<AllUserStore>((set, get) => ({
   users: [],
-  setUsers: (users: User[]) => set({ users }),
-  addUser: (user: User) =>
-    set((state: AllUserStore) => ({ users: [...state.users, user] })),
+  fetchUsers: async () => {
+    try {
+      const data = await getAllUsers();
+      set({ users: data });
+    } catch (err) {
+      console.error(err);
+    }
+  },
+  getUser: (id: string) => get().users.find((user) => user._id === id),
 }));

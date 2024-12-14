@@ -1,35 +1,32 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState, useRef, useEffect } from "react";
 import ModifyProfileInput from "../components/ModifyProfile/ModifyProfileInput";
-import { userStore } from "../store/userStore";
-import defaultProfileImg from "../assets/logo.png";
 import { updateUser } from "../api/user";
+import { useAuthStore } from "../store/authStore";
 
 export default function ModifyProfile() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage>();
   const [fullName, setFullName] = useState("");
+  const [isWarning, setIsWarning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const defaultImgRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const { user } = useAuthStore();
+  const defaultProfileImg = "/logo.png";
 
   // 컴포넌트 마운트 시 사용자 정보 불러오기
   useEffect(() => {
-    const { fetchUserProfile } = userStore.getState();
-
-    fetchUserProfile().then(() => {
-      const { profileImage, fullName } = userStore.getState();
-      if (fullName) {
-        setFullName(fullName);
-      }
-      if (profileImage) {
-        setSelectedImage({ src: profileImage, file: null });
-      }
-    });
+    if (user) {
+      setFullName(user.fullName);
+      if (user.image) setSelectedImage({ src: user.image, file: null });
+      else selectDefaultImage();
+    }
   }, []);
 
   // 이름 변경 핸들러
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value);
+    setIsWarning(false);
   };
 
   // 이미지 업로드 핸들러 (미리 상태만 변경)
@@ -60,9 +57,17 @@ export default function ModifyProfile() {
   // 프로필 수정 요청 함수 (수정 버튼 클릭 시만 서버에 반영)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!fullName) {
+      setIsWarning(true);
+      return;
+    }
     if (!selectedImage) return;
 
-    await updateUser(selectedImage, fullName);
+    const result = await updateUser(
+      selectedImage.src !== user?.image ? selectedImage : null,
+      fullName !== user?.fullName ? fullName : null
+    );
+    if (result) window.confirm("프로필이 수정되었습니다.");
     navigate("/mypage");
   };
 
@@ -120,13 +125,24 @@ export default function ModifyProfile() {
           onChange={handleFullNameChange} // 이름 변경 핸들러 연결
           placeholder="이름을 입력해주세요"
           message="이름을 입력해주세요."
+          isWarning={isWarning}
         />
-        <button
-          type="submit"
-          className="w-[400px] h-[40px] rounded-[50px] primary-btn"
-        >
-          수정
-        </button>
+        <div className="flex flex-col gap-5 mt-24">
+          <button
+            type="submit"
+            className="w-[400px] py-2 rounded-[50px] primary-btn"
+          >
+            수정
+          </button>
+          <Link to="/mypage">
+            <button
+              type="button"
+              className="w-[400px] py-2 rounded-[50px] secondary-btn"
+            >
+              취소
+            </button>
+          </Link>
+        </div>
       </form>
     </section>
   );
