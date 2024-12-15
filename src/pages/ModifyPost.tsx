@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { getOneYoutubeVideoInfo } from "../api/youtube";
 import { getOnePost, updatePost } from "../api/post";
 import { useNavigate, useParams } from "react-router";
-import Dropdown from "../components/Write/Dropdown";
+import CategoryButton from "../components/Write/CategoryButton";
 
 const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 
@@ -106,7 +106,10 @@ export default function ModifyPost() {
   return (
     <section className="w-full px-16 py-7">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Dropdown channel={selectedChannel} setChannel={setSelectedChannel} />
+        <CategoryButton
+          channel={selectedChannel}
+          setChannel={setSelectedChannel}
+        />
         <input
           value={title}
           className="border p-3 focus:border-primary text-2xl border-gray-c8 dark:border-gray-c8/50 rounded-lg"
