@@ -12,7 +12,6 @@ interface PostCardProps {
   post: Post | SearchPost;
   isSearch?: boolean;
 }
-
 interface Author {
   _id: string;
   fullName: string;
@@ -23,6 +22,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post.likes.length);
+
   const [author, setAuthor] = useState<Author | null>(null);
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
@@ -33,7 +33,6 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
 
   useEffect(() => {
     parsePostTitle();
-    findLikeInformation();
     if (isSearch) {
       setSearchPostAuthor();
     } else {
@@ -53,12 +52,6 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
       console.error(err);
       setPostInformation(null);
     }
-  };
-
-  const findLikeInformation = () => {
-    const likeInformation =
-      post.likes.find((like) => like.user === loggedInUser?._id) ?? null;
-    setLikeInformation(likeInformation);
   };
 
   const setPostAuthor = () => {
@@ -111,7 +104,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
       const result = await deleteLike(likeInformation._id);
       if (result) {
         setLikeInformation(null);
-        setLikeCount((prev) => prev - 1);
+        setLikeCount((prev) => Math.max(0, prev - 1));
       }
     } else {
       const result = await postLike(post._id);
