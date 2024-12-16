@@ -54,9 +54,11 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   };
 
   const findLikeInformation = () => {
-    const likeInformation =
-      post.likes.find((like) => like.user === loggedInUser?._id) ?? null;
-    setLikeInformation(likeInformation);
+    if (!loggedInUser || post.likes.length === 0) return;
+    const myInfo =
+      (post.likes as Like[]).find((like) => like.user === loggedInUser?._id) ??
+      null;
+    setLikeInformation(myInfo);
   };
 
   const setPostAuthor = () => {

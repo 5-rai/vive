@@ -13,9 +13,24 @@ export default function MyProfile() {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        const response = await axiosInstance.get<User>("/auth-user");
-        setUser(response.data);
-        console.log(response.data);
+        const { data } = await axiosInstance.get<User>("/auth-user");
+
+        const updatedPosts = data.posts.map((post) => {
+          const updatedLikes = (post.likes as string[]).map((likeId) => {
+            const like = data.likes.find((like) => like._id === likeId);
+            return like
+              ? like
+              : {
+                  _id: likeId,
+                  user: "",
+                  post: post._id,
+                  createdAt: "",
+                  updatedAt: "",
+                };
+          });
+          return { ...post, likes: updatedLikes };
+        });
+        setUser({ ...data, posts: updatedPosts });
       } catch (err) {
         console.error(err);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
