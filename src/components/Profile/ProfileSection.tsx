@@ -15,7 +15,6 @@ export default function ProfileSection({
 
   return (
     <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
-      {/* 정훈님 컴포넌트 재사용? */}
       <div className="flex flex-col gap-2 items-center">
         <img
           src={user?.image || "/logo.png"}
@@ -27,16 +26,16 @@ export default function ProfileSection({
       <section className="w-max">
         <div className="flex w-[208px] justify-between mb-4">
           <div className="text-center">
-            <p>{user?.posts.length}</p>
-            <p>게시물</p>
+            <p className="text-xl">{user?.posts.length}</p>
+            <p className="text-lg">게시물</p>
           </div>
           <div className="text-center">
-            <p>{user?.followers.length}</p>
-            <p>팔로워</p>
+            <p className="text-xl">{user?.followers.length}</p>
+            <p className="text-lg">팔로워</p>
           </div>
           <div className="text-center">
-            <p>{user?.following.length}</p>
-            <p>팔로잉</p>
+            <p className="text-xl">{user?.following.length}</p>
+            <p className="text-lg">팔로잉</p>
           </div>
         </div>
         {isMyProfile ? (
@@ -44,7 +43,7 @@ export default function ProfileSection({
             <Link to="/mypage/edit" className="w-full">
               <button
                 type="button"
-                className="primary-btn w-full py-1 rounded-full text-sm font-medium"
+                className="primary-btn w-full py-1 rounded-lg text-sm"
               >
                 프로필 수정
               </button>
@@ -52,7 +51,7 @@ export default function ProfileSection({
             <Link to="/mypage/edit/password" className="w-full">
               <button
                 type="button"
-                className="primary-btn w-full py-1 rounded-full text-sm font-medium"
+                className="primary-btn w-full py-1 rounded-lg text-sm"
               >
                 비밀번호 변경
               </button>
@@ -63,7 +62,7 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-full text-sm font-medium",
+                "w-full py-1 rounded-lg text-sm",
                 isFollow ? "secondary-btn" : "primary-btn"
               )}
               onClick={() => setIsFollow((prev) => !prev)}
@@ -72,7 +71,7 @@ export default function ProfileSection({
             </button>
             <button
               type="button"
-              className="primary-btn w-full py-1 rounded-full text-sm font-medium"
+              className="primary-btn w-full py-1 rounded-lg text-sm"
             >
               메세지 보내기
             </button>
