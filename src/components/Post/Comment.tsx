@@ -1,7 +1,13 @@
 import CommentItem from "./CommentItem";
 import CommentWrite from "./CommentWrite";
 
-export default function Comment({ comments }: { comments: Comment[] }) {
+export default function Comment({
+  comments,
+  setComments,
+}: {
+  comments: Comment[];
+  setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>
+}) {
   return (
     <section className="sticky top-[69px] flex flex-col min-w-[420px] w-[420px] screen-100vh py-[28px] border-l border-gray-ee dark:border-gray-ee/50">
       <p className="mb-[22px] font-medium text-xl px-6">
@@ -16,12 +22,12 @@ export default function Comment({ comments }: { comments: Comment[] }) {
         ) : (
           <div className="flex flex-col gap-5 overflow-y-auto custom-scrollbar px-6">
             {comments.map((comment) => (
-              <CommentItem key={comment._id} comment={comment} />
+              <CommentItem key={comment._id} comment={comment} setComments={setComments} />
             ))}
           </div>
         )}
       </div>
-      <CommentWrite />
+      <CommentWrite setComments={setComments} />
     </section>
   );
 }

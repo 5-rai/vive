@@ -3,7 +3,11 @@ import { createComment } from "../../api/comment";
 import { useNavigate, useParams } from "react-router";
 import { useAuthStore } from "../../store/authStore";
 
-export default function CommentWrite() {
+export default function CommentWrite({
+  setComments,
+}: {
+  setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
+}) {
   const navigate = useNavigate();
   const { postId } = useParams();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -36,8 +40,12 @@ export default function CommentWrite() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const comment = textareaRef.current!.value;
-    await createComment({ comment, postId });
-    textareaRef.current!.value = "";
+    const addedComment = await createComment({ comment, postId });
+
+    if (addedComment) {
+      setComments((prev) => [...prev!, addedComment]);
+      textareaRef.current!.value = "";
+    }
   };
   return (
     <form
