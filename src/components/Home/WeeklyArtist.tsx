@@ -1,16 +1,20 @@
 import { useNavigate } from "react-router";
+import { useAllUserStore } from "../../store/allUserStore";
 
 export default function WeeklyArtist({
   name,
   images,
+  userId,
 }: {
   name: string;
   images: string;
+  userId: string;
 }) {
   const navigate = useNavigate();
   const artistClick = () => {
-    navigate("");
+    navigate(`/user/${userId}`);
   };
+
   return (
     <div
       onClick={artistClick}
