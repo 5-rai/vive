@@ -26,16 +26,27 @@ export default function Write() {
     e.preventDefault();
     if (!validate()) return;
 
+    const thumbnails = videoInfo!.snippet!.thumbnails;
+    const maxResThumbnailURL = getMaxResolutionThumbnail(thumbnails);
+
     const post = await createPost({
       title: JSON.stringify({
         title,
         contents,
         youtubeUrl: youtubeUrl.validUrl,
-        image: videoInfo!.snippet!.thumbnails.default.url,
+        image: maxResThumbnailURL,
       }),
       channelId: selectedChannel!._id,
     });
     navigate(`/channels/${selectedChannel!.name}/${post!._id}`);
+  };
+
+  const getMaxResolutionThumbnail = (thumbnails: ThumbnailsType) => {
+    if (thumbnails.maxres) return thumbnails.maxres.url;
+    if (thumbnails.standard) return thumbnails.standard.url;
+    if (thumbnails.high) return thumbnails.high.url;
+    if (thumbnails.medium) return thumbnails.medium.url;
+    return thumbnails.default.url;
   };
 
   const createBookmark = async (url: string) => {
@@ -140,7 +151,7 @@ export default function Write() {
             title={videoInfo.snippet!.title}
             description={videoInfo.snippet!.description}
             url={youtubeUrl.validUrl}
-            thumbnail={videoInfo.snippet!.thumbnails.default.url}
+            thumbnail={getMaxResolutionThumbnail(videoInfo.snippet!.thumbnails)}
           />
         )}
         <button
