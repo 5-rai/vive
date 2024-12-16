@@ -93,16 +93,16 @@ export default function ProfileSection({
       <section className="w-max">
         <div className="flex w-[208px] justify-between mb-4">
           <div className="text-center">
-            <p>{user?.posts.length}</p>
-            <p>게시물</p>
+            <p className="text-xl">{user?.posts.length}</p>
+            <p className="text-lg">게시물</p>
           </div>
           <div className="text-center">
-            <p>{followersCount}</p>
-            <p>팔로워</p>
+            <p className="text-xl">{followersCount}</p>
+            <p className="text-lg">팔로워</p>
           </div>
           <div className="text-center">
-            <p>{user?.following.length}</p>
-            <p>팔로잉</p>
+            <p className="text-xl">{user?.following.length}</p>
+            <p className="text-lg">팔로잉</p>
           </div>
         </div>
         {isMyProfile ? (
@@ -110,7 +110,7 @@ export default function ProfileSection({
             <Link to="/mypage/edit" className="w-full">
               <button
                 type="button"
-                className="primary-btn w-full py-1 rounded-full text-sm font-medium"
+                className="primary-btn w-full py-1 rounded-lg text-sm"
               >
                 프로필 수정
               </button>
@@ -118,7 +118,7 @@ export default function ProfileSection({
             <Link to="/mypage/edit/password" className="w-full">
               <button
                 type="button"
-                className="primary-btn w-full py-1 rounded-full text-sm font-medium"
+                className="primary-btn w-full py-1 rounded-lg text-sm"
               >
                 비밀번호 변경
               </button>
@@ -140,7 +140,7 @@ export default function ProfileSection({
             </button>
             <button
               type="button"
-              className="primary-btn w-full py-1 rounded-full text-sm font-medium"
+              className="primary-btn w-full py-1 rounded-lg text-sm"
             >
               메세지 보내기
             </button>

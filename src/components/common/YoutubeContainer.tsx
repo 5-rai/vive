@@ -7,7 +7,7 @@ export default function YouTubeContainer({
 }) {
   const opts: YouTubeProps["opts"] = {
     height: "334",
-    width: "596",
+    width: "618",
     playerVars: {
       rel: 0,
       modestbranding: 1,
