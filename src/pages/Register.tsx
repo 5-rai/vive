@@ -11,8 +11,9 @@ export default function Register() {
   const [password, setPassword] = useState({ value: "", isWarning: false });
   const navigate = useNavigate();
   const validate = () => {
-    if (!name.value) {
-      setName({ ...name, isWarning: true });
+    const trimeedName = name.value.trim();
+    if (!trimeedName) {
+      setName({ ...name, value: trimeedName, isWarning: true });
     }
     if (!email.value) {
       setEmail({ ...email, isWarning: true });
@@ -21,7 +22,7 @@ export default function Register() {
       setPassword({ ...password, isWarning: true });
     }
 
-    if (!name.value || !email.value || !password.value) {
+    if (!trimeedName || !email.value || !password.value) {
       return false;
     }
     return true;
@@ -30,8 +31,6 @@ export default function Register() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
-    console.log(name, email, password); // TODO: 회원등록 API 연동
-
     try {
       axiosInstance.post("/signup", {
         email: email.value,
@@ -89,7 +88,9 @@ export default function Register() {
           <AuthButton type="submit" primary>
             회원 등록
           </AuthButton>
-          <AuthButton type="button">로그인 하러가기</AuthButton>
+          <AuthButton type="button" onClick={() => navigate("/login")}>
+            로그인 하러가기
+          </AuthButton>
         </div>
       </form>
     </section>
