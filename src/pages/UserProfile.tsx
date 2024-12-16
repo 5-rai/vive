@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import PostCardGridSection from "../components/Profile/PostCardGridSection";
 import ProfileSection from "../components/Profile/ProfileSection";
 import { axiosInstance } from "../api/axios";
+import { useAuthStore } from "../store/authStore";
 
 export default function UserProfile() {
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { userId } = useParams();
+  const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
 
   useEffect(() => {
     const fetchProfileUserData = async () => {
@@ -42,6 +44,7 @@ export default function UserProfile() {
     );
   }
 
+  if (checkIsMyUserId(userId!)) return <Navigate to="/mypage" replace />;
   return (
     <section className="w-fit mx-auto flex flex-col items-center">
       <ProfileSection user={profileUser} />
