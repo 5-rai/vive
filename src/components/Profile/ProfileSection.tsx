@@ -43,7 +43,7 @@ export default function ProfileSection({
             <Link to="/mypage/edit" className="w-full">
               <button
                 type="button"
-                className="primary-btn w-full py-1 rounded-lg text-sm font-medium"
+                className="primary-btn w-full py-1 rounded-lg text-sm"
               >
                 프로필 수정
               </button>
@@ -51,7 +51,7 @@ export default function ProfileSection({
             <Link to="/mypage/edit/password" className="w-full">
               <button
                 type="button"
-                className="primary-btn w-full py-1 rounded-lg text-sm font-medium"
+                className="primary-btn w-full py-1 rounded-lg text-sm"
               >
                 비밀번호 변경
               </button>
@@ -62,7 +62,7 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-lg text-sm font-medium",
+                "w-full py-1 rounded-lg text-sm",
                 isFollow ? "secondary-btn" : "primary-btn"
               )}
               onClick={() => setIsFollow((prev) => !prev)}
@@ -71,7 +71,7 @@ export default function ProfileSection({
             </button>
             <button
               type="button"
-              className="primary-btn w-full py-1 rounded-lg text-sm font-medium"
+              className="primary-btn w-full py-1 rounded-lg text-sm"
             >
               메세지 보내기
             </button>
