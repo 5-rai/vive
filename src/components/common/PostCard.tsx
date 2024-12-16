@@ -6,12 +6,12 @@ import { useAllUserStore } from "../../store/allUserStore";
 import { deleteLike, postLike } from "../../api/like";
 import { isCustomTitle } from "../../utils/typeGuards";
 import { useAuthStore } from "../../store/authStore";
+import { useChannelStore } from "../../store/channelStore";
 
 interface PostCardProps {
   post: Post | SearchPost;
   isSearch?: boolean;
 }
-
 interface Author {
   _id: string;
   fullName: string;
@@ -22,17 +22,21 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post.likes.length);
+
   const [author, setAuthor] = useState<Author | null>(null);
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
   );
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
+<<<<<<< HEAD
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+=======
+  const getNameFromId = useChannelStore((state) => state.getNameFromId);
+>>>>>>> a7ceb555dd46b11824651ceb900d4280e3ccf466
 
   useEffect(() => {
     parsePostTitle();
-    findLikeInformation();
     if (isSearch) {
       setSearchPostAuthor();
     } else {
@@ -54,6 +58,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     }
   };
 
+<<<<<<< HEAD
   const findLikeInformation = () => {
     if (!loggedInUser || post.likes.length === 0) return;
     const myInfo =
@@ -62,6 +67,8 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     setLikeInformation(myInfo);
   };
 
+=======
+>>>>>>> a7ceb555dd46b11824651ceb900d4280e3ccf466
   const setPostAuthor = () => {
     const author = post.author as User;
     setAuthor({
@@ -92,10 +99,11 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
 
   const handleCardClick = () => {
     if (typeof post.channel === "string") {
-      navigate(`/channels/${post.channel}/${post._id}`);
+      const channelName = getNameFromId(post.channel);
+      navigate(`/channels/${channelName}/${post._id}`);
       return;
     }
-    navigate(`/channels/${post.channel._id}/${post._id}`);
+    navigate(`/channels/${post.channel.name}/${post._id}`);
   };
 
   const handleProfileClick = (e: React.MouseEvent<HTMLButtonElement>) => {

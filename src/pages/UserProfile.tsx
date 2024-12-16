@@ -14,10 +14,8 @@ export default function UserProfile() {
     const fetchProfileUserData = async () => {
       try {
         setLoading(true);
-        const userResponse = await axiosInstance.get<User>(`/users/${userId}`);
-        setProfileUser({
-          ...userResponse.data,
-        });
+        const { data } = await axiosInstance.get<User>(`/users/${userId}`);
+        setProfileUser(data);
       } catch (err) {
         console.error(err);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
@@ -37,7 +35,7 @@ export default function UserProfile() {
           </div>
         )}
         {error && <p className="text-lg font-medium">{error}</p>}
-        {!profileUser && (
+        {!loading && !profileUser && (
           <p className="text-lg font-medium">사용자 정보를 찾을 수 없습니다.</p>
         )}
       </section>
