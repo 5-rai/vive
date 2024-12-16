@@ -1,6 +1,8 @@
 import { Link } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { axiosInstance } from "../../api/axios";
+import { useAuthStore } from "../../store/authStore";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -12,6 +14,71 @@ export default function ProfileSection({
   isMyProfile = false,
 }: ProfileSectionProps) {
   const [isFollow, setIsFollow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { isLoggedIn } = useAuthStore();
+  const [followersCount, setFollowersCount] = useState(
+    user?.followers.length || 0
+  ); // 팔로워 수 상태 추가
+  const [followId, setFollowId] = useState<string | null>(null);
+  const myId = useAuthStore((state) => state.user)?._id;
+
+  useEffect(() => {
+    const foundFollowId = user?.followers.find(
+      (follower) => follower.follower === myId
+    )?._id;
+
+    // 상태 업데이트
+    setFollowId(foundFollowId || null);
+    setIsFollow(!!foundFollowId);
+  }, [user?.followers]); // followers 배열 변경 시에만 실행
+
+  const handleUnfollow = async () => {
+    if (!followId || !isLoggedIn) {
+      console.error("언팔로우 불가: follow ID or access token 없음");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axiosInstance.delete("/follow/delete", {
+        data: { id: followId },
+      });
+
+      // 상태 직접 업데이트
+      setIsFollow(false);
+      setFollowersCount((prevCount) => Math.max(prevCount - 1, 0));
+      setFollowId(null);
+    } catch (err) {
+      console.error("언팔로우 요청 실패:", err);
+      // 실패 시 상태 롤백
+      setIsFollow(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFollow = async () => {
+    if (!user?._id || !isLoggedIn) {
+      console.error("Cannot follow: No user ID or access token");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axiosInstance.post("/follow/create", {
+        userId: user._id,
+      });
+
+      // 상태 직접 업데이트
+      setIsFollow(true);
+      setFollowersCount((prevCount) => prevCount + 1);
+      setFollowId(response.data._id);
+    } catch (err) {
+      console.error("팔로우 요청 실패:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
@@ -30,7 +97,7 @@ export default function ProfileSection({
             <p className="text-lg">게시물</p>
           </div>
           <div className="text-center">
-            <p className="text-xl">{user?.followers.length}</p>
+            <p className="text-xl">{followersCount}</p>
             <p className="text-lg">팔로워</p>
           </div>
           <div className="text-center">
@@ -62,10 +129,12 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-lg text-sm",
-                isFollow ? "secondary-btn" : "primary-btn"
+                "w-full py-1 rounded-full text-sm font-medium",
+                isFollow ? "secondary-btn" : "primary-btn",
+                loading && "opacity-50 cursor-not-allowed"
               )}
-              onClick={() => setIsFollow((prev) => !prev)}
+              onClick={isFollow ? handleUnfollow : handleFollow}
+              disabled={loading}
             >
               {isFollow ? "언팔로우" : "팔로우"}
             </button>
