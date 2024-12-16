@@ -14,5 +14,5 @@ export default function YouTubeContainer({
     },
   };
 
-  return <YouTube videoId={videoId} opts={opts} />;
+  return <YouTube videoId={videoId} opts={opts} className="min-h-[334px]" />;
 }
