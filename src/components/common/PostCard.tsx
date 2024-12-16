@@ -29,14 +29,12 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   );
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
-<<<<<<< HEAD
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-=======
   const getNameFromId = useChannelStore((state) => state.getNameFromId);
->>>>>>> a7ceb555dd46b11824651ceb900d4280e3ccf466
 
   useEffect(() => {
     parsePostTitle();
+    findLikeInformation();
     if (isSearch) {
       setSearchPostAuthor();
     } else {
@@ -58,7 +56,6 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     }
   };
 
-<<<<<<< HEAD
   const findLikeInformation = () => {
     if (!loggedInUser || post.likes.length === 0) return;
     const myInfo =
@@ -67,8 +64,6 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     setLikeInformation(myInfo);
   };
 
-=======
->>>>>>> a7ceb555dd46b11824651ceb900d4280e3ccf466
   const setPostAuthor = () => {
     const author = post.author as User;
     setAuthor({
