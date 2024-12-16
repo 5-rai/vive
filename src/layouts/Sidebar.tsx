@@ -1,23 +1,16 @@
 import { Outlet, NavLink } from "react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
 import UserNavLink from "../components/common/UserNavLink";
 import { useAllUserStore } from "../store/allUserStore";
-
-interface Channel {
-  _id: string;
-  name: string;
-  description: string;
-  authRequired: boolean;
-}
+import { useChannelStore } from "../store/channelStore";
 
 export default function Sidebar() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [channels, setChannels] = useState<Channel[]>([]);
-  const [loading, setLoading] = useState(true);
+  const channels = useChannelStore((state) => state.channels);
   const [searchName, setSearchName] = useState(""); // 검색할 이름 상태 관리
   const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
   const debounceTimeout = useRef<number | null>(null); // 디바운스 타이머 관리
@@ -35,22 +28,6 @@ export default function Sidebar() {
       console.error("Error:", error);
     }
   };
-
-  // 채널 get
-  useEffect(() => {
-    const fetchChannels = async () => {
-      try {
-        setLoading(true);
-        const response = await axiosInstance.get("/channels");
-        setChannels(response.data);
-      } catch (error) {
-        console.error("Failed to fetch channels", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchChannels();
-  }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -76,24 +53,20 @@ export default function Sidebar() {
           <p className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-2.5 dark:text-gray-ee">
             카테고리
           </p>
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <div className="flex flex-col gap-1">
-              {/* 상위 3개를 제외한 나머지 항목만 표시 */}
-              {channels.slice(3).map((channel) => (
-                <NavLink
-                  key={channel._id}
-                  to={`/channels/${channel.name}`}
-                  className={
-                    "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
-                  }
-                >
-                  {channel.name}
-                </NavLink>
-              ))}
-            </div>
-          )}
+          <div className="flex flex-col gap-1">
+            {/* 상위 3개를 제외한 나머지 항목만 표시 */}
+            {channels.slice(3).map((channel) => (
+              <NavLink
+                key={channel._id}
+                to={`/channels/${channel.name}`}
+                className={
+                  "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
+                }
+              >
+                {channel.name}
+              </NavLink>
+            ))}
+          </div>
         </div>
         <div className="grow overflow-y-hidden flex flex-col">
           <p className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-4 dark:text-gray-ee">
