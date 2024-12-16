@@ -13,7 +13,7 @@ export default function CommentWrite({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [comment, setComment] = useState("");
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -29,7 +29,7 @@ export default function CommentWrite({
   };
 
   const checkIsLoggedIn = () => {
-    if (!accessToken) {
+    if (!isLoggedIn) {
       const isConfirmed = window.confirm(
         "로그인이 필요한 기능입니다. 로그인 하시겠습니까?"
       );
