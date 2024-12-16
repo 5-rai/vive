@@ -48,7 +48,7 @@ export default function CommentItem({
         <span className="dark:text-white">{comment.author.fullName}</span>
       </NavLink>
       <div className="relative">
-        <p className="text-[#666666] dark:text-gray-c8 whitespace-pre-wrap break-words">
+        <p className="text-gray-54 dark:text-gray-c8 whitespace-pre-wrap break-words">
           {comment.comment}
         </p>
 
