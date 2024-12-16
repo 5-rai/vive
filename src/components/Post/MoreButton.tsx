@@ -1,21 +1,17 @@
 import { NavLink, useNavigate } from "react-router";
-import { usePostStore } from "../../store/postStore";
 import { useState } from "react";
 import { useThemeStore } from "../../store/themeStore";
 import { deletePost } from "../../api/post";
 import MoreIcon from "../../assets/MoreIcon";
 import Dropdown from "../common/Dropdown";
 
-export default function MoreButton() {
+export default function MoreButton({ post }: { post: Post }) {
   const navigate = useNavigate();
-  const post = usePostStore((state) => state.post);
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
 
   const [isOpen, setIsOpen] = useState(false);
 
   const handleDeletePost = async () => {
-    if (!post) return;
-
     const isConfirmed = window.confirm("정말로 포스팅을 삭제하시겠습니까?");
     if (isConfirmed) {
       await deletePost(post._id);
