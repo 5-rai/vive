@@ -2,15 +2,11 @@ import { NavLink } from "react-router";
 import YouTubeContainer from "../common/YoutubeContainer";
 import LikeEmptyIcon from "../../assets/LikeEmptyIcon";
 import profileImg from "../../assets/profileImg.jpg";
-import { usePostStore } from "../../store/postStore";
 import { useAuthStore } from "../../store/authStore";
 import MoreButton from "./MoreButton";
 
-export default function PostDetail() {
+export default function PostDetail({ post }: { post: Post }) {
   const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
-  const post = usePostStore((state) => state.post);
-  if (!post) return;
-
   const { title, contents, youtubeUrl } = JSON.parse(post.title);
   const parsedUrl = new URL(youtubeUrl);
   const videoId = new URLSearchParams(parsedUrl.search).get("v");
@@ -21,10 +17,13 @@ export default function PostDetail() {
         <YouTubeContainer videoId={videoId} />
         <div className="flex justify-between items-start gap-5 mt-5 mb-4">
           <h1 className="font-semibold text-2xl break-all">{title}</h1>
-          {checkIsMyUserId(post.author._id) && <MoreButton />}
+          {checkIsMyUserId(post.author._id) && <MoreButton post={post} />}
         </div>
         <div className="flex justify-between">
-          <NavLink to={"/user/userId"} className="flex gap-3 items-center">
+          <NavLink
+            to={`/user/${post.author._id}`}
+            className="flex gap-3 items-center"
+          >
             <img
               className="w-[30px] h-[30px] rounded-full"
               src={post.author.image ?? profileImg}
