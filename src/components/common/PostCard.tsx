@@ -6,6 +6,7 @@ import { useAllUserStore } from "../../store/allUserStore";
 import { deleteLike, postLike } from "../../api/like";
 import { isCustomTitle } from "../../utils/typeGuards";
 import { useAuthStore } from "../../store/authStore";
+import { useChannelStore } from "../../store/channelStore";
 
 interface PostCardProps {
   post: Post | SearchPost;
@@ -28,6 +29,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   );
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
+  const getNameFromId = useChannelStore((state) => state.getNameFromId);
 
   useEffect(() => {
     parsePostTitle();
@@ -89,10 +91,11 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
 
   const handleCardClick = () => {
     if (typeof post.channel === "string") {
-      navigate(`/channels/${post.channel}/${post._id}`);
+      const channelName = getNameFromId(post.channel);
+      navigate(`/channels/${channelName}/${post._id}`);
       return;
     }
-    navigate(`/channels/${post.channel._id}/${post._id}`);
+    navigate(`/channels/${post.channel.name}/${post._id}`);
   };
 
   const handleProfileClick = (e: React.MouseEvent<HTMLButtonElement>) => {

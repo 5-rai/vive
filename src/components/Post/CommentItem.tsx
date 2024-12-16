@@ -1,11 +1,15 @@
 import { NavLink } from "react-router";
 import profileImg from "../../assets/profileImg.jpg";
-import { useState } from "react";
 import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 
-export default function CommentItem({ comment }: { comment: Comment }) {
-  const [isDeleted, setIsDeleted] = useState(false);
+export default function CommentItem({
+  comment,
+  setComments,
+}: {
+  comment: Comment;
+  setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
+}) {
   const loggedInUser = useAuthStore((state) => state.user);
   const handleDelete = async () => {
     const confirmDelete = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
@@ -18,7 +22,9 @@ export default function CommentItem({ comment }: { comment: Comment }) {
 
       if (response.status === 200) {
         alert("댓글이 성공적으로 삭제되었습니다.");
-        setIsDeleted(true);
+        setComments((prev) =>
+          prev!.filter((prevComment) => prevComment._id !== comment._id)
+        );
       } else {
         alert(response.data?.message || "댓글 삭제에 실패했습니다.");
       }
@@ -27,8 +33,6 @@ export default function CommentItem({ comment }: { comment: Comment }) {
       alert("오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
-
-  if (isDeleted) return null;
 
   return (
     <div className="flex flex-col gap-2">
