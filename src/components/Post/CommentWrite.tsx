@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { createComment } from "../../api/comment";
 import { useNavigate, useParams } from "react-router";
-import { useAuthStore } from "../../store/authStore";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 
 export default function CommentWrite({
   setComments,
@@ -11,9 +11,7 @@ export default function CommentWrite({
   const navigate = useNavigate();
   const { postId } = useParams();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
   const [comment, setComment] = useState("");
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -25,15 +23,6 @@ export default function CommentWrite({
     if (textarea.scrollHeight < 24 * 5) {
       textarea.style.height = "auto"; // 기존 높이 초기화
       textarea.style.height = `${textarea.scrollHeight}px`;
-    }
-  };
-
-  const checkIsLoggedIn = () => {
-    if (!isLoggedIn) {
-      const isConfirmed = window.confirm(
-        "로그인이 필요한 기능입니다. 로그인 하시겠습니까?"
-      );
-      isConfirmed && navigate("/login");
     }
   };
 
@@ -58,7 +47,7 @@ export default function CommentWrite({
           rows={1}
           className="block w-full h-[47px] bg-transparent resize-none custom-scrollbar"
           onChange={handleChange}
-          onClick={checkIsLoggedIn}
+          onClick={() => confirmAndNavigateToLogin(navigate)}
           placeholder="댓글을 적어주세요!"
         ></textarea>
       </div>
