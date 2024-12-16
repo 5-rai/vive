@@ -15,7 +15,7 @@ export default function ProfileSection({
 }: ProfileSectionProps) {
   const [isFollow, setIsFollow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { user2, isLoggedIn } = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
   const [followersCount, setFollowersCount] = useState(
     user?.followers.length || 0
   ); // 팔로워 수 상태 추가
