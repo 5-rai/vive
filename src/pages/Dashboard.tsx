@@ -7,18 +7,18 @@ import Loading from "../components/common/Loading";
 
 export default function Dashboard() {
   const { channelName } = useParams();
-  const channels = useChannelStore((state) => state.channels);
+  const getIdFromName = useChannelStore((state) => state.getIdFromName);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // 선택된 채널 찾기 및 해당 채널의 포스트 불러오기
   useEffect(() => {
-    const channel = channels.find((c) => c.name === channelName);
-    if (channel) {
-      fetchPosts(channel._id);
-    }
-  }, [channelName, channels]);
+    if (!channelName) return;
+
+    const channelId = getIdFromName(channelName);
+    if (channelId) fetchPosts(channelId);
+  }, []);
 
   // 선택된 채널의 포스트 목록 API 요청
   const fetchPosts = async (channelId: string) => {
