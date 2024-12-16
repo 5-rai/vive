@@ -47,13 +47,13 @@ export default function PostDetail({
           <div className="flex items-center gap-2">
             <button
               type="button"
-              className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
+              className="flex justify-center items-center gap-3 border rounded-full border-gray-c8 w-[72px] h-[30px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
               onClick={handleLikeClick}
             >
               {likeInformation ? (
-                <LikeIcon className="w-4 h-4" />
+                <LikeIcon className="w-[14px] h-[14px]" />
               ) : (
-                <LikeEmptyIcon className="w-4 h-4" />
+                <LikeEmptyIcon className="w-[14px] h-[14px]" />
               )}
               <p>{likeCount}</p>
             </button>
