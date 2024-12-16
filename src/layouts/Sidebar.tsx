@@ -5,6 +5,7 @@ import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
 import UserNavLink from "../components/common/UserNavLink";
 import { useAllUserStore } from "../store/allUserStore";
+import { twMerge } from "tailwind-merge";
 
 interface Channel {
   _id: string;
@@ -85,8 +86,13 @@ export default function Sidebar() {
                 <NavLink
                   key={channel._id}
                   to={`/channels/${channel.name}`}
-                  className={
-                    "flex items-center h-11 px-7 py-1 rounded-lg hover:bg-secondary dark:hover:text-gray-22 transition-colors"
+                  className={({ isActive }) =>
+                    twMerge(
+                      "flex items-center h-11 px-7 py-1 rounded-lg transition-colors",
+                      isActive
+                        ? "bg-primary"
+                        : "hover:bg-secondary dark:hover:text-gray-22"
+                    )
                   }
                 >
                   {channel.name}
