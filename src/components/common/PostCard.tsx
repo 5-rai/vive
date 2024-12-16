@@ -147,7 +147,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
             <img
               src={author?.image || "/logo.png"}
               alt={`${author?.fullName}-프로필 이미지`}
-              className="w-7 h-7 rounded-full mr-2 bg-white/20 border border-gray-ee"
+              className="w-7 h-7 rounded-full mr-2 profile"
             />
             <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">
               {author?.fullName}
@@ -155,7 +155,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
           </button>
           <button
             type="button"
-            className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
+            className="rounded-full border border-gray-c8 dark:border-gray-c8/70 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
             onClick={handleLikeClick}
           >
             {likeInformation ? (
