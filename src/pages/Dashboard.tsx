@@ -18,7 +18,7 @@ export default function Dashboard() {
 
     const channelId = getIdFromName(channelName);
     if (channelId) fetchPosts(channelId);
-  }, []);
+  }, [channelName]);
 
   // 선택된 채널의 포스트 목록 API 요청
   const fetchPosts = async (channelId: string) => {
