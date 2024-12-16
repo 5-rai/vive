@@ -137,10 +137,10 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
       </div>
       <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
         <section className="flex flex-col h-full">
-          <p className="font-semibold mb-1 line-clamp-1 dark:text-white">
+          <p className="font-semibold mb-1 line-clamp-1 dark:text-white break-all">
             {postInformation.title}
           </p>
-          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap">
+          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap break-all">
             {postInformation.contents}
           </p>
         </section>
