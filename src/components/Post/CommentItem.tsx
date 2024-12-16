@@ -1,7 +1,35 @@
 import { NavLink } from "react-router";
 import profileImg from "../../assets/profileImg.jpg";
+import { useState } from "react";
+import { axiosInstance } from "../../api/axios";
+import { useAuthStore } from "../../store/authStore";
 
 export default function CommentItem({ comment }: { comment: Comment }) {
+  const [isDeleted, setIsDeleted] = useState(false);
+  const loggedInUser = useAuthStore((state) => state.user);
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await axiosInstance.delete(`/comments/delete`, {
+        data: { id: comment._id },
+      });
+
+      if (response.status === 200) {
+        alert("댓글이 성공적으로 삭제되었습니다.");
+        setIsDeleted(true);
+      } else {
+        alert(response.data?.message || "댓글 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("댓글 삭제 실패:", error);
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  if (isDeleted) return null;
+
   return (
     <div className="flex flex-col gap-2">
       <NavLink
@@ -15,9 +43,19 @@ export default function CommentItem({ comment }: { comment: Comment }) {
         />
         <span className="dark:text-white">{comment.author.fullName}</span>
       </NavLink>
-      <p className="text-[#666666] dark:text-gray-c8 whitespace-pre-wrap break-words">
-        {comment.comment}
-      </p>
+      <div className="relative">
+        <p className="text-[#666666] dark:text-gray-c8 whitespace-pre-wrap break-words">
+          {comment.comment}
+        </p>
+
+        {loggedInUser?._id === comment.author._id && (
+          <div className="flex justify-end mt-2">
+            <button onClick={handleDelete} className="text-red-500 text-sm">
+              삭제
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
