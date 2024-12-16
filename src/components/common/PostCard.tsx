@@ -29,10 +29,12 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   );
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const getNameFromId = useChannelStore((state) => state.getNameFromId);
 
   useEffect(() => {
     parsePostTitle();
+    findLikeInformation();
     if (isSearch) {
       setSearchPostAuthor();
     } else {
@@ -52,6 +54,14 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
       console.error(err);
       setPostInformation(null);
     }
+  };
+
+  const findLikeInformation = () => {
+    if (!loggedInUser || post.likes.length === 0) return;
+    const myInfo =
+      (post.likes as Like[]).find((like) => like.user === loggedInUser?._id) ??
+      null;
+    setLikeInformation(myInfo);
   };
 
   const setPostAuthor = () => {
@@ -100,11 +110,19 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
+    if (!isLoggedIn) {
+      const result = window.confirm(
+        "로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?"
+      );
+      if (result) navigate("/login");
+      else return;
+    }
+
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
       if (result) {
         setLikeInformation(null);
-        setLikeCount((prev) => Math.max(0, prev - 1));
+        setLikeCount((prev) => Math.max(prev - 1, 0));
       }
     } else {
       const result = await postLike(post._id);
@@ -131,10 +149,10 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
       </div>
       <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
         <section className="flex flex-col h-full">
-          <p className="font-semibold mb-1 line-clamp-1 dark:text-white">
+          <p className="font-semibold mb-1 line-clamp-1 dark:text-white break-all">
             {postInformation.title}
           </p>
-          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap">
+          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap break-all">
             {postInformation.contents}
           </p>
         </section>
