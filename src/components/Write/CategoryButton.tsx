@@ -2,13 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import DropdownArrowIcon from "../../assets/DropdownArrowIcon";
 import { getAllChannels } from "../../api/write";
+import Dropdown from "../common/Dropdown";
 
-interface DropdownProps {
+interface CategoryDropdownProps {
   channel?: Channel;
   setChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>;
 }
 
-export default function Dropdown({ channel, setChannel }: DropdownProps) {
+export default function CategoryButton({
+  channel,
+  setChannel,
+}: CategoryDropdownProps) {
   const [channels, setChannels] = useState<Channel[]>();
   const [isOpen, setIsOpen] = useState(!false);
   const ref = useRef<HTMLElement>(null);
@@ -45,7 +49,10 @@ export default function Dropdown({ channel, setChannel }: DropdownProps) {
       <button
         type="button"
         className="flex w-full rounded-lg border border-gray-c8 dark:border-gray-c8/50 py-1 pl-3 pr-1 justify-between bg-white dark:bg-gray-22"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen((prev) => !prev);
+        }}
       >
         <p
           className={twMerge(
@@ -58,8 +65,12 @@ export default function Dropdown({ channel, setChannel }: DropdownProps) {
         </p>
         <DropdownArrowIcon />
       </button>
-      {isOpen && (
-        <ul className="flex flex-col py-3 px-3 absolute bg-white dark:bg-gray-22 w-full rounded-lg border border-gray-c8 dark:border-gray-c8/50 top-10">
+      <Dropdown
+        className="w-full p-3 top-10"
+        isOpen={isOpen}
+        onClose={() => setIsOpen((prev) => !prev)}
+      >
+        <ul>
           {channels?.slice(3).map((channel) => (
             <li key={`channels-${channel._id}`} className="w-full">
               <button
@@ -72,7 +83,7 @@ export default function Dropdown({ channel, setChannel }: DropdownProps) {
             </li>
           ))}
         </ul>
-      )}
+      </Dropdown>
     </section>
   );
 }
