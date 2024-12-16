@@ -41,7 +41,7 @@ export default function CommentItem({
         className={"flex items-center gap-[13px]"}
       >
         <img
-          className="w-7 h-7 rounded-full object-cover"
+          className="w-7 h-7 rounded-full object-cover profile"
           src={comment.author?.image ?? profileImg}
           alt="유저 프로필 이미지"
         />

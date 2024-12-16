@@ -38,7 +38,7 @@ export default function PostDetail({
             className="flex gap-3 items-center"
           >
             <img
-              className="w-[30px] h-[30px] rounded-full"
+              className="w-[30px] h-[30px] rounded-full profile"
               src={post.author.image ?? profileImg}
               alt="유저 프로필 이미지"
             />
