@@ -47,7 +47,7 @@ interface User {
 }
 
 interface Post {
-  likes: Like[] | string[];
+  likes: Like[];
   comments: Comment[];
   _id: string;
   image?: string;
