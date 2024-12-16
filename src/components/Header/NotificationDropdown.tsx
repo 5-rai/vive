@@ -2,11 +2,16 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router";
 import { axiosInstance } from "../../api/axios"; // Adjust the import path as needed
 import { useAuthStore } from "../../store/authStore";
+import { getOnePost } from "../../api/post";
+import { useChannelStore } from "../../store/channelStore";
 
 export default function NotificationDropdown() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const [postChannels, setPostChannels] = useState<Record<string, string>>({});
+  const { getNameFromId, setChannels } = useChannelStore();
+  const [notificationLinks, setNotificationLinks] = useState<
+    Record<string, string>
+  >({});
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -23,26 +28,34 @@ export default function NotificationDropdown() {
         console.error("Error fetching notifications:", error);
       }
     };
+
+    const fetchChannels = async () => {
+      try {
+        const response = await axiosInstance.get<Channel[]>("/channels");
+        setChannels(response.data); // 채널 정보를 store에 설정
+      } catch (error) {
+        console.error("Error fetching channels:", error);
+      }
+    };
+
     fetchNotifications();
-  }, [isLoggedIn]);
-  const [notificationLinks, setNotificationLinks] = useState<
-    Record<string, string>
-  >({});
+    fetchChannels();
+  }, [isLoggedIn, setChannels]);
 
-  // 특정 포스트의 채널 이름 가져오기
   const fetchPostChannelName = async (postId: string) => {
-    if (postChannels[postId]) {
-      return postChannels[postId]; // 이미 로드된 경우 캐싱된 값 사용
-    }
-
     try {
-      const response = await axiosInstance.get(`/posts/${postId}`);
-      const channelName = response.data.channel.name;
-      setPostChannels((prev) => ({ ...prev, [postId]: channelName })); // 캐싱
-      return channelName;
+      const post = await getOnePost(postId); // post.ts의 getOnePost 함수 사용
+      const channelId = post?.channel?._id;
+
+      // 채널 ID로 이름 조회
+      if (channelId) {
+        const channelName = getNameFromId(channelId);
+        return channelName || "알 수 없음";
+      }
+      return "알 수 없음";
     } catch (error) {
       console.error("Error fetching post channel name:", error);
-      return "알 수 없음"; // 오류 처리
+      return "알 수 없음";
     }
   };
 
