@@ -15,15 +15,14 @@ export default function ProfileSection({
 }: ProfileSectionProps) {
   const [isFollow, setIsFollow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { accessToken } = useAuthStore();
+  const { user2, isLoggedIn } = useAuthStore();
   const [followersCount, setFollowersCount] = useState(
     user?.followers.length || 0
   ); // 팔로워 수 상태 추가
   const [followId, setFollowId] = useState<string | null>(null);
+  const myId = useAuthStore((state) => state.user)?._id;
 
   useEffect(() => {
-    const myId = useAuthStore.getState().user?._id;
-
     const foundFollowId = user?.followers.find(
       (follower) => follower.follower === myId
     )?._id;
@@ -34,7 +33,7 @@ export default function ProfileSection({
   }, [user?.followers]); // followers 배열 변경 시에만 실행
 
   const handleUnfollow = async () => {
-    if (!followId || !accessToken) {
+    if (!followId || !isLoggedIn) {
       console.error("언팔로우 불가: follow ID or access token 없음");
       return;
     }
@@ -43,9 +42,6 @@ export default function ProfileSection({
       setLoading(true);
       const response = await axiosInstance.delete("/follow/delete", {
         data: { id: followId },
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
       });
 
       // 상태 직접 업데이트
@@ -62,7 +58,7 @@ export default function ProfileSection({
   };
 
   const handleFollow = async () => {
-    if (!user?._id || !accessToken) {
+    if (!user?._id || !isLoggedIn) {
       console.error("Cannot follow: No user ID or access token");
       return;
     }
