@@ -67,7 +67,7 @@ export default function ModifyProfile() {
       selectedImage.src !== user?.image ? selectedImage : null,
       fullName !== user?.fullName ? fullName : null
     );
-    if (result) window.confirm("프로필이 수정되었습니다.");
+    if (result) window.alert("프로필이 수정되었습니다.");
     navigate("/mypage");
   };
 
