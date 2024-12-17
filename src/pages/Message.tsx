@@ -47,16 +47,13 @@ export default function Message() {
             />
           </div>
           <div className="border-t border-gray-c8 px-10 pb-8">
-            <form
-              className="grid grid-rows-[1fr_auto] gap-4"
-              onSubmit={handleSubmit}
-            >
+            <form className="flex flex-col" onSubmit={handleSubmit}>
               <textarea
                 className="w-full mt-5 p-3 border border-gray-c8 rounded-[15px] whitespace-pre-wrap focus:text-gray-22 placeholder:text-[#cecece]"
                 placeholder="메세지를 입력해주세요."
               />
               <button
-                className="justify-self-end w-20 h-10 rounded-[15px] mt-4 py-[7px] px-[19px] bg-primary"
+                className="self-end w-20 h-10 rounded-[15px] mt-4 py-[7px] px-[19px] bg-primary"
                 type="submit"
               >
                 보내기
