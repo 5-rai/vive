@@ -35,9 +35,9 @@ export default function Message() {
               <img
                 src={TEMP_USER.image || "/logo.png"}
                 alt="프로필 이미지"
-                className="w-[30px] h-[30px] mr-3 mb-1 rounded-full"
+                className="w-8 h-8 mr-3 rounded-full profile"
               />
-              <p className="text-lg dark:text-white">
+              <p className="text-xl dark:text-white font-semibold">
                 닉네임{/* {user?.fullName} */}
               </p>
             </div>
@@ -49,11 +49,11 @@ export default function Message() {
           <div className="border-t border-gray-c8 px-10 pb-8">
             <form className="flex flex-col" onSubmit={handleSubmit}>
               <textarea
-                className="w-full mt-5 p-3 border border-gray-c8 rounded-[15px] whitespace-pre-wrap focus:text-gray-22 placeholder:text-[#cecece]"
+                className="w-full mt-5 p-3 border border-gray-c8 rounded-[15px] dark:border-gray-c8/50 resize-none"
                 placeholder="메세지를 입력해주세요."
               />
               <button
-                className="self-end w-20 h-10 rounded-[15px] mt-4 py-[7px] px-[19px] bg-primary"
+                className="self-end w-20 h-10 rounded-[15px] mt-4 py-[7px] px-[19px] bg-primary text-gray-22"
                 type="submit"
               >
                 보내기

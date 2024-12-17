@@ -16,9 +16,9 @@ export default function MessageContent({
           ) : (
             <span className="text-[#12AA5F]">받은 메세지</span>
           )}
-          <span className="text-sm text-gray-6c">24.12.25 12:45</span>
+          <span className="text-sm text-gray-6c dark:text-gray-ee">24.12.25 12:45</span>
         </div>
-        <p className="text-gray-6c">{message}</p>
+        <p className="text-gray-6c dark:text-gray-ee whitespace-pre-wrap">{message}</p>
       </div>
     </>
   );
