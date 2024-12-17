@@ -8,6 +8,8 @@ import { isCustomTitle } from "../../utils/typeGuards";
 import { useAuthStore } from "../../store/authStore";
 import { useChannelStore } from "../../store/channelStore";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
+import CommentIcon from "../../assets/CommentIcon";
+import { useThemeStore } from "../../store/themeStore";
 
 interface PostCardProps {
   post: Post | SearchPost;
@@ -31,6 +33,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
   const getNameFromId = useChannelStore((state) => state.getNameFromId);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
 
   useEffect(() => {
     parsePostTitle();
@@ -165,18 +168,27 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
               {author?.fullName}
             </p>
           </button>
-          <button
-            type="button"
-            className="rounded-full border border-gray-c8 dark:border-gray-c8/70 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
-            onClick={handleLikeClick}
-          >
-            {likeInformation ? (
-              <LikeIcon className="w-4 h-4" />
-            ) : (
-              <LikeEmptyIcon className="w-4 h-4" />
-            )}
-            <p>{likeCount}</p>
-          </button>
+          <div className="flex">
+            <div className="flex items-center gap-[2px] px-[6px]">
+              <CommentIcon
+                className="w-4 h-4"
+                color={isDarkMode ? "#c8c8c8" : "#222"}
+              />
+              <p>{post.comments.length}</p>
+            </div>
+            <button
+              type="button"
+              className="rounded-full flex items-center gap-[2px] px-[6px] py-[2px] hover:bg-gray-ee dark:hover:bg-gray-ee/10"
+              onClick={handleLikeClick}
+            >
+              {likeInformation ? (
+                <LikeIcon className="w-4 h-4" />
+              ) : (
+                <LikeEmptyIcon className="w-4 h-4" />
+              )}
+              <p>{likeCount}</p>
+            </button>
+          </div>
         </section>
       </section>
     </article>

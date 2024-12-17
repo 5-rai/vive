@@ -128,7 +128,6 @@ export default function ProfileSection({
               className={twMerge(
                 "w-full py-1 rounded-lg text-sm font-medium",
                 isFollow ? "secondary-btn" : "primary-btn",
-                loading && "opacity-50 cursor-not-allowed"
               )}
               onClick={isFollow ? handleUnfollow : handleFollow}
               disabled={loading}
