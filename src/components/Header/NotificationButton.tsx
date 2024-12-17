@@ -1,11 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import NotificationIcon from "../../assets/NotificationIcon";
 import NotificationDropdown from "./NotificationDropdown";
+import { useNotifications } from "../../hooks/useNotification";
 
 export default function NotificationButton() {
   const isPostExist = true; // 알림 API Response의 "post"값이 null인지 아닌지
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  // useNotifications에서 가져올 상태 및 함수
+  const { notifications, fetchNotifications, markAllNotificationsAsSeen } =
+    useNotifications();
+  const [hasNotifications, setHasNotifications] = useState(false);
+
+  // 알림의 'seen' 상태를 확인하여 빨간 점 여부를 설정
+  useEffect(() => {
+    setHasNotifications(notifications.some((n) => !n.seen));
+  }, [notifications]);
+
+  // 모두 읽음 버튼 클릭 시
+  const handleAllSeen = async () => {
+    await markAllNotificationsAsSeen();
+    await fetchNotifications(); // 서버와 동기화해서 알림 상태 업데이트
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,8 +46,16 @@ export default function NotificationButton() {
           onClick={() => setIsOpen((prev) => !prev)}
           className="w-[24px] h-[24px]"
         />
+        {hasNotifications && (
+          <div className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+        )}
       </button>
-      {isOpen && <NotificationDropdown isPostExist={isPostExist} />}
+      {isOpen && (
+        <NotificationDropdown
+          isPostExist={isPostExist}
+          onAllNotificationsSeen={handleAllSeen}
+        />
+      )}
     </div>
   );
 }
