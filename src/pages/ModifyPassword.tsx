@@ -53,6 +53,12 @@ export default function ModifyPassword() {
     }
   };
 
+  // 비밀번호 변경 버튼 비활성화 조건
+  const isDisabled =
+    !data.password ||
+    !data.passwordCheck ||
+    (data.passwordCheck.length > 0 && data.password !== data.passwordCheck);
+
   return (
     <section className="mx-auto flex flex-col items-center justify-center">
       <form className="mt-8" onSubmit={handleSubmit}>
@@ -82,12 +88,7 @@ export default function ModifyPassword() {
           <button
             type="submit"
             className="w-[400px] h-[40px] rounded-[50px] primary-btn"
-            disabled={
-              !data.password ||
-              !data.passwordCheck ||
-              (data.passwordCheck.length > 0 &&
-                data.password !== data.passwordCheck)
-            }
+            disabled={isDisabled}
           >
             비밀번호 변경
           </button>
