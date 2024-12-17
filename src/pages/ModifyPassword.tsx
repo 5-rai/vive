@@ -82,7 +82,12 @@ export default function ModifyPassword() {
           <button
             type="submit"
             className="w-[400px] h-[40px] rounded-[50px] primary-btn"
-            disabled={!data.password || !data.passwordCheck}
+            disabled={
+              !data.password ||
+              !data.passwordCheck ||
+              (data.passwordCheck.length > 0 &&
+                data.password !== data.passwordCheck)
+            }
           >
             비밀번호 변경
           </button>
