@@ -126,7 +126,7 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-full text-sm font-medium",
+                "w-full py-1 rounded-lg text-sm font-medium",
                 isFollow ? "secondary-btn" : "primary-btn",
                 loading && "opacity-50 cursor-not-allowed"
               )}
