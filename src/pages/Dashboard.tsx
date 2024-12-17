@@ -26,7 +26,7 @@ export default function Dashboard() {
       setLoading(true);
       const response = await axiosInstance.get(`/posts/channel/${channelId}`);
       setPosts(response.data);
-    } catch (error) {
+    } catch {
       setError("카테고리의 포스트를 불러오는 데 실패했습니다.");
     } finally {
       setLoading(false);
