@@ -1,6 +1,5 @@
 import { Link } from "react-router";
 import UserAvatar from "../components/common/UserAvatar";
-import AdBanner from "../components/Home/AdBanner";
 import RecentPosts from "../components/Home/RecentPosts";
 import { useAllUserStore } from "../store/allUserStore";
 
@@ -69,7 +68,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <AdBanner />
     </div>
   );
 }
