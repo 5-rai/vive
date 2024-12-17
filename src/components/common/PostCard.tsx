@@ -169,7 +169,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
             </p>
           </button>
           <div className="flex">
-            <div className="flex items-center gap-[2px] px-1">
+            <div className="flex items-center gap-[2px] px-[6px]">
               <CommentIcon
                 className="w-4 h-4"
                 color={isDarkMode ? "#c8c8c8" : "#222"}
