@@ -1,9 +1,10 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 import UserAvatar from "../common/UserAvatar";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -14,6 +15,7 @@ export default function ProfileSection({
   user,
   isMyProfile = false,
 }: ProfileSectionProps) {
+  const navigate = useNavigate();
   const [isFollow, setIsFollow] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isLoggedIn } = useAuthStore();
@@ -59,15 +61,12 @@ export default function ProfileSection({
   };
 
   const handleFollow = async () => {
-    if (!user?._id || !isLoggedIn) {
-      console.error("Cannot follow: No user ID or access token");
-      return;
-    }
+    confirmAndNavigateToLogin(navigate);
 
     try {
       setLoading(true);
       const response = await axiosInstance.post("/follow/create", {
-        userId: user._id,
+        userId: user!._id,
       });
 
       // 상태 직접 업데이트
@@ -79,6 +78,10 @@ export default function ProfileSection({
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleMessage = () => {
+    confirmAndNavigateToLogin(navigate);
   };
 
   return (
@@ -123,7 +126,7 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-full text-sm font-medium",
+                "w-full py-1 rounded-lg text-sm font-medium",
                 isFollow ? "secondary-btn" : "primary-btn",
                 loading && "opacity-50 cursor-not-allowed"
               )}
@@ -135,6 +138,7 @@ export default function ProfileSection({
             <button
               type="button"
               className="primary-btn w-full py-1 rounded-lg text-sm"
+              onClick={handleMessage}
             >
               메세지 보내기
             </button>

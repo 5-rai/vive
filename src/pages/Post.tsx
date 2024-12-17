@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import PostDetail from "../components/Post/PostDetail";
 import Comment from "../components/Post/Comment";
 import { useEffect, useState } from "react";
@@ -6,8 +6,10 @@ import { getOnePost } from "../api/post";
 import NotFound from "./NotFound";
 import { deleteLike, postLike } from "../api/like";
 import { useAuthStore } from "../store/authStore";
+import confirmAndNavigateToLogin from "../utils/confirmAndNavigateToLogin";
 
 export default function Post() {
+  const navigate = useNavigate();
   const { channelName, postId } = useParams();
   const [post, setPost] = useState<Post>();
   const [comments, setComments] = useState<Comment[]>();
@@ -34,6 +36,7 @@ export default function Post() {
   };
 
   const handleLikeClick = async () => {
+    confirmAndNavigateToLogin(navigate);
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
       if (result) {

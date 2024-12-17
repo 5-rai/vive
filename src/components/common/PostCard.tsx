@@ -7,6 +7,7 @@ import { deleteLike, postLike } from "../../api/like";
 import { isCustomTitle } from "../../utils/typeGuards";
 import { useAuthStore } from "../../store/authStore";
 import { useChannelStore } from "../../store/channelStore";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 
 interface PostCardProps {
   post: Post | SearchPost;
@@ -29,7 +30,6 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   );
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const getNameFromId = useChannelStore((state) => state.getNameFromId);
 
   useEffect(() => {
@@ -110,13 +110,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    if (!isLoggedIn) {
-      const result = window.confirm(
-        "로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?"
-      );
-      if (result) navigate("/login");
-      else return;
-    }
+    confirmAndNavigateToLogin(navigate);
 
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
