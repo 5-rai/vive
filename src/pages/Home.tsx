@@ -2,8 +2,18 @@ import { Link } from "react-router";
 import UserAvatar from "../components/common/UserAvatar";
 import AdBanner from "../components/Home/AdBanner";
 import RecentPosts from "../components/Home/RecentPosts";
+import { useAllUserStore } from "../store/allUserStore";
 
 export default function Home() {
+  const users = useAllUserStore((state) => state.users);
+
+  const getRandomArtists = (arr: User[], count: number) => {
+    const shuffled = arr.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
+  const randomArtists = getRandomArtists(users, 5);
+
   return (
     <div className="mx-auto py-10 flex-col justify-start flex w-[952px] gap-24 overflow-y-auto">
       <section>
@@ -13,10 +23,12 @@ export default function Home() {
             아티스트
           </span>
         </div>
+
+        {/* 랜덤으로 WeeklyArtist 5개 추출 */}
         <div className="flex flex-wrap justify-between px-2">
-          {[1, 2, 3, 4, 5].map((item) => (
-            <Link to="" key={item}>
-              <UserAvatar name="음악하는 다람쥐" image="" />
+          {randomArtists.map((artist) => (
+            <Link to={`/user/${artist._id}`} key={artist._id}>
+              <UserAvatar name={artist.fullName} image={artist.image} />
             </Link>
           ))}
         </div>
