@@ -4,6 +4,7 @@ import PostCardGridSection from "../components/Profile/PostCardGridSection";
 import ProfileSection from "../components/Profile/ProfileSection";
 import { axiosInstance } from "../api/axios";
 import { useAuthStore } from "../store/authStore";
+import Loading from "../components/common/Loading";
 
 export default function UserProfile() {
   const [profileUser, setProfileUser] = useState<User | null>(null);
@@ -31,11 +32,7 @@ export default function UserProfile() {
   if (loading || error || !profileUser) {
     return (
       <section className="w-[934px] mx-auto flex items-center justify-center">
-        {loading && (
-          <div>
-            <div className="loader" />
-          </div>
-        )}
+        {loading && <Loading />}
         {error && <p className="text-lg font-medium">{error}</p>}
         {!loading && !profileUser && (
           <p className="text-lg font-medium">사용자 정보를 찾을 수 없습니다.</p>
