@@ -3,6 +3,7 @@ import PostCard from "../components/common/PostCard";
 import { useChannelStore } from "../store/channelStore";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../api/axios";
+import Loading from "../components/common/Loading";
 
 export default function Dashboard() {
   const { channelName } = useParams();
@@ -35,11 +36,7 @@ export default function Dashboard() {
   if (loading || error) {
     return (
       <section className="w-[934px] mx-auto flex items-center justify-center">
-        {loading && (
-          <div>
-            <div className="loader" />
-          </div>
-        )}
+        {loading && <Loading />}
         {error && <p className="text-lg font-medium">{error}</p>}
       </section>
     );

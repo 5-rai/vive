@@ -53,10 +53,8 @@ export default function Post() {
     getPost();
   }, []);
 
-  if (!post || !comments || channelName !== post?.channel?.name) {
-    return <NotFound />;
-  }
-
+  if (!post || !comments) return;
+  if (channelName !== post?.channel?.name) return <NotFound />;
   return (
     <div className="flex">
       <PostDetail
