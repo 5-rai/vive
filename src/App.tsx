@@ -16,7 +16,6 @@ import { useEffect } from "react";
 import ModifyPassword from "./pages/ModifyPassword";
 import Private from "./layouts/Private";
 import { useAllUserStore } from "./store/allUserStore";
-import ModifyPost from "./pages/ModifyPost";
 import { axiosInstance } from "./api/axios";
 import { useChannelStore } from "./store/channelStore";
 import NotPrivate from "./layouts/NotPrivate";
@@ -56,7 +55,7 @@ function App() {
 
           <Route element={<Private />}>
             <Route path="/write" element={<Write />} />
-            <Route path="/posts/:postId/edit" element={<ModifyPost />} />
+            <Route path="/posts/:postId/edit" element={<Write />} />
             <Route path="/mypage" element={<MyProfile />} />
             <Route path="/mypage/edit" element={<ModifyProfile />} />
             <Route path="/mypage/edit/password" element={<ModifyPassword />} />

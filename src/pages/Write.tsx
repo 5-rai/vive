@@ -3,17 +3,19 @@ import CategoryButton from "../components/Write/CategoryButton";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { getOneYoutubeVideoInfo } from "../api/youtube";
-import { createPost } from "../api/post";
-import { useNavigate } from "react-router";
+import { createPost, getOnePost, updatePost } from "../api/post";
+import { useNavigate, useParams } from "react-router";
 
 const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 
 export default function Write() {
   const navigate = useNavigate();
-  const [videoInfo, setVideoInfo] = useState<Partial<YoutubeVideoType>>();
+  const { postId } = useParams();
 
+  const [videoInfo, setVideoInfo] = useState<Partial<YoutubeVideoType>>();
   const [isDisabled, setIsDisabled] = useState(false);
   const [selectedChannel, setSelectedChannel] = useState<Channel>();
+  const [error, setError] = useState(false);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState({
@@ -22,7 +24,7 @@ export default function Write() {
     isWarning: false,
   });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
 
@@ -36,6 +38,24 @@ export default function Write() {
       channelId: selectedChannel!._id,
     });
     navigate(`/channels/${selectedChannel!.name}/${post!._id}`);
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!postId) return;
+    if (!validate()) return;
+
+    await updatePost({
+      title: JSON.stringify({
+        title,
+        contents,
+        youtubeUrl: youtubeUrl.validUrl,
+        image: videoInfo!.snippet!.thumbnails.default.url,
+      }),
+      channelId: selectedChannel!._id,
+      postId,
+    });
+    navigate(`/channels/${selectedChannel!.name}/${postId}`);
   };
 
   const createBookmark = async (url: string) => {
@@ -72,6 +92,30 @@ export default function Write() {
   };
 
   useEffect(() => {
+    const setCurrentPostData = async () => {
+      const post = await getOnePost(postId);
+      if (!post) {
+        setError(true);
+        return;
+      }
+
+      const { title, contents, youtubeUrl }: CustomTitle = JSON.parse(
+        post.title
+      );
+      setTitle(title);
+      setContents(contents);
+      setSelectedChannel(post.channel);
+      setYoutubeUrl({
+        value: youtubeUrl,
+        validUrl: youtubeUrl,
+        isWarning: false,
+      });
+      createBookmark(youtubeUrl);
+    };
+    if (postId) setCurrentPostData();
+  }, []);
+
+  useEffect(() => {
     if (!title || !contents || !youtubeUrl.value || !selectedChannel) {
       setIsDisabled(true);
     } else {
@@ -79,9 +123,19 @@ export default function Write() {
     }
   }, [title, contents, youtubeUrl, selectedChannel]);
 
+  if (postId && error)
+    return (
+      <section className="w-full px-16 py-7 flex items-center justify-center">
+        <p className="text-gray-54">포스트 정보를 가져오는데 실패했습니다.</p>
+      </section>
+    );
+
   return (
     <section className="w-full px-16 py-7">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form
+        onSubmit={postId ? handleEditSubmit : handleCreateSubmit}
+        className="flex flex-col gap-4"
+      >
         <CategoryButton
           channel={selectedChannel}
           setChannel={setSelectedChannel}
@@ -144,7 +198,7 @@ export default function Write() {
           disabled={isDisabled}
           className="primary-btn self-end h-[50px] w-[157px] rounded-lg flex justify-center items-center"
         >
-          포스팅 올리기
+          {postId ? "포스팅 수정하기" : "포스팅 올리기"}
         </button>
       </form>
     </section>
