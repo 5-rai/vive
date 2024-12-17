@@ -126,7 +126,7 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-lg text-sm font-medium",
+                "w-full py-1 rounded-lg text-sm",
                 isFollow ? "secondary-btn" : "primary-btn"
               )}
               onClick={isFollow ? handleUnfollow : handleFollow}
