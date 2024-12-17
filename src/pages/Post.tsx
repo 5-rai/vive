@@ -7,6 +7,7 @@ import NotFound from "./NotFound";
 import { deleteLike, postLike } from "../api/like";
 import { useAuthStore } from "../store/authStore";
 import confirmAndNavigateToLogin from "../utils/confirmAndNavigateToLogin";
+import { createNotification } from "../api/notification";
 
 export default function Post() {
   const navigate = useNavigate();
@@ -45,10 +46,17 @@ export default function Post() {
       }
     } else {
       const result = await postLike(postId!);
-      if (result) {
-        setLikeInformation(result);
-        setLikeCount((prev) => prev + 1);
-      }
+      if (!result) return;
+
+      setLikeInformation(result);
+      setLikeCount((prev) => prev + 1);
+
+      await createNotification({
+        notificationType: "LIKE",
+        notificationTypeId: result._id,
+        userId: post!.author._id,
+        postId: result.post,
+      });
     }
   };
 
@@ -66,7 +74,11 @@ export default function Post() {
         likeInformation={likeInformation}
         handleLikeClick={handleLikeClick}
       />
-      <Comment comments={comments} setComments={setComments} />
+      <Comment
+        postAuthorId={post.author._id}
+        comments={comments}
+        setComments={setComments}
+      />
     </div>
   );
 }

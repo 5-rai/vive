@@ -2,9 +2,11 @@ import CommentItem from "./CommentItem";
 import CommentWrite from "./CommentWrite";
 
 export default function Comment({
+  postAuthorId,
   comments,
   setComments,
 }: {
+  postAuthorId: string;
   comments: Comment[];
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>
 }) {
@@ -27,7 +29,7 @@ export default function Comment({
           </div>
         )}
       </div>
-      <CommentWrite setComments={setComments} />
+      <CommentWrite postAuthorId={postAuthorId} setComments={setComments} />
     </section>
   );
 }

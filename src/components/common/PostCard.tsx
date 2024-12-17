@@ -8,6 +8,7 @@ import { isCustomTitle } from "../../utils/typeGuards";
 import { useAuthStore } from "../../store/authStore";
 import { useChannelStore } from "../../store/channelStore";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
+import { createNotification } from "../../api/notification";
 
 interface PostCardProps {
   post: Post | SearchPost;
@@ -113,17 +114,24 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     confirmAndNavigateToLogin(navigate);
 
     if (likeInformation) {
-      const result = await deleteLike(likeInformation._id);
-      if (result) {
-        setLikeInformation(null);
-        setLikeCount((prev) => Math.max(prev - 1, 0));
-      }
+      await deleteLike(likeInformation._id);
+      setLikeInformation(null);
+      setLikeCount((prev) => Math.max(prev - 1, 0));
     } else {
       const result = await postLike(post._id);
-      if (result) {
-        setLikeInformation(result);
-        setLikeCount((prev) => prev + 1);
-      }
+      if (!result) return;
+
+      setLikeInformation(result);
+      setLikeCount((prev) => prev + 1);
+
+      const postAuthorId =
+        typeof post.author === "string" ? post.author : post.author._id;
+      await createNotification({
+        notificationType: "LIKE",
+        notificationTypeId: result._id,
+        userId: postAuthorId,
+        postId: result.post,
+      });
     }
   };
 
