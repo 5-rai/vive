@@ -19,6 +19,7 @@ import { useAllUserStore } from "./store/allUserStore";
 import ModifyPost from "./pages/ModifyPost";
 import { useChannelStore } from "./store/channelStore";
 import NotPrivate from "./layouts/NotPrivate";
+import Message from "./pages/Message";
 
 function App() {
   const fetchUsers = useAllUserStore((state) => state.fetchUsers);
@@ -52,6 +53,7 @@ function App() {
             <Route path="/mypage" element={<MyProfile />} />
             <Route path="/mypage/edit" element={<ModifyProfile />} />
             <Route path="/mypage/edit/password" element={<ModifyPassword />} />
+            <Route path="/message" element={<Message />} />
           </Route>
         </Route>
       </Route>
