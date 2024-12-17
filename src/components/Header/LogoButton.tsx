@@ -4,7 +4,9 @@ import { Link } from "react-router";
 export default function LogoButton() {
   return (
     <Link to="/">
-      <Logo className="w-[45px] h-[45px]" />
+      <h1>
+        <Logo className="w-11 h-11" />
+      </h1>
     </Link>
   );
 }
