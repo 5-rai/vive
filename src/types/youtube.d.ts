@@ -3,16 +3,18 @@ interface YoutubeVideoType {
   snippet: {
     title: string;
     description: string;
-    thumbnails: {
-      default: ThumbnailType;
-      medium: ThumbnailType?;
-      high: ThumbnailType?;
-      standard: ThumbnailType?;
-      maxres: ThumbnailType?;
-    };
+    thumbnails: ThumbnailsType;
     channelTitle: string;
     tags: string[];
   };
+}
+
+interface ThumbnailsType {
+  default: ThumbnailType;
+  medium: ThumbnailType | null;
+  high: ThumbnailType | null;
+  standard: ThumbnailType | null;
+  maxres: ThumbnailType | null;
 }
 
 interface ThumbnailType {
