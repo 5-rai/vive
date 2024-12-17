@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from "react-router";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
@@ -15,11 +15,12 @@ export default function Sidebar() {
   const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
   const debounceTimeout = useRef<number | null>(null); // 디바운스 타이머 관리
   const allUsers = useAllUserStore((state) => state.users);
+  const fetchUsers = useAllUserStore((state) => state.fetchUsers);
 
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
 
   // API GET 함수 (검색값 가져오기)
-  const fetchUsers = async (searchName: string) => {
+  const searchUsers = async (searchName: string) => {
     try {
       const response = await axiosInstance.get(`/search/users/${searchName}`);
       setSearchResults(response.data); // 검색 결과 저장
@@ -39,12 +40,18 @@ export default function Sidebar() {
 
     if (value.trim() !== "") {
       debounceTimeout.current = setTimeout(() => {
-        fetchUsers(value); // 0.5초 후 검색 실행
+        searchUsers(value); // 0.5초 후 검색 실행
       }, 500);
     } else {
       setSearchResults([]);
     }
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(fetchUsers, 10000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>
