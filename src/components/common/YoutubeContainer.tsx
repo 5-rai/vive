@@ -7,12 +7,12 @@ export default function YouTubeContainer({
 }) {
   const opts: YouTubeProps["opts"] = {
     height: "334",
-    width: "596",
+    width: "618",
     playerVars: {
       rel: 0,
       modestbranding: 1,
     },
   };
 
-  return <YouTube videoId={videoId} opts={opts} />;
+  return <YouTube videoId={videoId} opts={opts} className="min-h-[334px]" />;
 }

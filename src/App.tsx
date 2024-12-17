@@ -19,7 +19,7 @@ import { useAllUserStore } from "./store/allUserStore";
 import ModifyPost from "./pages/ModifyPost";
 import { axiosInstance } from "./api/axios";
 import { useChannelStore } from "./store/channelStore";
-
+import NotPrivate from "./layouts/NotPrivate";
 
 function App() {
   const fetchUsers = useAllUserStore((state) => state.fetchUsers);
@@ -40,9 +40,12 @@ function App() {
   return (
     <Routes>
       <Route element={<RootLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
+
+        <Route element={<NotPrivate />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
 
         <Route element={<Sidebar />}>
           <Route path="/" element={<Home />} />

@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import PostCardGridSection from "../components/Profile/PostCardGridSection";
 import ProfileSection from "../components/Profile/ProfileSection";
 import { axiosInstance } from "../api/axios";
+import { useAuthStore } from "../store/authStore";
 
 export default function UserProfile() {
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { userId } = useParams();
+  const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
 
   useEffect(() => {
     const fetchProfileUserData = async () => {
       try {
         setLoading(true);
-        const userResponse = await axiosInstance.get<User>(`/users/${userId}`);
-        setProfileUser({
-          ...userResponse.data,
-        });
+        const { data } = await axiosInstance.get<User>(`/users/${userId}`);
+        setProfileUser(data);
       } catch (err) {
         console.error(err);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
@@ -37,13 +37,14 @@ export default function UserProfile() {
           </div>
         )}
         {error && <p className="text-lg font-medium">{error}</p>}
-        {!profileUser && (
+        {!loading && !profileUser && (
           <p className="text-lg font-medium">사용자 정보를 찾을 수 없습니다.</p>
         )}
       </section>
     );
   }
 
+  if (checkIsMyUserId(userId!)) return <Navigate to="/mypage" replace />;
   return (
     <section className="w-fit mx-auto flex flex-col items-center">
       <ProfileSection user={profileUser} />

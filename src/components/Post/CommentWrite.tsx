@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
 import { createComment } from "../../api/comment";
-import { usePostStore } from "../../store/postStore";
-import { useNavigate } from "react-router";
-import { useAuthStore } from "../../store/authStore";
+import { useNavigate, useParams } from "react-router";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 
-export default function CommentWrite() {
+export default function CommentWrite({
+  setComments,
+}: {
+  setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
+}) {
   const navigate = useNavigate();
+  const { postId } = useParams();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
   const [comment, setComment] = useState("");
-  const postId = usePostStore((state) => state.postId);
-  const addComment = usePostStore((state) => state.addComment);
-  const accessToken = useAuthStore((state) => state.accessToken);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -26,22 +26,15 @@ export default function CommentWrite() {
     }
   };
 
-  const checkIsLoggedIn = () => {
-    if (!accessToken) {
-      const isConfirmed = window.confirm(
-        "로그인이 필요한 기능입니다. 로그인 하시겠습니까?"
-      );
-      isConfirmed && navigate("/login");
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const comment = textareaRef.current!.value;
-    const data = await createComment({ comment, postId });
-    textareaRef.current!.value = "";
+    const addedComment = await createComment({ comment, postId });
 
-    addComment(data!);
+    if (addedComment) {
+      setComments((prev) => [...prev!, addedComment]);
+      textareaRef.current!.value = "";
+    }
   };
   return (
     <form
@@ -54,7 +47,7 @@ export default function CommentWrite() {
           rows={1}
           className="block w-full h-[47px] bg-transparent resize-none custom-scrollbar"
           onChange={handleChange}
-          onClick={checkIsLoggedIn}
+          onClick={() => confirmAndNavigateToLogin(navigate)}
           placeholder="댓글을 적어주세요!"
         ></textarea>
       </div>

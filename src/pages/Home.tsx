@@ -1,12 +1,13 @@
+import { Link } from "react-router";
+import UserAvatar from "../components/common/UserAvatar";
 import AdBanner from "../components/Home/AdBanner";
 import RecentPosts from "../components/Home/RecentPosts";
-import WeeklyArtist from "../components/Home/WeeklyArtist";
 import { useAllUserStore } from "../store/allUserStore";
 
 export default function Home() {
   const users = useAllUserStore((state) => state.users);
 
-  const getRandomArtists = (arr: any[], count: number) => {
+  const getRandomArtists = (arr: User[], count: number) => {
     const shuffled = arr.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
   };
@@ -26,19 +27,16 @@ export default function Home() {
         {/* 랜덤으로 WeeklyArtist 5개 추출 */}
         <div className="flex flex-wrap justify-between px-2">
           {randomArtists.map((artist) => (
-            <WeeklyArtist
-              userId={artist._id}
-              key={artist._id}
-              name={artist.fullName}
-              images={artist.image || "/logo.png"}
-            />
+            <Link to={`/user/${artist._id}`} key={artist._id}>
+              <UserAvatar name={artist.fullName} image={artist.image} />
+            </Link>
           ))}
         </div>
       </section>
       <section>
         <div className="mb-3">
           <span className="text-2xl font-semibold">최근 </span>
-          <span className="text-[#fcc404] text-2xl font-semibold">K-POP</span>
+          <span className="text-primary text-2xl font-semibold">K-POP</span>
           <span className="text-2xl font-semibold"> 포스트</span>
         </div>
         <div className="flex flex-wrap justify-between">
@@ -56,9 +54,7 @@ export default function Home() {
       <section>
         <div className="mb-3">
           <span className="text-2xl font-semibold">최근 </span>
-          <span className="text-[#fcc404] text-2xl font-semibold">
-            인디음악
-          </span>
+          <span className="text-primary text-2xl font-semibold">인디음악</span>
           <span className="text-2xl font-semibold"> 포스트</span>
         </div>
         <div className="w-[952px] flex flex-wrap justify-between">

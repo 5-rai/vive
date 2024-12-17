@@ -1,5 +1,5 @@
 import Bookmark from "../components/Write/Bookmark";
-import Dropdown from "../components/Write/Dropdown";
+import CategoryButton from "../components/Write/CategoryButton";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { getOneYoutubeVideoInfo } from "../api/youtube";
@@ -82,7 +82,10 @@ export default function Write() {
   return (
     <section className="w-full px-16 py-7">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Dropdown channel={selectedChannel} setChannel={setSelectedChannel} />
+        <CategoryButton
+          channel={selectedChannel}
+          setChannel={setSelectedChannel}
+        />
         <input
           className="border p-3 focus:border-primary text-2xl border-gray-c8 dark:border-gray-c8/50 rounded-lg"
           placeholder="제목을 입력하세요"
