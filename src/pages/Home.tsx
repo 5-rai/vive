@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 import UserAvatar from "../components/common/UserAvatar";
-import AdBanner from "../components/Home/AdBanner";
 import RecentPosts from "../components/Home/RecentPosts";
 import { useAllUserStore } from "../store/allUserStore";
+import SucodingAd from "../components/Home/SucodingAd";
 
 export default function Home() {
   const users = useAllUserStore((state) => state.users);
@@ -69,7 +69,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <AdBanner />
+      <SucodingAd />
     </div>
   );
 }
