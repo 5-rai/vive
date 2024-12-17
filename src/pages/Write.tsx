@@ -87,13 +87,15 @@ export default function Write() {
           setChannel={setSelectedChannel}
         />
         <input
-          className="border p-3 focus:border-primary text-2xl border-gray-c8 dark:border-gray-c8/50 rounded-lg"
+          value={title}
+          className="border px-6 py-3 focus:border-primary text-xl border-gray-c8 dark:border-gray-c8/50 rounded-lg"
           placeholder="제목을 입력하세요"
           onChange={(e) => setTitle(e.target.value)}
         />
-        <div className="border focus-within:border-primary rounded-lg border-gray-c8 dark:border-gray-c8/50 overflow-hidden p-6 bg-white dark:bg-white/10">
+        <div className="border focus-within:border-primary rounded-lg border-gray-c8 dark:border-gray-c8/50 overflow-hidden p-6 pr-2 bg-white dark:bg-white/10">
           <textarea
-            className="w-full h-[280px] resize-none bg-transparent custom-scrollbar"
+            value={contents}
+            className="w-full h-[280px] resize-none bg-transparent overflow-y-scroll custom-scrollbar"
             placeholder="내용을 입력해주세요"
             onChange={(e) => setContents(e.target.value)}
           />
@@ -124,16 +126,11 @@ export default function Write() {
               })
             }
           />
-          <p
-            className={twMerge(
-              "text-xs leading-7",
-              youtubeUrl.isWarning
-                ? "text-red-accent"
-                : "text-transparent select-none"
-            )}
-          >
-            올바른 유튜브 URL을 입력해주세요.
-          </p>
+          {youtubeUrl.isWarning && (
+            <p className="text-xs leading-7 text-red-accent">
+              올바른 유튜브 URL을 입력해주세요.
+            </p>
+          )}
         </div>
         {videoInfo && (
           <Bookmark
