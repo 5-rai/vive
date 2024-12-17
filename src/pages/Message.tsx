@@ -22,18 +22,13 @@ const TEMP_USER: User = {
 };
 
 export default function Message() {
-  const handleSendMessageClick = (e: React.MouseEvent<HTMLButtonElement>) => {};
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
   return (
     <>
-      <section className="flex flex-row-reverse ">
-        <aside className="w-[419px] border-l px-[29px]">
-          <h2 className="font-semibold text-2xl mt-10 mb-5">메세지함</h2>
-          <MessageListItem user={TEMP_USER} />
-        </aside>
+      <section className="flex flex-row">
         <article className="flex flex-col justify-between w-[721px] ">
           <div className="px-10">
             <div className="flex items-center mt-[38px] mb-[29px]">
@@ -46,12 +41,10 @@ export default function Message() {
                 닉네임{/* {user?.fullName} */}
               </p>
             </div>
-            {
-              <MessageContent
-                isOutgoingMessage={false}
-                message="안녕하세요~~~~ 반갑습니다아~~~~ ^_^"
-              />
-            }
+            <MessageContent
+              isOutgoingMessage={false}
+              message="안녕하세요~~~~ 반갑습니다아~~~~ ^_^"
+            />
           </div>
           <div className="border-t border-gray-c8 px-10 pb-8">
             <form
@@ -65,13 +58,18 @@ export default function Message() {
               <button
                 className="justify-self-end w-20 h-10 rounded-[15px] mt-4 py-[7px] px-[19px] bg-primary"
                 type="submit"
-                onClick={handleSendMessageClick}
               >
                 보내기
               </button>
             </form>
           </div>
         </article>
+        <aside className="w-[419px] border-l px-[29px]">
+          <h2 className="font-semibold text-2xl mt-10 mb-5">메세지함</h2>
+          {[1, 2, 3, 4].map((item) => (
+            <MessageListItem key={item} user={TEMP_USER} />
+          ))}
+        </aside>
       </section>
     </>
   );
