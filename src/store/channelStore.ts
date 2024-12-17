@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { axiosInstance } from "../api/axios";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 interface ChannelStore {
   channels: Channel[];
@@ -36,7 +36,6 @@ export const useChannelStore = create<ChannelStore>()(
     }),
     {
       name: "channels",
-      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );
