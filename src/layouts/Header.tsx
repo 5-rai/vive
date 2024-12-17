@@ -4,7 +4,6 @@ import { useAuthStore } from "../store/authStore";
 import NotificationButton from "../components/Header/NotificationButton";
 import NewPostButton from "../components/Header/NewPostButton";
 import ProfileButton from "../components/Header/ProfileButton";
-import LogoutButton from "../components/Header/LogoutButton";
 import SearchBar from "../components/Header/SearchBar";
 
 export default function Header() {
@@ -19,11 +18,9 @@ export default function Header() {
             <SearchBar />
             <NotificationButton />
             <NewPostButton />
-            <LogoutButton />
             <ProfileButton profileImage={user?.image} />
           </div>
         ) : (
-          // 비로그인 시
           <div className="flex justify-start items-center flex-grow-0 flex-shrink-0 gap-3">
             <SearchBar />
             <LogInButton />
