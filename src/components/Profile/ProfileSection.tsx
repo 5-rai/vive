@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
+import UserAvatar from "../common/UserAvatar";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -40,7 +41,7 @@ export default function ProfileSection({
 
     try {
       setLoading(true);
-      const response = await axiosInstance.delete("/follow/delete", {
+      await axiosInstance.delete("/follow/delete", {
         data: { id: followId },
       });
 
@@ -82,14 +83,7 @@ export default function ProfileSection({
 
   return (
     <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
-      <div className="flex flex-col gap-2 items-center">
-        <img
-          src={user?.image || "/logo.png"}
-          alt="프로필 이미지"
-          className="w-[124px] h-[124px] rounded-full profile-shadow border border-gray-ee bg-white/20"
-        />
-        <p className="text-lg mt-[10px] dark:text-white">{user?.fullName}</p>
-      </div>
+      <UserAvatar name={user?.fullName} image={user?.image} />
       <section className="w-max">
         <div className="flex w-[208px] justify-between mb-4">
           <div className="text-center">

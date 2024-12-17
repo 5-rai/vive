@@ -67,9 +67,9 @@ export default function SearchResult() {
           {userResult.length > 0 ? (
             <div className="w-full grid grid-cols-6 gap-10 justify-between">
               {userResult.map((user) => (
-                <Link to="/user/userId" key={user._id}>
+                <Link to={`/user/${user._id}`}>
                   <UserAvatar
-                    id={user._id}
+                    key={user._id}
                     name={user.fullName}
                     image={user.image}
                   />

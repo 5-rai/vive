@@ -38,7 +38,7 @@ export default function PostDetail({
             className="flex gap-3 items-center"
           >
             <img
-              className="w-[30px] h-[30px] rounded-full"
+              className="w-[30px] h-[30px] rounded-full profile"
               src={post.author.image ?? profileImg}
               alt="유저 프로필 이미지"
             />
@@ -61,7 +61,7 @@ export default function PostDetail({
         </div>
 
         <hr className="bg-gray-22 dark:bg-gray-ee/50 my-5 border-none h-[1px]" />
-        <p className="text-[#6C6C6C] dark:text-gray-c8 whitespace-pre-wrap">
+        <p className="text-gray-54 dark:text-gray-c8 whitespace-pre-wrap">
           {contents}
         </p>
       </div>

@@ -152,7 +152,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
           <p className="font-semibold mb-1 line-clamp-1 dark:text-white break-all">
             {postInformation.title}
           </p>
-          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap break-all">
+          <p className="text-sm text-gray-54 dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap break-all">
             {postInformation.contents}
           </p>
         </section>
@@ -165,15 +165,15 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
             <img
               src={author?.image || "/logo.png"}
               alt={`${author?.fullName}-프로필 이미지`}
-              className="w-7 h-7 rounded-full mr-2 bg-white/20 border border-gray-ee"
+              className="w-7 h-7 rounded-full mr-2 profile"
             />
-            <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">
+            <p className="text-sm text-gray-54 dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">
               {author?.fullName}
             </p>
           </button>
           <button
             type="button"
-            className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
+            className="rounded-full border border-gray-c8 dark:border-gray-c8/70 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
             onClick={handleLikeClick}
           >
             {likeInformation ? (
