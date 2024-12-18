@@ -34,7 +34,10 @@ export default function Comment({
             <p>이 포스팅의 첫 번째 댓글을 달아주세요!</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-5 overflow-y-scroll custom-scrollbar ml-6 mr-2">
+          <div
+            ref={commentsRef}
+            className="flex flex-col gap-5 overflow-y-scroll custom-scrollbar ml-6 mr-2"
+          >
             {comments.map((comment) => (
               <CommentItem
                 key={comment._id}
