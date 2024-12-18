@@ -67,8 +67,8 @@ export default function Sidebar() {
             카테고리
           </p>
           <div className="flex flex-col gap-1">
-            {/* 상위 3개를 제외한 나머지 항목만 표시 */}
-            {channels.slice(3).map((channel) => (
+            {/* 모든 항목 표시 */}
+            {channels.map((channel) => (
               <NavLink
                 key={channel._id}
                 to={`/channels/${channel.name}`}
