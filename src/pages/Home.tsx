@@ -82,7 +82,7 @@ export default function Home() {
       {/* 채널별 섹션 및 광고 */}
       {Object.entries(channelPosts).map(
         ([channelId, { posts, name }]: [string, ChannelPosts], index) => (
-          <div key={channelId}>
+          <div key={`recent-${channelId}`}>
             {/* 채널 섹션 */}
             <section>
               <div className="mb-3">
