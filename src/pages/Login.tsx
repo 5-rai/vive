@@ -52,7 +52,7 @@ export default function Login() {
             id="email"
             type="email"
             value={email.value}
-            message="이메일을 입력해주세요"
+            placeholder="이메일을 입력해주세요"
             isWarning={email.isWarning}
             onChange={(e) =>
               setEmail({ value: e.target.value, isWarning: false })
@@ -63,7 +63,7 @@ export default function Login() {
             id="password"
             type="password"
             value={password.value}
-            message="비밀번호를 입력해주세요"
+            placeholder="비밀번호를 입력해주세요"
             isWarning={password.isWarning}
             onChange={(e) =>
               setPassword({ value: e.target.value, isWarning: false })

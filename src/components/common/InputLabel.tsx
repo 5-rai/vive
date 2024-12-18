@@ -26,7 +26,7 @@ export default function InputLabel({
           isWarning ? "text-red-accent" : "text-transparent select-none"
         )}
       >
-        {errorMessage ?? props.placeholder}
+        {errorMessage ?? props.placeholder + "."}
       </p>
     </fieldset>
   );
