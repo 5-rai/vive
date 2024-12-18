@@ -10,6 +10,7 @@ import { useChannelStore } from "../../store/channelStore";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import CommentIcon from "../../assets/CommentIcon";
 import { useThemeStore } from "../../store/themeStore";
+import { createNotification } from "../../api/notification";
 
 interface PostCardProps {
   post: Post | SearchPost;
@@ -117,16 +118,25 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
 
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
-      if (result) {
-        setLikeInformation(null);
-        setLikeCount((prev) => Math.max(prev - 1, 0));
-      }
+      if (!result) return;
+
+      setLikeInformation(null);
+      setLikeCount((prev) => Math.max(prev - 1, 0));
     } else {
       const result = await postLike(post._id);
-      if (result) {
-        setLikeInformation(result);
-        setLikeCount((prev) => prev + 1);
-      }
+      if (!result) return;
+
+      setLikeInformation(result);
+      setLikeCount((prev) => prev + 1);
+
+      const postAuthorId =
+        typeof post.author === "string" ? post.author : post.author._id;
+      await createNotification({
+        notificationType: "LIKE",
+        notificationTypeId: result._id,
+        userId: postAuthorId,
+        postId: result.post,
+      });
     }
   };
 
