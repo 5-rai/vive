@@ -21,7 +21,7 @@ export default function Message() {
         <section className="grow h-full flex flex-col">
           {!userId && (
             <p className="w-full text-lg text-center mt-36">
-              메세지 목록을 선택해주세요.
+              메시시지 목록을 선택해주세요.
             </p>
           )}
         </section>

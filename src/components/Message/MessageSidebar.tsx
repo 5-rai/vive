@@ -23,7 +23,7 @@ const TEMP_USER: User = {
 export default function MessageSidebar() {
   return (
     <aside className="h-full w-[419px] border-l px-7 pr-3 overflow-hidden flex flex-col">
-      <h2 className="font-semibold text-2xl mt-10 mb-5">메세지함</h2>
+      <h2 className="font-semibold text-2xl mt-10 mb-5">메시시지함</h2>
       <section className="overflow-y-scroll custom-scrollbar mb-5">
         {[1, 2, 3, 4].map((item) => (
           <MessageListItem key={item} user={TEMP_USER} />

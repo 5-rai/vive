@@ -48,7 +48,7 @@ export default function MessageForm({ userId, refetch }: MessageFromProps) {
             ref={textareaRef}
             rows={1}
             value={newMessage}
-            placeholder="메세지를 입력해주세요."
+            placeholder="메시지를 입력해주세요."
             className="block w-full resize-none overflow-y-scroll custom-scrollbar bg-transparent text-gray-22"
             onChange={handleChange}
           />

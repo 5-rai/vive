@@ -139,7 +139,7 @@ export default function ProfileSection({
               className="primary-btn w-full py-1 rounded-lg text-sm"
               onClick={handleMessage}
             >
-              메세지 보내기
+              메시지 보내기
             </button>
           </div>
         )}
