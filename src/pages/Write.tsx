@@ -1,6 +1,6 @@
 import Bookmark from "../components/Write/Bookmark";
 import CategoryButton from "../components/Write/CategoryButton";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { getOneYoutubeVideoInfo } from "../api/youtube";
 import { createPost } from "../api/post";
@@ -10,6 +10,7 @@ const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 
 export default function Write() {
   const navigate = useNavigate();
+  const debounceTimer = useRef(0);
   const [videoInfo, setVideoInfo] = useState<Partial<YoutubeVideoType>>();
 
   const [isDisabled, setIsDisabled] = useState(false);
@@ -21,6 +22,15 @@ export default function Write() {
     validUrl: "",
     isWarning: false,
   });
+
+  const handleChange = (value: string) => {
+    setYoutubeUrl({
+      ...youtubeUrl,
+      value,
+      isWarning: false,
+    });
+    createBookmark(value);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,29 +60,33 @@ export default function Write() {
   };
 
   const createBookmark = async (url: string) => {
-    url = url.trim();
-    if (!youtubeLinkRegex.test(url)) {
-      setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
-      setVideoInfo(undefined);
-      return;
-    }
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
-    const parsedUrl = new URL(url);
-    const videoId = new URLSearchParams(parsedUrl.search).get("v");
-    const videoInfo = await getOneYoutubeVideoInfo(videoId);
+    debounceTimer.current = setTimeout(async () => {
+      url = url.trim();
+      if (!youtubeLinkRegex.test(url)) {
+        setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
+        setVideoInfo(undefined);
+        return;
+      }
 
-    if (videoInfo) {
-      setVideoInfo(videoInfo);
-      setYoutubeUrl({
-        ...youtubeUrl,
-        value: url,
-        validUrl: url,
-        isWarning: false,
-      });
-    } else {
-      setVideoInfo(undefined);
-      setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
-    }
+      const parsedUrl = new URL(url);
+      const videoId = new URLSearchParams(parsedUrl.search).get("v");
+      const videoInfo = await getOneYoutubeVideoInfo(videoId);
+
+      if (videoInfo) {
+        setVideoInfo(videoInfo);
+        setYoutubeUrl({
+          ...youtubeUrl,
+          value: url,
+          validUrl: url,
+          isWarning: false,
+        });
+      } else {
+        setVideoInfo(undefined);
+        setYoutubeUrl({ ...youtubeUrl, isWarning: true });
+      }
+    }, 500);
   };
 
   const validate = () => {
@@ -119,21 +133,8 @@ export default function Write() {
             )}
             placeholder="유튜브 url를 입력하세요"
             autoCorrect="off"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                createBookmark(e.currentTarget.value);
-              }
-            }}
             onPaste={(e) => createBookmark(e.clipboardData.getData("text"))}
-            onBlur={(e) => createBookmark(e.currentTarget.value)}
-            onChange={(e) =>
-              setYoutubeUrl({
-                ...youtubeUrl,
-                value: e.target.value,
-                isWarning: false,
-              })
-            }
+            onChange={(e) => handleChange(e.target.value)}
           />
           <p
             className={twMerge(

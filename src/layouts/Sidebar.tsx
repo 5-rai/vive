@@ -1,25 +1,29 @@
 import { Outlet, NavLink } from "react-router";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import SearchIcon from "../assets/SearchIcon";
 import { useThemeStore } from "../store/themeStore";
 import { axiosInstance } from "../api/axios";
 import UserNavLink from "../components/common/UserNavLink";
 import { useAllUserStore } from "../store/allUserStore";
 import { useChannelStore } from "../store/channelStore";
+import Loading from "../components/common/Loading";
 
 export default function Sidebar() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
-  const [isInputFocused, setIsInputFocused] = useState(false);
   const channels = useChannelStore((state) => state.channels);
+  const allUsers = useAllUserStore((state) => state.users);
+  const fetchUsers = useAllUserStore((state) => state.fetchUsers);
+
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const [searchName, setSearchName] = useState(""); // 검색할 이름 상태 관리
+  const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
   const debounceTimeout = useRef<number | null>(null); // 디바운스 타이머 관리
-  const allUsers = useAllUserStore((state) => state.users);
 
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
 
   // API GET 함수 (검색값 가져오기)
-  const fetchUsers = async (searchName: string) => {
+  const searchUsers = async (searchName: string) => {
     try {
       const response = await axiosInstance.get(`/search/users/${searchName}`);
       setSearchResults(response.data); // 검색 결과 저장
@@ -32,6 +36,7 @@ export default function Sidebar() {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchName(value);
+    setIsLoading(true);
 
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current); // 기존 타이머를 취소
@@ -39,12 +44,20 @@ export default function Sidebar() {
 
     if (value.trim() !== "") {
       debounceTimeout.current = setTimeout(() => {
-        fetchUsers(value); // 0.5초 후 검색 실행
+        searchUsers(value); // 0.5초 후 검색 실행
+        setIsLoading(false);
       }, 500);
     } else {
       setSearchResults([]);
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(fetchUsers, 10000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>
@@ -98,13 +111,25 @@ export default function Sidebar() {
           </div>
 
           <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
-            {searchResults.length > 0
-              ? searchResults.map((user) => (
-                  <UserNavLink key={user._id} user={user} />
-                ))
-              : allUsers.map((user) => (
-                  <UserNavLink key={user._id} user={user} />
-                ))}
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <>
+                {searchResults.length > 0 ? (
+                  searchResults.map((user) => (
+                    <UserNavLink key={user._id} user={user} />
+                  ))
+                ) : searchName.length > 0 ? (
+                  <p className="text-center text-gray-6c">
+                    검색 결과가 없습니다...
+                  </p>
+                ) : (
+                  allUsers.map((user) => (
+                    <UserNavLink key={user._id} user={user} />
+                  ))
+                )}
+              </>
+            )}
           </div>
         </div>
       </aside>
