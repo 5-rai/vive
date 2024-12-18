@@ -82,6 +82,7 @@ export default function ProfileSection({
 
   const handleMessage = () => {
     confirmAndNavigateToLogin(navigate);
+    navigate(`/message?user=${user?._id}`);
   };
 
   return (
