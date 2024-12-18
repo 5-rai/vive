@@ -5,25 +5,30 @@ import { useEffect, useState } from "react";
 import useGetMessagesWithUser from "../hooks/useGetMessagesWithUser";
 import Loading from "../components/common/Loading";
 import { useAllUserStore } from "../store/allUserStore";
+import { postMessage } from "../api/message";
 
 export default function Message() {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("user") ?? "";
-  const [newMessage, setNeMessage] = useState("");
+  const [newMessage, setNewMessage] = useState("");
   const [userInfo, setUserInfo] = useState<User | undefined>();
-  const { messages, loading, error } = useGetMessagesWithUser(userId);
+  const { messages, loading, error, refetch } = useGetMessagesWithUser(userId);
   const getUsers = useAllUserStore((state) => state.getUser);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(newMessage);
-    // TODO: 메시지 전송 API 쏘기
-    //const data = await postMessage(newMessage, userId);
-    // 성공 시, setNewMessage("")
+    const data = await postMessage(newMessage, userId);
+    if (data) {
+      setNewMessage("");
+      refetch();
+      // TODO: 메시지 확인 API 쏘기
+    }
   };
 
   useEffect(() => {
     if (userId) setUserInfo(getUsers(userId));
+    // TODO: 메시지 확인 API 쏘기
   }, [userId]);
 
   if (!userId)
@@ -80,7 +85,7 @@ export default function Message() {
             {messages?.map((message) => (
               <MessageContent
                 key={message._id}
-                isOutgoingMessage={message.sender._id === userId}
+                isOutgoingMessage={message.receiver._id === userId}
                 message={message.message}
                 date={message.createdAt}
               />
@@ -93,7 +98,7 @@ export default function Message() {
               value={newMessage}
               className="w-full mt-5 p-3 border border-gray-c8 rounded-[15px] dark:border-gray-c8/50 resize-none"
               placeholder="메세지를 입력해주세요."
-              onChange={(e) => setNeMessage(e.target.value)}
+              onChange={(e) => setNewMessage(e.target.value)}
             />
             <button
               className="self-end w-20 h-10 rounded-[15px] mt-4 py-[7px] px-[19px] bg-primary text-gray-22"

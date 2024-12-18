@@ -6,27 +6,28 @@ const useGetMessagesWithUser = (userId: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const getMessagesWithUser = async () => {
     if (!userId) return;
 
-    const getMessagesWithUser = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axiosInstance.get(`/messages`, {
-          params: { userId },
-        });
-        setMessages(data);
-      } catch (err) {
-        if (err instanceof Error) setError(err.message);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    try {
+      if (!messages) setLoading(true);
+      const { data } = await axiosInstance.get(`/messages`, {
+        params: { userId },
+      });
+      setMessages(data);
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     getMessagesWithUser();
   }, [userId]);
 
-  return { messages, error, loading };
+  return { messages, error, loading, refetch: getMessagesWithUser };
 };
 
 export default useGetMessagesWithUser;
