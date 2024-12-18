@@ -3,8 +3,8 @@ import { axiosInstance } from "../api/axios";
 
 const useGetMessagesWithUser = (userId: string) => {
   const [messages, setMessages] = useState<Message[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const getMessagesWithUser = async () => {
     if (!userId) return;
@@ -16,7 +16,7 @@ const useGetMessagesWithUser = (userId: string) => {
       });
       setMessages(data);
     } catch (err) {
-      if (err instanceof Error) setError(err.message);
+      if (err instanceof Error) setError(true);
       console.error(err);
     } finally {
       setLoading(false);
