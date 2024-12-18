@@ -56,7 +56,7 @@ export default function NotificationDropdown({
     }
 
     if (notification.message) {
-      return `/messages/${notification.message}`;
+      return `/message?user=${notification.author?._id}`;
     }
 
     return "#";
