@@ -16,7 +16,7 @@ function Private() {
       return;
     }
     setIsShow(true);
-  }, []);
+  }, [isLoggedIn]);
   return <>{show && <Outlet />}</>;
 }
 

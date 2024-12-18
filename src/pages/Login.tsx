@@ -30,11 +30,11 @@ export default function Login() {
     const result = await loginApi({
       email: email.value,
       password: password.value,
-    }); // LoginRequest 타입의 객체 전달
+    });
 
     if (result) {
-      navigate("/");
       console.log("로그인 성공");
+      navigate(-1);
       return;
     } else {
       alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
