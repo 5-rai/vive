@@ -12,6 +12,7 @@ import { useWeekArtistStore } from "../store/weekArtist";
 export default function Home() {
   const users = useAllUserStore((state) => state.users);
   const weekArtists = useWeekArtistStore((state) => state.weekArtists);
+  const pickedDate = useWeekArtistStore((state) => state.pickedDate);
   const pickWeekArtists = useWeekArtistStore((state) => state.pickWeekArtists);
   const channels = useChannelStore((state) => state.channels);
   const [channelPosts, setChannelPosts] = useState<
@@ -50,9 +51,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // 매주 월요일에 접속하면, 금주의 아티스트 재설정
-    const currentDay = new Date().getDay();
-    if (weekArtists.length === 0 || currentDay === 1) {
+    const diffInMs = new Date().getTime() - new Date(pickedDate).getTime();
+    const diffInWeek = diffInMs / 1000 / 60 / 60 / 24 / 7; // 일주일
+    if (weekArtists.length === 0 || diffInWeek >= 1) {
       pickWeekArtists(users);
     }
     if (channelIds.length > 0) {

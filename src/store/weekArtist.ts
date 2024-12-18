@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 interface WeekArtistStore {
   weekArtists: User[];
   pickWeekArtists: (users: User[]) => void;
+  pickedDate: string;
 }
 
 export const useWeekArtistStore = create<WeekArtistStore>()(
@@ -16,7 +17,7 @@ export const useWeekArtistStore = create<WeekArtistStore>()(
         );
         const shuffled = candidates.sort(() => 0.5 - Math.random());
         const weekArtists = shuffled.slice(0, 5);
-        set({ weekArtists });
+        set({ weekArtists, pickedDate: new Date().toISOString() });
       },
       pickedDate: "",
     }),
