@@ -1,21 +1,17 @@
 import { useSearchParams } from "react-router";
 import MessageSidebar from "../components/Message/MessageSidebar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useGetMessagesWithUser from "../hooks/useGetMessagesWithUser";
 import Loading from "../components/common/Loading";
-import { useAllUserStore } from "../store/allUserStore";
 import MessageHistory from "../components/Message/MessageHistory";
 import MessageForm from "../components/Message/MessageForm";
 
 export default function Message() {
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("user") ?? "";
-  const [userInfo, setUserInfo] = useState<User | undefined>();
   const { messages, loading, error, refetch } = useGetMessagesWithUser(userId);
-  const getUsers = useAllUserStore((state) => state.getUser);
 
   useEffect(() => {
-    if (userId) setUserInfo(getUsers(userId));
     // TODO: 메시지 확인 API 쏘기
   }, [userId]);
 
@@ -44,11 +40,7 @@ export default function Message() {
           </p>
         ) : (
           <>
-            <MessageHistory
-              userId={userId}
-              userInfo={userInfo}
-              messages={messages}
-            />
+            <MessageHistory userId={userId} messages={messages} />
             <MessageForm userId={userId} refetch={refetch} />
           </>
         )}
