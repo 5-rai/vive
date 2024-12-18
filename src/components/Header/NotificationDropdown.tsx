@@ -85,7 +85,7 @@ export default function NotificationDropdown({
   };
 
   return (
-    <div className="absolute px-8 py-3 left-0 w-[364px] bg-white dark:bg-gray-22 border dark:border-gray-ee/50 rounded-lg">
+    <div className="absolute px-8 py-3 left-0 top-11 w-[364px] z-50 bg-white dark:bg-gray-22 border dark:border-gray-ee/50 rounded-lg">
       <div className="flex justify-between items-center border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-2.5">
         <p>알림</p>
         {notifications.length > 0 && (

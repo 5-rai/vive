@@ -89,6 +89,7 @@ export default function ProfileSection({
 
   const handleMessage = () => {
     confirmAndNavigateToLogin(navigate);
+    navigate(`/message?user=${user?._id}`);
   };
 
   return (
@@ -146,7 +147,7 @@ export default function ProfileSection({
               className="primary-btn w-full py-1 rounded-lg text-sm"
               onClick={handleMessage}
             >
-              메세지 보내기
+              메시지 보내기
             </button>
           </div>
         )}
