@@ -7,7 +7,10 @@ import { useAuthStore } from "../store/authStore";
 export default function ModifyProfile() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage>();
   const [fullName, setFullName] = useState("");
-  const [isWarning, setIsWarning] = useState(false);
+  const [warning, setWarning] = useState({
+    isWarning: false,
+    errorMessage: "",
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const defaultImgRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -26,7 +29,7 @@ export default function ModifyProfile() {
   // 이름 변경 핸들러
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value);
-    setIsWarning(false);
+    setWarning((prev) => ({ ...prev, isWarning: false }));
   };
 
   // 이미지 업로드 핸들러 (미리 상태만 변경)
@@ -57,15 +60,25 @@ export default function ModifyProfile() {
   // 프로필 수정 요청 함수 (수정 버튼 클릭 시만 서버에 반영)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullName) {
-      setIsWarning(true);
+    if (!fullName.trim()) {
+      setWarning({
+        isWarning: true,
+        errorMessage: "공백만 있는 이름은 사용할 수 없습니다.",
+      });
+      return;
+    }
+    if (fullName.length > 7) {
+      setWarning({
+        isWarning: true,
+        errorMessage: "이름은 최대 7자까지만 입력할 수 있습니다.",
+      });
       return;
     }
     if (!selectedImage) return;
 
     const result = await updateUser(
       selectedImage.src !== user?.image ? selectedImage : null,
-      fullName !== user?.fullName ? fullName : null
+      fullName !== user?.fullName ? fullName.trim() : null
     );
     if (result) window.alert("프로필이 수정되었습니다.");
     navigate("/mypage");
@@ -123,14 +136,15 @@ export default function ModifyProfile() {
           id="username"
           value={fullName}
           onChange={handleFullNameChange} // 이름 변경 핸들러 연결
-          placeholder="이름을 입력해주세요"
-          message="이름을 입력해주세요."
-          isWarning={isWarning}
+          placeholder="이름을 입력해주세요 (7자 이내)"
+          message={warning.errorMessage}
+          isWarning={warning.isWarning}
         />
         <div className="flex flex-col gap-5 mt-24">
           <button
             type="submit"
             className="w-[400px] py-2 rounded-[50px] primary-btn"
+            disabled={!fullName}
           >
             수정
           </button>
