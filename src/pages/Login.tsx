@@ -3,13 +3,12 @@ import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
 import { loginApi } from "../api/auth";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
-  const location = useLocation(); // 현재 위치
 
   const validate = (): boolean => {
     let isValid = true;

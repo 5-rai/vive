@@ -2,7 +2,7 @@ import { useState } from "react";
 import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { axiosInstance } from "../api/axios";
 
 export default function Register() {
@@ -10,7 +10,6 @@ export default function Register() {
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
   const navigate = useNavigate();
-  const location = useLocation(); // 현재 위치 가져오기
   const validate = () => {
     const trimeedName = name.value.trim();
     if (!trimeedName) {
