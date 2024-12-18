@@ -35,12 +35,7 @@ export default function Login() {
 
     if (result) {
       console.log("로그인 성공");
-      // 이전 페이지가 /register인 경우 '/'로 리디렉션
-      if (location.state?.from?.pathname === "/register") {
-        navigate("/");
-      } else {
-        navigate(-1); // 기본적으로 이전 페이지로 돌아갑니다.
-      }
+      navigate(-1);
       return;
     } else {
       alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");

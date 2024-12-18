@@ -89,10 +89,7 @@ export default function Register() {
           <AuthButton type="submit" primary>
             회원 등록
           </AuthButton>
-          <AuthButton
-            type="button"
-            onClick={() => navigate("/login", { state: { from: location } })}
-          >
+          <AuthButton type="button" onClick={() => navigate("/login")}>
             로그인 하러가기
           </AuthButton>
         </div>
