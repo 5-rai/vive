@@ -12,7 +12,7 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
   const ref = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const { logout } = useAuthStore();
-  const privateRoutes = ["/write", "/mypage", "/message"]; // 로그인 상태에서만 접근 가능한 페이지
+  const privateRoutes = ["/write", "/mypage", "/message", "/edit"]; // 로그인 상태에서만 접근 가능한 페이지
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -36,15 +36,15 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
   };
 
   const handleLogoutClick = () => {
-    const currentPath = `${location.pathname}${location.search}`; // 경로 + 쿼리 문자열 포함
+    const currentPath = location.pathname;
     logout();
 
-    if (privateRoutes.some((route) => currentPath.startsWith(route))) {
+    if (
+      privateRoutes.some((route) => currentPath.startsWith(route)) ||
+      currentPath.includes("/edit")
+    ) {
       // 로그인 상태에서 접근 가능한 경로라면 홈으로 이동
       navigate("/");
-    } else {
-      // 나머지 경로는 그대로 유지 (쿼리 포함)
-      navigate(currentPath);
     }
 
     setIsOpen(false);
