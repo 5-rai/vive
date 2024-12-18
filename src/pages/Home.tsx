@@ -7,9 +7,12 @@ import { useAllUserStore } from "../store/allUserStore";
 import { useChannelStore } from "../store/channelStore";
 import SucodingAd from "../components/Home/SucodingAd";
 import IndistreetAd from "../components/Home/IndistreetAd";
+import { useWeekArtistStore } from "../store/weekArtist";
 
 export default function Home() {
   const users = useAllUserStore((state) => state.users);
+  const weekArtists = useWeekArtistStore((state) => state.weekArtists);
+  const pickWeekArtists = useWeekArtistStore((state) => state.pickWeekArtists);
   const channels = useChannelStore((state) => state.channels);
   const [channelPosts, setChannelPosts] = useState<
     Record<string, ChannelPosts>
@@ -47,17 +50,15 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // 매주 월요일에 접속하면, 금주의 아티스트 재설정
+    const currentDay = new Date().getDay();
+    if (weekArtists.length === 0 || currentDay === 1) {
+      pickWeekArtists(users);
+    }
     if (channelIds.length > 0) {
       fetchPostsForChannels();
     }
-  }, [channels]);
-
-  // 랜덤 아티스트 추출
-  const getRandomArtists = (arr: User[], count: number) => {
-    const shuffled = arr.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
-  const randomArtists = getRandomArtists(users, 5);
+  }, []);
 
   return (
     <div className="mx-auto py-10 flex-col justify-start flex w-[952px] gap-24 overflow-y-auto">
@@ -70,7 +71,7 @@ export default function Home() {
           </span>
         </div>
         <div className="flex flex-wrap justify-between px-2">
-          {randomArtists.map((artist) => (
+          {weekArtists.map((artist) => (
             <Link to={`/user/${artist._id}`} key={artist._id}>
               <UserAvatar name={artist.fullName} image={artist.image} />
             </Link>
