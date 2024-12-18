@@ -60,8 +60,11 @@ export default function Post() {
     }
   };
 
+  // 댓글 날짜를 갱신하기 위해 풀링 사용
   useEffect(() => {
-    getPost();
+    const intervalId = setInterval(getPost, 1000 * 60); // 1분
+
+    return () => clearInterval(intervalId);
   }, []);
 
   if (!post || !comments) return;
