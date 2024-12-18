@@ -15,15 +15,27 @@ const SORT_OPTIONS: SortOption[] = [
 ];
 
 interface SortButtonProps {
+  currentSort: string;
   onSortChange: (option: string) => void;
 }
 
-export default function SortButton({ onSortChange }: SortButtonProps) {
+export default function SortButton({
+  currentSort,
+  onSortChange,
+}: SortButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<SortOption>(
-    SORT_OPTIONS[0]
-  ); // 기본값: 최신순
+    SORT_OPTIONS.find((option) => option.id === currentSort) || SORT_OPTIONS[0]
+  );
   const ref = useRef<HTMLElement>(null);
+
+  // currentSort prop이 변경될 때 selectedOption 업데이트
+  useEffect(() => {
+    const newOption = SORT_OPTIONS.find((option) => option.id === currentSort);
+    if (newOption) {
+      setSelectedOption(newOption);
+    }
+  }, [currentSort]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
