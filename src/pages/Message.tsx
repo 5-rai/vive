@@ -16,7 +16,7 @@ export default function Message() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
-  
+
   // 메세지를 주고받은 유저 정보 API 가져오기
   useEffect(() => {
     const fetchUserInfo = async () => {
