@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { postMessage } from "../../api/message";
+import { createNotification } from "../../api/notification";
 
 interface MessageFromProps {
   userId: string;
@@ -32,6 +33,11 @@ export default function MessageForm({ userId, refetch }: MessageFromProps) {
       setNewMessage("");
       refetch();
       adjustHeight();
+      await createNotification({
+        notificationType: "MESSAGE",
+        notificationTypeId: data._id,
+        userId: userId,
+      });
     }
   };
 
