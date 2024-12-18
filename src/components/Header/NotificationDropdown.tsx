@@ -98,28 +98,34 @@ export default function NotificationDropdown({
         )}
       </div>
       <ul className="flex flex-col gap-1 max-h-64 overflow-y-auto custom-scrollbar">
-        {notifications.map((notification) => (
-          <li
-            key={notification._id}
-            className={`rounded-lg relative ${
-              notification.seen ? "text-gray-c8" : ""
-            } hover:bg-secondary dark:hover:text-gray-22`}
-            onClick={() => {
-              // 조건부로 handleMarkAllAsSeen 실행
-              if (!notification.seen) {
-                handleMarkAllAsSeen();
-              }
-            }}
-          >
-            <NavLink
-              className="block px-7 py-3"
-              to={notificationLinks[notification._id] || "#"}
+        {notifications.length > 0 ? (
+          notifications.map((notification) => (
+            <li
+              key={notification._id}
+              className={`rounded-lg relative ${
+                notification.seen ? "text-gray-c8" : ""
+              } hover:bg-secondary dark:hover:text-gray-22`}
+              onClick={() => {
+                // 조건부로 handleMarkAllAsSeen 실행
+                if (!notification.seen) {
+                  handleMarkAllAsSeen();
+                }
+              }}
             >
-              {/* 알림 텍스트 */}
-              {getNotificationText(notification)}
-            </NavLink>
+              <NavLink
+                className="block px-7 py-3"
+                to={notificationLinks[notification._id] || "#"}
+              >
+                {/* 알림 텍스트 */}
+                {getNotificationText(notification)}
+              </NavLink>
+            </li>
+          ))
+        ) : (
+          <li className="px-7 py-3 text-center text-gray-500">
+            새로운 알림이 없습니다.
           </li>
-        ))}
+        )}
       </ul>
     </div>
   );
