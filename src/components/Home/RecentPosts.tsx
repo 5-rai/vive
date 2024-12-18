@@ -5,19 +5,27 @@ export default function RecentPosts({
   youtubeTitle,
   youtubeThumbnail,
   avatarImg,
+  channelName,
+  postId,
+  userName,
+  userId,
 }: {
   title: string;
   youtubeTitle: string;
   youtubeThumbnail: string;
   avatarImg: string;
+  channelName: string;
+  postId: string;
+  userName: string;
+  userId: string;
 }) {
   const navigate = useNavigate();
   const postClick = () => {
-    navigate("/channels/channelName/postId");
+    navigate(`/channels/${channelName}/${postId}`);
   };
   const avatarClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.stopPropagation();
-    navigate("/user/userId");
+    navigate(`/user/${userId}`);
   };
   return (
     <article
@@ -37,7 +45,7 @@ export default function RecentPosts({
         >
           <img className="w-6 h-6 rounded-full" src={avatarImg} />
           <p className="text-gray-c8 text-sm font-medium group-hover:text-gray-ee">
-            avatar
+            {userName}
           </p>
         </div>
       </section>

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { useAllUserStore } from "../../store/allUserStore";
 
 export default function WeeklyArtist({
   name,
