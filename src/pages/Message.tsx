@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router";
 import MessageContent from "../components/Message/MessageContent";
 import MessageSidebar from "../components/Message/MessageSidebar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useGetMessagesWithUser from "../hooks/useGetMessagesWithUser";
 import Loading from "../components/common/Loading";
 import { useAllUserStore } from "../store/allUserStore";
@@ -14,6 +14,7 @@ export default function Message() {
   const [userInfo, setUserInfo] = useState<User | undefined>();
   const { messages, loading, error, refetch } = useGetMessagesWithUser(userId);
   const getUsers = useAllUserStore((state) => state.getUser);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,9 +27,25 @@ export default function Message() {
     }
   };
 
+  const adjustHeight = () => {
+    // 높이가 5줄까지만 늘어나도록 설정
+    if (!textareaRef.current) return;
+    textareaRef.current.style.height = "auto"; // 기존 높이 초기화
+    textareaRef.current.style.height = `${Math.min(
+      textareaRef.current.scrollHeight,
+      24 * 5
+    )}px`;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewMessage(e.target.value);
+    adjustHeight();
+  };
+
   useEffect(() => {
     if (userId) setUserInfo(getUsers(userId));
     // TODO: 메시지 확인 API 쏘기
+    adjustHeight();
   }, [userId]);
 
   if (!userId)
@@ -68,10 +85,10 @@ export default function Message() {
   }
 
   return (
-    <div className="flex w-full bg-red-200">
-      <section className="grow flex flex-col justify-between bg-blue-200">
-        <div className="px-10 bg-orange-200">
-          <section className="flex items-center mt-10 mb-7 bg-purple-200">
+    <div className="flex w-full screen-100vh">
+      <section className="grow h-full flex flex-col justify-between">
+        <div className="pl-10 pr-6 grow flex flex-col overflow-hidden mt-10 mb-5">
+          <section className="flex items-center mb-5 mr-4">
             <img
               src={userInfo?.image || "/logo.png"}
               alt="프로필 이미지"
@@ -81,7 +98,7 @@ export default function Message() {
               {userInfo?.fullName}
             </p>
           </section>
-          <section>
+          <section className="grow overflow-y-scroll custom-scrollbar">
             {messages?.map((message) => (
               <MessageContent
                 key={message._id}
@@ -92,17 +109,22 @@ export default function Message() {
             ))}
           </section>
         </div>
-        <section className="border-t border-gray-c8 px-10 pb-8 bg-yellow-200">
+        <section className="border-t border-gray-c8 px-10 pb-8">
           <form className="flex flex-col" onSubmit={handleSubmit}>
-            <textarea
-              value={newMessage}
-              className="w-full mt-5 p-3 border border-gray-c8 rounded-[15px] dark:border-gray-c8/50 resize-none"
-              placeholder="메세지를 입력해주세요."
-              onChange={(e) => setNewMessage(e.target.value)}
-            />
+            <div className="block w-full mt-5 p-4 pr-1 border border-gray-c8 rounded-[15px] dark:border-gray-c8/50 dark:bg-white/20">
+              <textarea
+                ref={textareaRef}
+                rows={1}
+                value={newMessage}
+                placeholder="메세지를 입력해주세요."
+                className="block w-full resize-none overflow-y-scroll custom-scrollbar bg-transparent text-gray-22"
+                onChange={handleChange}
+              />
+            </div>
             <button
-              className="self-end w-20 h-10 rounded-[15px] mt-4 py-[7px] px-[19px] bg-primary text-gray-22"
+              className="self-end rounded-xl mt-4 py-2 px-5 text-gray-22 primary-btn"
               type="submit"
+              disabled={newMessage === ""}
             >
               보내기
             </button>

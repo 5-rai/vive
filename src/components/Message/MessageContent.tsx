@@ -9,7 +9,7 @@ interface MessageContentProps {
 const MessageContent = React.memo(
   ({ isOutgoingMessage = false, date, message }: MessageContentProps) => {
     return (
-      <article className="border-b border-gray-c8 py-4 px-3 bg-pink-200">
+      <article className="border-b border-gray-c8 py-4 px-3">
         <div className="flex items-center justify-between mb-1">
           {isOutgoingMessage ? (
             <span className="text-highlight">보낸 메시지</span>
