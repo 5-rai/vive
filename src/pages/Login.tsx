@@ -46,7 +46,7 @@ export default function Login() {
     <section className="mx-auto flex screen-100vh items-center justify-center p-[70px]">
       <form onSubmit={handleSubmit} className="flex flex-col w-[400px]">
         <Logo className="mx-auto w-[100px] h-[100px] mb-10" />
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-4">
           <InputLabel
             label="이메일"
             id="email"
