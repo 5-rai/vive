@@ -1,5 +1,6 @@
 body {
   font-family: "Pretendard", sans-serif;
+  overflow-y: scroll;
   @apply text-gray-22 dark:text-gray-ee transition-colors;
   @apply bg-white dark:bg-gray-22;
   @apply border-gray-22 dark:border-gray-ee;
@@ -27,4 +28,9 @@ p {
 
 *:focus {
   outline: none;
+}
+
+::selection {
+  @apply bg-secondary;
+  @apply dark:text-gray-22;
 }

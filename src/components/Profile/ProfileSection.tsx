@@ -1,9 +1,11 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 import UserAvatar from "../common/UserAvatar";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
+import { createNotification } from "../../api/notification";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -14,6 +16,7 @@ export default function ProfileSection({
   user,
   isMyProfile = false,
 }: ProfileSectionProps) {
+  const navigate = useNavigate();
   const [isFollow, setIsFollow] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isLoggedIn } = useAuthStore();
@@ -59,26 +62,33 @@ export default function ProfileSection({
   };
 
   const handleFollow = async () => {
-    if (!user?._id || !isLoggedIn) {
-      console.error("Cannot follow: No user ID or access token");
-      return;
-    }
+    confirmAndNavigateToLogin(navigate);
 
     try {
       setLoading(true);
-      const response = await axiosInstance.post("/follow/create", {
-        userId: user._id,
+      const { data } = await axiosInstance.post<Follow>("/follow/create", {
+        userId: user!._id,
       });
 
       // 상태 직접 업데이트
       setIsFollow(true);
       setFollowersCount((prevCount) => prevCount + 1);
-      setFollowId(response.data._id);
+      setFollowId(data._id);
+
+      await createNotification({
+        notificationType: "FOLLOW",
+        notificationTypeId: data._id,
+        userId: data.user,
+      });
     } catch (err) {
       console.error("팔로우 요청 실패:", err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleMessage = () => {
+    confirmAndNavigateToLogin(navigate);
   };
 
   return (
@@ -123,9 +133,8 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-full text-sm font-medium",
+                "w-full py-1 rounded-lg text-sm font-medium",
                 isFollow ? "secondary-btn" : "primary-btn",
-                loading && "opacity-50 cursor-not-allowed"
               )}
               onClick={isFollow ? handleUnfollow : handleFollow}
               disabled={loading}
@@ -135,6 +144,7 @@ export default function ProfileSection({
             <button
               type="button"
               className="primary-btn w-full py-1 rounded-lg text-sm"
+              onClick={handleMessage}
             >
               메세지 보내기
             </button>

@@ -71,7 +71,7 @@ export default function CategoryButton({
         onClose={() => setIsOpen((prev) => !prev)}
       >
         <ul>
-          {channels?.slice(3).map((channel) => (
+          {channels?.map((channel) => (
             <li key={`channels-${channel._id}`} className="w-full">
               <button
                 type="button"

@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { createComment } from "../../api/comment";
 import { useNavigate, useParams } from "react-router";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
+import { createNotification } from "../../api/notification";
 
 export default function CommentWrite({
+  postAuthorId,
   setComments,
 }: {
+  postAuthorId: string;
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
   const navigate = useNavigate();
@@ -34,6 +37,12 @@ export default function CommentWrite({
     const addedComment = await createComment({ comment, postId });
 
     if (addedComment) {
+      await createNotification({
+        notificationType: "COMMENT",
+        notificationTypeId: addedComment._id,
+        userId: postAuthorId,
+        postId: addedComment.post,
+      });
       setComments((prev) => [...prev!, addedComment]);
       textareaRef.current!.value = "";
     }

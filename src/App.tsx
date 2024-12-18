@@ -16,22 +16,15 @@ import { useEffect } from "react";
 import ModifyPassword from "./pages/ModifyPassword";
 import Private from "./layouts/Private";
 import { useAllUserStore } from "./store/allUserStore";
-import { axiosInstance } from "./api/axios";
 import { useChannelStore } from "./store/channelStore";
 import NotPrivate from "./layouts/NotPrivate";
+import Message from "./pages/Message";
 
 function App() {
   const fetchUsers = useAllUserStore((state) => state.fetchUsers);
-  const setChannels = useChannelStore((state) => state.setChannels);
+  const fetchChannels = useChannelStore((state) => state.fetchChannels);
+
   useEffect(() => {
-    const fetchChannels = async () => {
-      try {
-        const response = await axiosInstance.get("/channels");
-        setChannels(response.data);
-      } catch (error) {
-        console.error("채널 정보를 가져오는데 실패했습니다", error);
-      }
-    };
     fetchUsers();
     fetchChannels();
   }, []);
@@ -59,6 +52,7 @@ function App() {
             <Route path="/mypage" element={<MyProfile />} />
             <Route path="/mypage/edit" element={<ModifyProfile />} />
             <Route path="/mypage/edit/password" element={<ModifyPassword />} />
+            <Route path="/message" element={<Message />} />
           </Route>
         </Route>
       </Route>

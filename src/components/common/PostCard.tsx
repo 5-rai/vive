@@ -7,6 +7,10 @@ import { deleteLike, postLike } from "../../api/like";
 import { isCustomTitle } from "../../utils/typeGuards";
 import { useAuthStore } from "../../store/authStore";
 import { useChannelStore } from "../../store/channelStore";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
+import CommentIcon from "../../assets/CommentIcon";
+import { useThemeStore } from "../../store/themeStore";
+import { createNotification } from "../../api/notification";
 
 interface PostCardProps {
   post: Post | SearchPost;
@@ -29,8 +33,8 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   );
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const getNameFromId = useChannelStore((state) => state.getNameFromId);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
 
   useEffect(() => {
     parsePostTitle();
@@ -110,26 +114,29 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    if (!isLoggedIn) {
-      const result = window.confirm(
-        "로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?"
-      );
-      if (result) navigate("/login");
-      else return;
-    }
+    confirmAndNavigateToLogin(navigate);
 
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
-      if (result) {
-        setLikeInformation(null);
-        setLikeCount((prev) => Math.max(prev - 1, 0));
-      }
+      if (!result) return;
+
+      setLikeInformation(null);
+      setLikeCount((prev) => Math.max(prev - 1, 0));
     } else {
       const result = await postLike(post._id);
-      if (result) {
-        setLikeInformation(result);
-        setLikeCount((prev) => prev + 1);
-      }
+      if (!result) return;
+
+      setLikeInformation(result);
+      setLikeCount((prev) => prev + 1);
+
+      const postAuthorId =
+        typeof post.author === "string" ? post.author : post.author._id;
+      await createNotification({
+        notificationType: "LIKE",
+        notificationTypeId: result._id,
+        userId: postAuthorId,
+        postId: result.post,
+      });
     }
   };
 
@@ -171,18 +178,27 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
               {author?.fullName}
             </p>
           </button>
-          <button
-            type="button"
-            className="rounded-full border border-gray-c8 dark:border-gray-c8/70 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
-            onClick={handleLikeClick}
-          >
-            {likeInformation ? (
-              <LikeIcon className="w-4 h-4" />
-            ) : (
-              <LikeEmptyIcon className="w-4 h-4" />
-            )}
-            <p>{likeCount}</p>
-          </button>
+          <div className="flex">
+            <div className="flex items-center gap-[2px] px-[6px]">
+              <CommentIcon
+                className="w-4 h-4"
+                color={isDarkMode ? "#c8c8c8" : "#222"}
+              />
+              <p>{post.comments.length}</p>
+            </div>
+            <button
+              type="button"
+              className="rounded-full flex items-center gap-[2px] px-[6px] py-[2px] hover:bg-gray-ee dark:hover:bg-gray-ee/10"
+              onClick={handleLikeClick}
+            >
+              {likeInformation ? (
+                <LikeIcon className="w-4 h-4" />
+              ) : (
+                <LikeEmptyIcon className="w-4 h-4" />
+              )}
+              <p>{likeCount}</p>
+            </button>
+          </div>
         </section>
       </section>
     </article>

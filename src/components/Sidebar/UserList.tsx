@@ -4,10 +4,12 @@ import SearchIcon from "../../assets/SearchIcon";
 import { useAllUserStore } from "../../store/allUserStore";
 import { axiosInstance } from "../../api/axios";
 import UserNavLink from "./UserNavLink";
+import Loading from "../common/Loading";
 
 export default function UserList() {
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchName, setSearchName] = useState(""); // 검색할 이름 상태 관리
   const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
   const allUsers = useAllUserStore((state) => state.users);
@@ -16,7 +18,7 @@ export default function UserList() {
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
 
   // API GET 함수 (검색값 가져오기)
-  const fetchUsers = async (searchName: string) => {
+  const searchUsers = async (searchName: string) => {
     try {
       const response = await axiosInstance.get(`/search/users/${searchName}`);
       setSearchResults(response.data); // 검색 결과 저장
@@ -29,6 +31,7 @@ export default function UserList() {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchName(value);
+    setIsLoading(true);
 
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current); // 기존 타이머를 취소
@@ -36,10 +39,12 @@ export default function UserList() {
 
     if (value.trim() !== "") {
       debounceTimeout.current = setTimeout(() => {
-        fetchUsers(value); // 0.5초 후 검색 실행
+        searchUsers(value); // 0.5초 후 검색 실행
+        setIsLoading(false);
       }, 500);
     } else {
       setSearchResults([]);
+      setIsLoading(false);
     }
   };
 
@@ -73,11 +78,23 @@ export default function UserList() {
       </div>
 
       <div className="h-full flex flex-col overflow-y-auto gap-2.5 custom-scrollbar">
-        {searchResults.length > 0
-          ? searchResults.map((user) => (
-              <UserNavLink key={user._id} user={user} />
-            ))
-          : allUsers.map((user) => <UserNavLink key={user._id} user={user} />)}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {searchResults.length > 0 ? (
+              searchResults.map((user) => (
+                <UserNavLink key={user._id} user={user} />
+              ))
+            ) : searchName.length > 0 ? (
+              <p className="text-center text-gray-6c">
+                검색 결과가 없습니다...
+              </p>
+            ) : (
+              allUsers.map((user) => <UserNavLink key={user._id} user={user} />)
+            )}
+          </>
+        )}
       </div>
     </section>
   );

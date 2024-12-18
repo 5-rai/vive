@@ -5,7 +5,7 @@
 @layer components {
   .primary-btn {
     background: #fcc404;
-    color: black;
+    color: #222222;
   }
   .primary-btn:hover {
     background: rgba(252, 196, 4, 0.8);
@@ -16,7 +16,7 @@
 
   .secondary-btn {
     background: #fbefbf;
-    color: black;
+    color: #222222;
   }
   .secondary-btn:hover {
     background: rgba(251, 239, 191, 0.8);

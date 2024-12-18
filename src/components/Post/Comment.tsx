@@ -1,13 +1,27 @@
+import { useEffect, useRef } from "react";
 import CommentItem from "./CommentItem";
 import CommentWrite from "./CommentWrite";
 
 export default function Comment({
+  postAuthorId,
   comments,
   setComments,
 }: {
+  postAuthorId: string;
   comments: Comment[];
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
+  const commentsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (commentsRef.current) {
+      commentsRef.current.scrollTo({
+        top: commentsRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [comments]);
+
   return (
     <section className="sticky top-[69px] flex flex-col min-w-[420px] w-[420px] screen-100vh py-[28px] border-l border-gray-ee dark:border-gray-ee/50">
       <p className="mb-[22px] font-medium text-xl px-6">
@@ -31,7 +45,7 @@ export default function Comment({
           </div>
         )}
       </div>
-      <CommentWrite setComments={setComments} />
+      <CommentWrite postAuthorId={postAuthorId} setComments={setComments} />
     </section>
   );
 }

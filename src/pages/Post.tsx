@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import PostDetail from "../components/Post/PostDetail";
 import Comment from "../components/Post/Comment";
 import { useEffect, useState } from "react";
@@ -6,8 +6,11 @@ import { getOnePost } from "../api/post";
 import NotFound from "./NotFound";
 import { deleteLike, postLike } from "../api/like";
 import { useAuthStore } from "../store/authStore";
+import confirmAndNavigateToLogin from "../utils/confirmAndNavigateToLogin";
+import { createNotification } from "../api/notification";
 
 export default function Post() {
+  const navigate = useNavigate();
   const { channelName, postId } = useParams();
   const [post, setPost] = useState<Post>();
   const [comments, setComments] = useState<Comment[]>();
@@ -34,6 +37,7 @@ export default function Post() {
   };
 
   const handleLikeClick = async () => {
+    confirmAndNavigateToLogin(navigate);
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
       if (result) {
@@ -42,15 +46,26 @@ export default function Post() {
       }
     } else {
       const result = await postLike(postId!);
-      if (result) {
-        setLikeInformation(result);
-        setLikeCount((prev) => prev + 1);
-      }
+      if (!result) return;
+
+      setLikeInformation(result);
+      setLikeCount((prev) => prev + 1);
+
+      await createNotification({
+        notificationType: "LIKE",
+        notificationTypeId: result._id,
+        userId: post!.author._id,
+        postId: result.post,
+      });
     }
   };
 
+  // 댓글 날짜를 갱신하기 위해 풀링 사용
   useEffect(() => {
     getPost();
+    const intervalId = setInterval(getPost, 1000 * 60); // 1분
+
+    return () => clearInterval(intervalId);
   }, []);
 
   if (!post || !comments) return;
@@ -63,7 +78,11 @@ export default function Post() {
         likeInformation={likeInformation}
         handleLikeClick={handleLikeClick}
       />
-      <Comment comments={comments} setComments={setComments} />
+      <Comment
+        postAuthorId={post.author._id}
+        comments={comments}
+        setComments={setComments}
+      />
     </div>
   );
 }
