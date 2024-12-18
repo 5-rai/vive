@@ -62,7 +62,7 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
         }}
       />
       <Dropdown
-        className="w-[158px] p-3 top-12"
+        className="w-[158px] p-3 top-12 right-0"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
