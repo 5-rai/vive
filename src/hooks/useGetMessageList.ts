@@ -25,7 +25,7 @@ const useGetMessageList = () => {
     getMessageList();
   }, []);
 
-  return { messageList, error, loading };
+  return { messageList, error, loading, refetch: getMessageList };
 };
 
 export default useGetMessageList;

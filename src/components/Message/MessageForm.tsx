@@ -4,10 +4,15 @@ import { createNotification } from "../../api/notification";
 
 interface MessageFromProps {
   userId: string;
-  refetch: () => void;
+  conversationRefetch: () => void;
+  messageListRefetch: () => void;
 }
 
-export default function MessageForm({ userId, refetch }: MessageFromProps) {
+export default function MessageForm({
+  userId,
+  conversationRefetch,
+  messageListRefetch,
+}: MessageFromProps) {
   const [newMessage, setNewMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -31,13 +36,14 @@ export default function MessageForm({ userId, refetch }: MessageFromProps) {
     const data = await postMessage(newMessage, userId);
     if (data) {
       setNewMessage("");
-      refetch();
       adjustHeight();
       await createNotification({
         notificationType: "MESSAGE",
         notificationTypeId: data._id,
         userId: userId,
       });
+      conversationRefetch();
+      messageListRefetch();
     }
   };
 

@@ -79,7 +79,7 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
           onClick={handleMessageClick}
         >
           <p className="text-base text-left text-black dark:text-gray-ee group-hover:text-black group-hover:dark:text-gray-22">
-            메세지함
+            메시지함
           </p>
         </button>
         <button

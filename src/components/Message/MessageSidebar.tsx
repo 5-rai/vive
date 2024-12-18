@@ -1,10 +1,17 @@
-import useGetMessageList from "../../hooks/useGetMessageList";
 import Loading from "../common/Loading";
 import MessageListItem from "./MessageListItem";
 
-export default function MessageSidebar() {
-  const { messageList, error, loading } = useGetMessageList();
+interface MessageSidebarProps {
+  messageList: Conversation[] | null;
+  loading: boolean;
+  error: boolean;
+}
 
+export default function MessageSidebar({
+  messageList,
+  loading,
+  error,
+}: MessageSidebarProps) {
   return (
     <aside className="h-full w-[419px] border-l px-7 pr-3 overflow-hidden flex flex-col">
       <h2 className="font-semibold text-2xl mt-10 mb-5">메시지함</h2>
