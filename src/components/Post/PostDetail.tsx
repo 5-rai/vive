@@ -60,9 +60,9 @@ export default function PostDetail({
               onClick={handleLikeClick}
             >
               {likeInformation ? (
-                <LikeIcon className="w-[14px] h-[14px]" />
+                <LikeIcon className="w-[16px] h-[16px]" />
               ) : (
-                <LikeEmptyIcon className="w-[14px] h-[14px]" />
+                <LikeEmptyIcon className="w-[16px] h-[16px]" />
               )}
               <p>{likeCount}</p>
             </button>
