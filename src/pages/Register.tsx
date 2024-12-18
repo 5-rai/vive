@@ -22,37 +22,36 @@ export default function Register() {
         isWarning: true,
         errorMessage: "이름을 입력해주세요.",
       });
-      return false;
-    }
-
-    if (!name.value.trim()) {
+    } else if (!name.value.trim()) {
       setName({
         ...name,
         isWarning: true,
         errorMessage: "공백만 있는 이름은 사용할 수 없습니다.",
       });
-      return false;
-    }
-
-    if (name.value.length > 7) {
+    } else if (name.value.length > 7) {
       setName({
         ...name,
         isWarning: true,
         errorMessage: "이름은 최대 7자까지만 입력할 수 있습니다.",
       });
-      return false;
     }
 
     if (!email.value) {
       setEmail({ ...email, isWarning: true });
-      return false;
     }
 
     if (!password.value) {
       setPassword({ ...password, isWarning: true });
-      return false;
     }
 
+    if (
+      !name.value ||
+      !name.value.trim() ||
+      name.value.length > 7 ||
+      !email.value ||
+      !password.value
+    )
+      return false;
     return true;
   };
 
