@@ -117,7 +117,9 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     confirmAndNavigateToLogin(navigate);
 
     if (likeInformation) {
-      await deleteLike(likeInformation._id);
+      const result = await deleteLike(likeInformation._id);
+      if (!result) return;
+
       setLikeInformation(null);
       setLikeCount((prev) => Math.max(prev - 1, 0));
     } else {
