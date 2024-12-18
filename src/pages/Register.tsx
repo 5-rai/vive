@@ -6,25 +6,53 @@ import { useNavigate } from "react-router";
 import { axiosInstance } from "../api/axios";
 
 export default function Register() {
-  const [name, setName] = useState({ value: "", isWarning: false });
+  const [name, setName] = useState({
+    value: "",
+    isWarning: false,
+    errorMessage: "",
+  });
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
   const navigate = useNavigate();
-  const validate = () => {
-    const trimeedName = name.value.trim();
-    if (!trimeedName) {
-      setName({ ...name, value: trimeedName, isWarning: true });
-    }
-    if (!email.value) {
-      setEmail({ ...email, isWarning: true });
-    }
-    if (!password.value) {
-      setPassword({ ...password, isWarning: true });
-    }
 
-    if (!trimeedName || !email.value || !password.value) {
+  const validate = () => {
+    if (!name.value) {
+      setName({
+        ...name,
+        isWarning: true,
+        errorMessage: "이름을 입력해주세요.",
+      });
       return false;
     }
+
+    if (!name.value.trim()) {
+      setName({
+        ...name,
+        isWarning: true,
+        errorMessage: "공백만 있는 이름은 사용할 수 없습니다.",
+      });
+      return false;
+    }
+
+    if (name.value.length > 7) {
+      setName({
+        ...name,
+        isWarning: true,
+        errorMessage: "이름은 최대 7자까지만 입력할 수 있습니다.",
+      });
+      return false;
+    }
+
+    if (!email.value) {
+      setEmail({ ...email, isWarning: true });
+      return false;
+    }
+
+    if (!password.value) {
+      setPassword({ ...password, isWarning: true });
+      return false;
+    }
+
     return true;
   };
 
@@ -34,7 +62,7 @@ export default function Register() {
     try {
       axiosInstance.post("/signup", {
         email: email.value,
-        fullName: name.value,
+        fullName: name.value.trim(),
         password: password.value,
       });
       alert("회원가입 완료🎉");
@@ -55,10 +83,15 @@ export default function Register() {
             id="name"
             type="text"
             value={name.value}
-            message="이름을 입력해주세요"
+            placeholder="이름을 입력해주세요 (7자 이내)"
+            errorMessage={name.errorMessage}
             isWarning={name.isWarning}
             onChange={(e) =>
-              setName({ value: e.target.value, isWarning: false })
+              setName((prev) => ({
+                ...prev,
+                value: e.target.value,
+                isWarning: false,
+              }))
             }
           />
           <InputLabel
@@ -66,10 +99,14 @@ export default function Register() {
             id="email"
             type="email"
             value={email.value}
-            message="이메일을 입력해주세요"
+            placeholder="이메일을 입력해주세요"
             isWarning={email.isWarning}
             onChange={(e) =>
-              setEmail({ value: e.target.value, isWarning: false })
+              setEmail((prev) => ({
+                ...prev,
+                value: e.target.value,
+                isWarning: false,
+              }))
             }
           />
           <InputLabel
@@ -77,10 +114,14 @@ export default function Register() {
             id="password"
             type="password"
             value={password.value}
-            message="비밀번호를 입력해주세요"
+            placeholder="비밀번호를 입력해주세요"
             isWarning={password.isWarning}
             onChange={(e) =>
-              setPassword({ value: e.target.value, isWarning: false })
+              setPassword((prev) => ({
+                ...prev,
+                value: e.target.value,
+                isWarning: false,
+              }))
             }
           />
         </div>
