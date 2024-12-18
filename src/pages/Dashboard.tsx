@@ -4,6 +4,7 @@ import { useChannelStore } from "../store/channelStore";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../api/axios";
 import Loading from "../components/common/Loading";
+import SortButton from "../components/Dashboard/SortButton";
 
 export default function Dashboard() {
   const { channelName } = useParams();
@@ -11,6 +12,8 @@ export default function Dashboard() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sortedPosts, setSortedPosts] = useState<Post[]>([]);
+  const [sortOption, setSortOption] = useState<string>("latest");
 
   // 선택된 채널 찾기 및 해당 채널의 포스트 불러오기
   useEffect(() => {
@@ -18,7 +21,7 @@ export default function Dashboard() {
 
     const channelId = getIdFromName(channelName);
     if (channelId) fetchPosts(channelId);
-  }, [channelName]);
+  }, [channelName, getIdFromName]);
 
   // 선택된 채널의 포스트 목록 API 요청
   const fetchPosts = async (channelId: string) => {
@@ -33,6 +36,23 @@ export default function Dashboard() {
     }
   };
 
+  // 포스트 정렬 로직
+  useEffect(() => {
+    let tempPosts = [...posts];
+    switch (sortOption) {
+      case "latest":
+        tempPosts = posts; // 원래 순서 유지
+        break;
+      case "popular":
+        tempPosts.sort((a, b) => b.likes.length - a.likes.length);
+        break;
+      case "comments":
+        tempPosts.sort((a, b) => b.comments.length - a.comments.length);
+        break;
+    }
+    setSortedPosts(tempPosts);
+  }, [posts, sortOption]);
+
   if (loading || error) {
     return (
       <section className="w-[934px] mx-auto flex items-center justify-center">
@@ -43,26 +63,25 @@ export default function Dashboard() {
   }
 
   return (
-    <>
-      <div className="mx-auto w-[934px]">
-        {/* Dashboard title */}
-        <h2 className="text-[32px] font-bold my-10">{channelName}</h2>
-        {/* PostCard */}
-        {posts.length > 0 && (
-          <section className="grid grid-cols-2 gap-10">
-            {posts.map((post) => (
-              <PostCard key={post._id} post={post} />
-            ))}
-          </section>
-        )}
-        {posts.length === 0 && (
-          <div className="flex items-center justify-center h-[50vh]">
-            <p className="text-lg text-center">
-              현재 작성된 포스트가 없습니다.
-            </p>
-          </div>
-        )}
+    <div className="mx-auto w-[934px]">
+      <div className="flex items-center justify-between my-10">
+        <h2 className="text-[32px] font-bold">{channelName}</h2>
+        <SortButton
+          currentSort={sortOption}
+          onSortChange={(option) => setSortOption(option)}
+        />
       </div>
-    </>
+      {posts.length > 0 ? (
+        <section className="grid grid-cols-2 gap-10">
+          {sortedPosts.map((post) => (
+            <PostCard key={post._id} post={post} />
+          ))}
+        </section>
+      ) : (
+        <div className="flex items-center justify-center h-[50vh]">
+          <p className="text-lg text-center">현재 작성된 포스트가 없습니다.</p>
+        </div>
+      )}
+    </div>
   );
 }
