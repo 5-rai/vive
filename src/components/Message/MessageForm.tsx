@@ -32,7 +32,6 @@ export default function MessageForm({ userId, refetch }: MessageFromProps) {
       setNewMessage("");
       refetch();
       adjustHeight();
-      // TODO: 메시지 확인 API 쏘기
     }
   };
 

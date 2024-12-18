@@ -12,3 +12,15 @@ export const postMessage = async (message: string, receiver: string) => {
     return false;
   }
 };
+
+export const checkMessageSeen = async (sender: string) => {
+  try {
+    await axiosInstance.put("/messages/update-seen", {
+      sender,
+    });
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};

@@ -5,6 +5,7 @@ import useGetMessagesWithUser from "../hooks/useGetMessagesWithUser";
 import Loading from "../components/common/Loading";
 import MessageHistory from "../components/Message/MessageHistory";
 import MessageForm from "../components/Message/MessageForm";
+import { checkMessageSeen } from "../api/message";
 
 export default function Message() {
   const [searchParams] = useSearchParams();
@@ -12,8 +13,8 @@ export default function Message() {
   const { messages, loading, error, refetch } = useGetMessagesWithUser(userId);
 
   useEffect(() => {
-    // TODO: 메시지 확인 API 쏘기
-  }, [userId]);
+    checkMessageSeen(userId);
+  }, [messages]);
 
   if (!userId)
     return (
