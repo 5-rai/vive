@@ -3,12 +3,13 @@ import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
 import { loginApi } from "../api/auth";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
+  const location = useLocation(); // 현재 위치
 
   const validate = (): boolean => {
     let isValid = true;
@@ -30,11 +31,16 @@ export default function Login() {
     const result = await loginApi({
       email: email.value,
       password: password.value,
-    }); // LoginRequest 타입의 객체 전달
+    });
 
     if (result) {
-      navigate("/");
       console.log("로그인 성공");
+      // 이전 페이지가 /register인 경우 '/'로 리디렉션
+      if (location.state?.from?.pathname === "/register") {
+        navigate("/");
+      } else {
+        navigate(-1); // 기본적으로 이전 페이지로 돌아갑니다.
+      }
       return;
     } else {
       alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
