@@ -1,29 +1,66 @@
+import { useEffect, useState } from "react";
 import MessageContent from "../components/Message/MessageContent";
 import MessageListItem from "../components/Message/MessageListItem";
-
-const TEMP_USER: User = {
-  role: "Regular",
-  isOnline: false,
-  posts: [],
-  likes: [],
-  comments: [],
-  followers: [],
-  following: [],
-  notifications: [],
-  messages: [],
-  _id: "675c637f7812b71a3cef02b5",
-  fullName: "하치와레",
-  email: "abc2@gmail.com",
-  createdAt: "2024-12-13T16:40:31.755Z",
-  updatedAt: "2024-12-16T03:29:53.507Z",
-  image:
-    "https://res.cloudinary.com/learnprogrammers/image/upload/v1734108092/user/6559338b-237f-43f1-bf6d-764b9e133cf4.jpg",
-  coverImage: "",
-};
+import { axiosInstance } from "../api/axios";
+import Loading from "../components/common/Loading";
 
 export default function Message() {
+  const [messageUser, setMessageUser] = useState<User | null>(null);
+  const [conversationList, setConversationList] = useState<Conversation[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    string | null
+  >(null);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+  };
+
+  // 메세지를 주고받은 유저 정보 API 가져오기
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axiosInstance.get("/users/get-users");
+        setMessageUser(response.data);
+      } catch (err) {
+        setError("사용자 정보를 불러오는데 실패했습니다.");
+      }
+    };
+    fetchUserInfo();
+  }, []);
+
+  // 주고 받은 메세지 내역 API 불러오기
+  useEffect(() => {
+    const fetchMessageList = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosInstance.get<Conversation[]>(
+          "/messages/conversations"
+        );
+        setConversationList(response.data);
+        console.log(response);
+      } catch (err) {
+        setError("메시지 목록을 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMessageList();
+  }, []);
+
+  if (loading || error) {
+    return (
+      <section className="w-[934px] mx-auto flex items-center justify-center">
+        {loading && <Loading />}
+        {error && <p className="text-lg font-medium">{error}</p>}
+      </section>
+    );
+  }
+
+  // 대화창 클릭하기
+  const handleConversationClick = (conversationId: string) => {
+    setSelectedConversationId(conversationId);
   };
 
   return (
@@ -33,7 +70,7 @@ export default function Message() {
           <div className="px-10">
             <div className="flex items-center mt-[38px] mb-[29px]">
               <img
-                src={TEMP_USER.image || "/logo.png"}
+                src={messageUser?.image || "/logo.png"}
                 alt="프로필 이미지"
                 className="w-8 h-8 mr-3 rounded-full profile"
               />
@@ -63,9 +100,23 @@ export default function Message() {
         </article>
         <aside className="w-[419px] border-l px-[29px]">
           <h2 className="font-semibold text-2xl mt-10 mb-5">메세지함</h2>
-          {[1, 2, 3, 4].map((item) => (
-            <MessageListItem key={item} user={TEMP_USER} />
-          ))}
+          {conversationList && conversationList.length > 0 ? (
+            conversationList.map((conversation) => (
+              <MessageListItem
+                key={conversation._id.join("-")}
+                user={messageUser}
+                conversation={conversation}
+                isSelected={
+                  selectedConversationId === conversation._id.join("-")
+                }
+                onClick={() =>
+                  handleConversationClick(conversation._id.join("-"))
+                }
+              />
+            ))
+          ) : (
+            <p>메시지가 없습니다.</p>
+          )}
         </aside>
       </section>
     </>
