@@ -2,6 +2,10 @@ import { NavLink } from "react-router";
 import profileImg from "../../assets/profileImg.jpg";
 import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
+import Modal from "../common/Modal";
+import { Toast } from "../common/Toast";
+import { useToastStore } from "../../store/isToastVisible";
+import { useState } from "react";
 
 export default function CommentItem({
   comment,
@@ -10,32 +14,39 @@ export default function CommentItem({
   comment: Comment;
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isToastVisible, toastMessage, showToast, hideToast } =
+    useToastStore();
   const loggedInUser = useAuthStore((state) => state.user);
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
-    if (!confirmDelete) return;
 
+  const handleDelete = async () => {
     try {
       const response = await axiosInstance.delete(`/comments/delete`, {
         data: { id: comment._id },
       });
 
       if (response.status === 200) {
-        alert("댓글이 성공적으로 삭제되었습니다.");
         setComments((prev) =>
           prev!.filter((prevComment) => prevComment._id !== comment._id)
         );
+        showToast("댓글이 성공적으로 삭제되었습니다.");
+        setTimeout(hideToast, 1000);
       } else {
-        alert(response.data?.message || "댓글 삭제에 실패했습니다.");
+        showToast(response.data?.message || "댓글 삭제에 실패했습니다.");
+        setTimeout(hideToast, 1000);
       }
     } catch (error) {
       console.error("댓글 삭제 실패:", error);
-      alert("오류가 발생했습니다. 다시 시도해주세요.");
+      showToast("오류가 발생했습니다. 다시 시도해주세요.");
+      setTimeout(hideToast, 1000);
+    } finally {
+      setIsModalOpen(false); // 모달 닫기
     }
   };
 
   return (
     <div className="flex flex-col gap-2">
+      {/* 유저 정보 */}
       <NavLink
         to={`/user/${comment.author._id}`}
         className={"flex items-center gap-[13px]"}
@@ -47,19 +58,39 @@ export default function CommentItem({
         />
         <span className="dark:text-white">{comment.author.fullName}</span>
       </NavLink>
+
+      {/* 댓글 내용 */}
       <div className="relative">
         <p className="text-gray-54 dark:text-gray-c8 whitespace-pre-wrap break-words">
           {comment.comment}
         </p>
 
+        {/* 삭제 버튼 */}
         {loggedInUser?._id === comment.author._id && (
           <div className="flex justify-end mt-2">
-            <button onClick={handleDelete} className="text-red-500 text-sm">
+            <button
+              onClick={() => setIsModalOpen(true)} // 모달 열기
+              className="text-red-500 text-sm"
+            >
               삭제
             </button>
           </div>
         )}
       </div>
+
+      {/* 삭제 확인 모달 */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)} // 모달 닫기
+        onConfirm={handleDelete} // 삭제 확인 시 실행
+      >
+        <div className="text-center text-[#222222] text-xl font-semibold uppercase leading-loose">
+          댓글을 삭제하시겠습니까?
+        </div>
+      </Modal>
+
+      {/* 삭제 완료 토스트 */}
+      <Toast isVisible={isToastVisible} message={toastMessage} />
     </div>
   );
 }
