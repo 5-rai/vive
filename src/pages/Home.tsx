@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { axiosInstance } from "../api/axios";
-import AdBanner from "../components/Home/AdBanner";
+import { Link } from "react-router";
+import UserAvatar from "../components/common/UserAvatar";
 import RecentPosts from "../components/Home/RecentPosts";
-import WeeklyArtist from "../components/Home/WeeklyArtist";
 import { useAllUserStore } from "../store/allUserStore";
 import { useChannelStore } from "../store/channelStore";
+import SucodingAd from "../components/Home/SucodingAd";
+import IndistreetAd from "../components/Home/IndistreetAd";
 
 export default function Home() {
   const users = useAllUserStore((state) => state.users);
@@ -69,25 +71,24 @@ export default function Home() {
         </div>
         <div className="flex flex-wrap justify-between px-2">
           {randomArtists.map((artist) => (
-            <WeeklyArtist
-              userId={artist._id}
-              key={artist._id}
-              name={artist.fullName}
-              images={artist.image || "/logo.png"}
-            />
+            <Link to={`/user/${artist._id}`} key={artist._id}>
+              <UserAvatar name={artist.fullName} image={artist.image} />
+            </Link>
           ))}
         </div>
       </section>
 
       {/* 채널별 섹션 및 광고 */}
-      {Object.entries(channelPosts).map(
-        ([channelId, { posts, name }]: [string, ChannelPosts], index) => (
-          <div key={`recent-${channelId}`}>
+      {Object.entries(channelPosts)
+        .sort()
+        .slice(3)
+        .map(([channelId, { posts, name }]: [string, ChannelPosts], index) => (
+          <Fragment key={`recent-${channelId}`}>
             {/* 채널 섹션 */}
             <section>
               <div className="mb-3">
                 <span className="text-2xl font-semibold">최근 </span>
-                <span className="text-[#fcc404] text-2xl font-semibold">
+                <span className="text-primary text-2xl font-semibold">
                   {name}
                 </span>
                 <span className="text-2xl font-semibold"> 포스트</span>
@@ -116,14 +117,10 @@ export default function Home() {
                 )}
               </div>
             </section>
-
-            {/* 2개마다 광고 삽입 */}
-            <div className="mt-20 mb-10">
-              {index % 2 === 1 && <AdBanner />}
-            </div>
-          </div>
-        )
-      )}
+            {index === 2 && <SucodingAd />}
+          </Fragment>
+        ))}
+      <IndistreetAd />
     </div>
   );
 }

@@ -26,9 +26,9 @@ export const getOnePost = async (postId?: string) => {
 
 interface UpdatePostProps {
   postId: string;
-  title: String;
+  title: string;
   imageToDeletePublicId?: string;
-  channelId: String;
+  channelId: string;
 }
 export const updatePost = async (body: UpdatePostProps) => {
   try {

@@ -3,21 +3,22 @@ import PostCard from "../components/common/PostCard";
 import { useChannelStore } from "../store/channelStore";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../api/axios";
+import Loading from "../components/common/Loading";
 
 export default function Dashboard() {
   const { channelName } = useParams();
-  const channels = useChannelStore((state) => state.channels);
+  const getIdFromName = useChannelStore((state) => state.getIdFromName);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // 선택된 채널 찾기 및 해당 채널의 포스트 불러오기
   useEffect(() => {
-    const channel = channels.find((c) => c.name === channelName);
-    if (channel) {
-      fetchPosts(channel._id);
-    }
-  }, [channelName, channels]);
+    if (!channelName) return;
+
+    const channelId = getIdFromName(channelName);
+    if (channelId) fetchPosts(channelId);
+  }, [channelName]);
 
   // 선택된 채널의 포스트 목록 API 요청
   const fetchPosts = async (channelId: string) => {
@@ -25,7 +26,7 @@ export default function Dashboard() {
       setLoading(true);
       const response = await axiosInstance.get(`/posts/channel/${channelId}`);
       setPosts(response.data);
-    } catch (error) {
+    } catch {
       setError("카테고리의 포스트를 불러오는 데 실패했습니다.");
     } finally {
       setLoading(false);
@@ -35,11 +36,7 @@ export default function Dashboard() {
   if (loading || error) {
     return (
       <section className="w-[934px] mx-auto flex items-center justify-center">
-        {loading && (
-          <div>
-            <div className="loader" />
-          </div>
-        )}
+        {loading && <Loading />}
         {error && <p className="text-lg font-medium">{error}</p>}
       </section>
     );
@@ -60,7 +57,7 @@ export default function Dashboard() {
         )}
         {posts.length === 0 && (
           <div className="flex items-center justify-center h-[50vh]">
-            <p className="text-xl text-center">
+            <p className="text-lg text-center">
               현재 작성된 포스트가 없습니다.
             </p>
           </div>

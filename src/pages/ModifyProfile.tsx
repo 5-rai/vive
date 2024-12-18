@@ -67,7 +67,7 @@ export default function ModifyProfile() {
       selectedImage.src !== user?.image ? selectedImage : null,
       fullName !== user?.fullName ? fullName : null
     );
-    if (result) window.confirm("프로필이 수정되었습니다.");
+    if (result) window.alert("프로필이 수정되었습니다.");
     navigate("/mypage");
   };
 
@@ -89,7 +89,7 @@ export default function ModifyProfile() {
             src={defaultProfileImg}
             hidden
           />
-          <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full border border-[#c8c8c8] bg-white/20">
+          <div className="flex items-center justify-center overflow-hidden w-[298px] h-[298px] mb-5 rounded-full profile">
             <img
               src={selectedImage?.src ?? defaultProfileImg}
               alt="프로필 이미지"
@@ -100,14 +100,14 @@ export default function ModifyProfile() {
         <div className="imgModifyBtn gap-5">
           <button
             type="button"
-            className="w-[100px] py-1.5 mr-5 rounded-[10px] text-center text-xs primary-btn font-medium"
+            className="px-5 py-2 mr-5 rounded-lg primary-btn font-medium"
             onClick={handleButtonClick}
           >
             이미지 선택
           </button>
           <button
             type="button"
-            className="w-[100px] py-1.5 rounded-[10px] bg-[#E7E7E7] hover:bg-gray-c8 text-center text-xs dark:text-gray-22 font-medium"
+            className="px-5 py-2 rounded-lg bg-[#E7E7E7] hover:bg-gray-c8 dark:text-gray-22 font-medium"
             onClick={handleImageDelete}
           >
             이미지 삭제

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router";
 import useGetSearchKeyword from "../hooks/useGetSearchKeyword";
 import PostCard from "../components/common/PostCard";
 import { isCustomTitle } from "../utils/typeGuards";
+import Loading from "../components/common/Loading";
 
 export default function SearchResult() {
   const [searchParams] = useSearchParams();
@@ -41,11 +42,7 @@ export default function SearchResult() {
   if (loading || error)
     return (
       <section className="w-full flex items-center justify-center">
-        {loading && (
-          <div>
-            <div className="loader" />
-          </div>
-        )}
+        {loading && <Loading />}
         {error && (
           <p className="text-center text-lg font-medium">
             검색 중 오류가 발생했습니다.
@@ -67,9 +64,9 @@ export default function SearchResult() {
           {userResult.length > 0 ? (
             <div className="w-full grid grid-cols-6 gap-10 justify-between">
               {userResult.map((user) => (
-                <Link to="/user/userId" key={user._id}>
+                <Link to={`/user/${user._id}`}>
                   <UserAvatar
-                    id={user._id}
+                    key={user._id}
                     name={user.fullName}
                     image={user.image}
                   />

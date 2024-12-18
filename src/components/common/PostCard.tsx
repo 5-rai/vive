@@ -7,12 +7,14 @@ import { deleteLike, postLike } from "../../api/like";
 import { isCustomTitle } from "../../utils/typeGuards";
 import { useAuthStore } from "../../store/authStore";
 import { useChannelStore } from "../../store/channelStore";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
+import CommentIcon from "../../assets/CommentIcon";
+import { useThemeStore } from "../../store/themeStore";
 
 interface PostCardProps {
   post: Post | SearchPost;
   isSearch?: boolean;
 }
-
 interface Author {
   _id: string;
   fullName: string;
@@ -23,6 +25,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post.likes.length);
+
   const [author, setAuthor] = useState<Author | null>(null);
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
@@ -30,6 +33,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const getUser = useAllUserStore((state) => state.getUser);
   const loggedInUser = useAuthStore((state) => state.user);
   const getNameFromId = useChannelStore((state) => state.getNameFromId);
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
 
   useEffect(() => {
     parsePostTitle();
@@ -56,9 +60,11 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   };
 
   const findLikeInformation = () => {
-    const likeInformation =
-      post.likes.find((like) => like.user === loggedInUser?._id) ?? null;
-    setLikeInformation(likeInformation);
+    if (!loggedInUser || post.likes.length === 0) return;
+    const myInfo =
+      (post.likes as Like[]).find((like) => like.user === loggedInUser?._id) ??
+      null;
+    setLikeInformation(myInfo);
   };
 
   const setPostAuthor = () => {
@@ -107,11 +113,13 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
+    confirmAndNavigateToLogin(navigate);
+
     if (likeInformation) {
       const result = await deleteLike(likeInformation._id);
       if (result) {
         setLikeInformation(null);
-        setLikeCount((prev) => prev - 1);
+        setLikeCount((prev) => Math.max(prev - 1, 0));
       }
     } else {
       const result = await postLike(post._id);
@@ -138,10 +146,10 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
       </div>
       <section className="w-full px-4 py-3 flex flex-col justify-between border-l border-gray-ee dark:border-gray-ee/20 bg-white dark:bg-white/5">
         <section className="flex flex-col h-full">
-          <p className="font-semibold mb-1 line-clamp-1 dark:text-white">
+          <p className="font-semibold mb-1 line-clamp-1 dark:text-white break-all">
             {postInformation.title}
           </p>
-          <p className="text-sm text-[#545454] dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap">
+          <p className="text-sm text-gray-54 dark:text-gray-c8 line-clamp-3 whitespace-pre-wrap break-all">
             {postInformation.contents}
           </p>
         </section>
@@ -154,24 +162,33 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
             <img
               src={author?.image || "/logo.png"}
               alt={`${author?.fullName}-프로필 이미지`}
-              className="w-7 h-7 rounded-full mr-2 bg-white/20 border border-gray-ee"
+              className="w-7 h-7 rounded-full mr-2 profile"
             />
-            <p className="text-sm text-[#6c6c6c] dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">
+            <p className="text-sm text-gray-54 dark:text-gray-c8 group-hover/author:text-gray-22 dark:group-hover/author:text-gray-c8/80 font-medium max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">
               {author?.fullName}
             </p>
           </button>
-          <button
-            type="button"
-            className="rounded-full border border-gray-c8 flex items-center gap-[6px] px-2 py-[1px] hover:bg-gray-ee/50 dark:hover:bg-gray-ee/10"
-            onClick={handleLikeClick}
-          >
-            {likeInformation ? (
-              <LikeIcon className="w-4 h-4" />
-            ) : (
-              <LikeEmptyIcon className="w-4 h-4" />
-            )}
-            <p>{likeCount}</p>
-          </button>
+          <div className="flex">
+            <div className="flex items-center gap-[2px] px-[6px]">
+              <CommentIcon
+                className="w-4 h-4"
+                color={isDarkMode ? "#c8c8c8" : "#222"}
+              />
+              <p>{post.comments.length}</p>
+            </div>
+            <button
+              type="button"
+              className="rounded-full flex items-center gap-[2px] px-[6px] py-[2px] hover:bg-gray-ee dark:hover:bg-gray-ee/10"
+              onClick={handleLikeClick}
+            >
+              {likeInformation ? (
+                <LikeIcon className="w-4 h-4" />
+              ) : (
+                <LikeEmptyIcon className="w-4 h-4" />
+              )}
+              <p>{likeCount}</p>
+            </button>
+          </div>
         </section>
       </section>
     </article>

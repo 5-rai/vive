@@ -1,8 +1,10 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
+import UserAvatar from "../common/UserAvatar";
+import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -13,6 +15,7 @@ export default function ProfileSection({
   user,
   isMyProfile = false,
 }: ProfileSectionProps) {
+  const navigate = useNavigate();
   const [isFollow, setIsFollow] = useState(false);
   const [loading, setLoading] = useState(false);
   const { isLoggedIn } = useAuthStore();
@@ -40,7 +43,7 @@ export default function ProfileSection({
 
     try {
       setLoading(true);
-      const response = await axiosInstance.delete("/follow/delete", {
+      await axiosInstance.delete("/follow/delete", {
         data: { id: followId },
       });
 
@@ -58,15 +61,12 @@ export default function ProfileSection({
   };
 
   const handleFollow = async () => {
-    if (!user?._id || !isLoggedIn) {
-      console.error("Cannot follow: No user ID or access token");
-      return;
-    }
+    confirmAndNavigateToLogin(navigate);
 
     try {
       setLoading(true);
       const response = await axiosInstance.post("/follow/create", {
-        userId: user._id,
+        userId: user!._id,
       });
 
       // 상태 직접 업데이트
@@ -80,16 +80,13 @@ export default function ProfileSection({
     }
   };
 
+  const handleMessage = () => {
+    confirmAndNavigateToLogin(navigate);
+  };
+
   return (
     <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
-      <div className="flex flex-col gap-2 items-center">
-        <img
-          src={user?.image || "/logo.png"}
-          alt="프로필 이미지"
-          className="w-[124px] h-[124px] rounded-full profile-shadow border border-gray-ee bg-white/20"
-        />
-        <p className="text-lg mt-[10px] dark:text-white">{user?.fullName}</p>
-      </div>
+      <UserAvatar name={user?.fullName} image={user?.image} />
       <section className="w-max">
         <div className="flex w-[208px] justify-between mb-4">
           <div className="text-center">
@@ -129,9 +126,8 @@ export default function ProfileSection({
             <button
               type="button"
               className={twMerge(
-                "w-full py-1 rounded-full text-sm font-medium",
+                "w-full py-1 rounded-lg text-sm font-medium",
                 isFollow ? "secondary-btn" : "primary-btn",
-                loading && "opacity-50 cursor-not-allowed"
               )}
               onClick={isFollow ? handleUnfollow : handleFollow}
               disabled={loading}
@@ -141,6 +137,7 @@ export default function ProfileSection({
             <button
               type="button"
               className="primary-btn w-full py-1 rounded-lg text-sm"
+              onClick={handleMessage}
             >
               메세지 보내기
             </button>

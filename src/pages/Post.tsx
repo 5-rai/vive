@@ -1,33 +1,71 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import PostDetail from "../components/Post/PostDetail";
 import Comment from "../components/Post/Comment";
 import { useEffect, useState } from "react";
 import { getOnePost } from "../api/post";
 import NotFound from "./NotFound";
+import { deleteLike, postLike } from "../api/like";
+import { useAuthStore } from "../store/authStore";
+import confirmAndNavigateToLogin from "../utils/confirmAndNavigateToLogin";
 
 export default function Post() {
+  const navigate = useNavigate();
   const { channelName, postId } = useParams();
   const [post, setPost] = useState<Post>();
   const [comments, setComments] = useState<Comment[]>();
+  const loggedInUser = useAuthStore((state) => state.user);
+
+  const [likeInformation, setLikeInformation] = useState<Like | null>(null);
+  const [likeCount, setLikeCount] = useState(post?.likes.length || 0);
+
+  // 좋아요 정보 찾기
+  const findLikeInformation = (fetchedPost: Post) => {
+    const likeInfo =
+      fetchedPost.likes.find((like) => like.user === loggedInUser?._id) ?? null;
+    setLikeInformation(likeInfo);
+  };
 
   const getPost = async () => {
-    const post = await getOnePost(postId);
-    if (!post) return;
+    const fetchedPost = await getOnePost(postId);
+    if (!fetchedPost) return;
 
-    setPost(post);
-    setComments(post.comments);
+    setPost(fetchedPost);
+    setComments(fetchedPost.comments);
+    findLikeInformation(fetchedPost);
+    setLikeCount(fetchedPost.likes.length);
+  };
+
+  const handleLikeClick = async () => {
+    confirmAndNavigateToLogin(navigate);
+    if (likeInformation) {
+      const result = await deleteLike(likeInformation._id);
+      if (result) {
+        setLikeInformation(null);
+        setLikeCount((prev) => Math.max(0, prev - 1));
+      }
+    } else {
+      const result = await postLike(postId!);
+      if (result) {
+        setLikeInformation(result);
+        setLikeCount((prev) => prev + 1);
+      }
+    }
   };
 
   useEffect(() => {
     getPost();
   }, []);
 
-  if (!post || !comments || channelName !== post?.channel?.name) {
-    return <NotFound />;
-  }
+  if (!post || !comments) return;
+  if (channelName !== post?.channel?.name) return <NotFound />;
   return (
     <div className="flex">
-      <PostDetail post={post} />
+      <PostDetail
+        post={post}
+        likeCount={likeCount}
+        likeInformation={likeInformation}
+        handleLikeClick={handleLikeClick}
+      />
       <Comment comments={comments} setComments={setComments} />
     </div>
   );
