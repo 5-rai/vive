@@ -26,7 +26,7 @@ export default function Dashboard() {
       setLoading(true);
       const response = await axiosInstance.get(`/posts/channel/${channelId}`);
       setPosts(response.data);
-    } catch (error) {
+    } catch {
       setError("카테고리의 포스트를 불러오는 데 실패했습니다.");
     } finally {
       setLoading(false);
@@ -57,7 +57,7 @@ export default function Dashboard() {
         )}
         {posts.length === 0 && (
           <div className="flex items-center justify-center h-[50vh]">
-            <p className="text-xl text-center">
+            <p className="text-lg text-center">
               현재 작성된 포스트가 없습니다.
             </p>
           </div>
