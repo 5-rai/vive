@@ -1,15 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import SearchIcon from "../../assets/SearchIcon";
 import { useNavigate } from "react-router";
 
 export default function SearchBar() {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +18,6 @@ export default function SearchBar() {
       onSubmit={handleSubmit}
     >
       <input
-        ref={inputRef}
         type="text"
         placeholder="이름 또는 키워드로 검색"
         className="w-full h-full pr-3 bg-transparent focus:outline-none dark:text-gray-ee"

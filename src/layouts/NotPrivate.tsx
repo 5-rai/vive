@@ -14,6 +14,6 @@ export default function NotPrivate() {
       return;
     }
     setIsShow(true);
-  }, []);
+  }, [isLoggedIn]);
   return <>{show && <Outlet />}</>;
 }
