@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import PostCard from "../components/common/PostCard";
 import { useChannelStore } from "../store/channelStore";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { axiosInstance } from "../api/axios";
 import Loading from "../components/common/Loading";
 import SortButton from "../components/Dashboard/SortButton";
@@ -16,7 +16,15 @@ export default function Dashboard() {
   const [sortOption, setSortOption] = useState<string>("latest");
 
   // 선택된 채널 찾기 및 해당 채널의 포스트 불러오기
-  const fetchPosts = useCallback(async (channelId: string) => {
+  useEffect(() => {
+    if (!channelName) return;
+
+    const channelId = getIdFromName(channelName);
+    if (channelId) fetchPosts(channelId);
+  }, [channelName, getIdFromName]);
+
+  // 선택된 채널의 포스트 목록 API 요청
+  const fetchPosts = async (channelId: string) => {
     try {
       setLoading(true);
       const response = await axiosInstance.get(`/posts/channel/${channelId}`);
@@ -26,14 +34,7 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    if (!channelName) return;
-
-    const channelId = getIdFromName(channelName);
-    if (channelId) fetchPosts(channelId);
-  }, [channelName, getIdFromName, fetchPosts]);
+  };
 
   // 포스트 정렬 로직
   useEffect(() => {
