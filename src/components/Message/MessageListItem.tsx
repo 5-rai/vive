@@ -1,83 +1,74 @@
-import { Link } from "react-router";
+import { NavLink, useSearchParams } from "react-router";
+import { useAuthStore } from "../../store/authStore";
+import { twMerge } from "tailwind-merge";
+import formatMessageTime from "../../utils/formatMessageTime";
 
 interface MessageListItemProps {
-  user: User | null;
   conversation: Conversation;
-  isSelected: boolean;
-  onClick: () => void;
 }
 
 export default function MessageListItem({
-  user,
   conversation,
-  isSelected,
-  onClick,
 }: MessageListItemProps) {
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get("user");
+  const myId = useAuthStore((state) => state.user)?._id;
   const otherUser =
-    conversation.sender._id === user?._id
+    conversation.sender._id === myId
       ? conversation.receiver
       : conversation.sender;
+  const isActive = userId === otherUser?._id;
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-  };
-
-  const formatMessageDateTime = formatDate(conversation.createdAt);
   return (
-    <>
-      <Link to={`/message?user=${otherUser._id}`}>
-        <div
-          className={`p-3 rounded-lg my-1 transition-colors group cursor-pointer ${
-            isSelected ? "bg-primary" : "hover:bg-secondary"
-          }`}
-          onClick={onClick}
-        >
-          <div className="flex items-center justify-between ">
-            <div className="flex items-center justify-center">
-              <img
-                src={otherUser.image || "/logo.png"}
-                alt="프로필 이미지"
-                className={`w-[30px] h-[30px] mr-3 mb-1 rounded-full profile transition-border ${
-                  isSelected
-                    ? "border-gray-c8 bg-white/80"
-                    : "group-hover:border-gray-c8 group-hover:bg-white/80"
-                }`}
-              />
-              <p
-                className={`text-lg font-medium ${
-                  isSelected
-                    ? " dark:text-gray-22"
-                    : "dark:text-white dark:group-hover:text-gray-22"
-                }`}
-              >
-                {otherUser.fullName}
-              </p>
-            </div>
-            <p
-              className={`text-sm text-gray-6c dark:text-gray-c8 dark:group-hover:text-gray-6c ${
-                isSelected && " dark:text-gray-6c"
-              }`}
-            >
-              {formatMessageDateTime}
-            </p>
-          </div>
-          <div
-            className={`line-clamp-1 text-gray-6c dark:text-gray-c8 dark:group-hover:text-gray-6c ${
-              isSelected && "dark:text-gray-6c"
-            }`}
+    <NavLink
+      to={`/message?user=${otherUser?._id}`}
+      className={twMerge(
+        "p-3 rounded-lg my-1 group transition-all",
+        isActive ? "bg-primary" : "hover:bg-secondary dark:bg-white/20"
+      )}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center items-center">
+          <img
+            src={otherUser?.image || "/logo.png"}
+            alt="프로필 이미지"
+            className={twMerge(
+              "w-[30px] h-[30px] mr-3 rounded-full profile profile-hover transition-all",
+              isActive && "border-gray-c8 bg-white/80"
+            )}
+          />
+          <p
+            className={twMerge(
+              "text-lg font-medium text-gray-22",
+              isActive
+                ? "dark:text-gray-22"
+                : "dark:text-white dark:group-hover:text-gray-22"
+            )}
           >
-            {conversation.message}
-          </div>
+            {otherUser?.fullName}
+          </p>
         </div>
-      </Link>
-    </>
+        <p
+          className={
+            (twMerge("text-sm text-gray-6c"),
+            isActive
+              ? "dark:text-gray-6c"
+              : "dark:text-gray-c8 dark:group-hover:text-gray-6c")
+          }
+        >
+          {formatMessageTime(conversation.createdAt)}
+        </p>
+      </div>
+      <p
+        className={
+          (twMerge("line-clamp-1 text-gray-6c"),
+          isActive
+            ? "dark:text-gray-6c"
+            : "dark:text-gray-c8 dark:group-hover:text-gray-6c")
+        }
+      >
+        {conversation.message}
+      </p>
+    </NavLink>
   );
 }

@@ -54,7 +54,7 @@ export default function MessageForm({ userId, refetch }: MessageFromProps) {
             rows={1}
             value={newMessage}
             placeholder="메시지를 입력해주세요."
-            className="block w-full resize-none overflow-y-scroll custom-scrollbar bg-transparent text-gray-22"
+            className="block w-full resize-none overflow-y-scroll custom-scrollbar bg-transparent"
             onChange={handleChange}
           />
         </div>

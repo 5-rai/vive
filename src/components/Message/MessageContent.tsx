@@ -1,4 +1,5 @@
 import React from "react";
+import formatMessageTime from "../../utils/formatMessageTime";
 
 interface MessageContentProps {
   isOutgoingMessage: boolean;
@@ -17,7 +18,7 @@ const MessageContent = React.memo(
             <span className="text-[#12AA5F] font-medium">받은 메시지</span>
           )}
           <span className="text-sm text-gray-6c dark:text-gray-ee">
-            {new Date(date).toLocaleString().slice(0, -3)}
+            {formatMessageTime(date)}
           </span>
         </div>
         <p className="text-gray-6c dark:text-gray-ee whitespace-pre-wrap">

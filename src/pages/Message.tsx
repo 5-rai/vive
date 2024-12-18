@@ -13,7 +13,7 @@ export default function Message() {
   const { messages, loading, error, refetch } = useGetMessagesWithUser(userId);
 
   useEffect(() => {
-    checkMessageSeen(userId);
+    if (userId) checkMessageSeen(userId);
   }, [messages]);
 
   if (!userId)

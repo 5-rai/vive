@@ -80,4 +80,8 @@
   .profile {
     @apply bg-white/20 border border-gray-ee dark:border-gray-ee/50;
   }
+
+  .profile-hover {
+    @apply group-hover:border-gray-c8 group-hover:bg-white/80;
+  }
 }
