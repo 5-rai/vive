@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import CommentItem from "./CommentItem";
 import CommentWrite from "./CommentWrite";
 
@@ -8,8 +9,18 @@ export default function Comment({
 }: {
   postAuthorId: string;
   comments: Comment[];
-  setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>
+  setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
+  const commentsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (commentsRef.current) {
+      commentsRef.current.scrollTo({
+        top: commentsRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [comments]);
   return (
     <section className="sticky top-[69px] flex flex-col min-w-[420px] w-[420px] screen-100vh py-[28px] border-l border-gray-ee dark:border-gray-ee/50">
       <p className="mb-[22px] font-medium text-xl px-6">
@@ -22,9 +33,16 @@ export default function Comment({
             <p>이 포스팅의 첫 번째 댓글을 달아주세요!</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-5 overflow-y-auto custom-scrollbar px-6">
+          <div
+            ref={commentsRef}
+            className="flex flex-col gap-5 overflow-y-auto custom-scrollbar px-6"
+          >
             {comments.map((comment) => (
-              <CommentItem key={comment._id} comment={comment} setComments={setComments} />
+              <CommentItem
+                key={comment._id}
+                comment={comment}
+                setComments={setComments}
+              />
             ))}
           </div>
         )}
