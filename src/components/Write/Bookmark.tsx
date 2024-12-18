@@ -23,7 +23,7 @@ export default function Bookmark({
               {description}
             </p>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 mt-1">
             <img src={YoutubeIcon} alt="유튜브 아이콘" />
             <p className="text-gray-22/70 dark:text-gray-c8">{url}</p>
           </div>

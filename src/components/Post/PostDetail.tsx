@@ -70,7 +70,9 @@ export default function PostDetail({
         </div>
 
         <hr className="bg-gray-22 dark:bg-gray-ee/50 my-5 border-none h-[1px]" />
-        <p className="text-gray-54 dark:text-gray-c8">{contents}</p>
+        <p className="text-gray-54 dark:text-gray-c8 whitespace-pre-wrap">
+          {contents}
+        </p>
       </div>
     </section>
   );

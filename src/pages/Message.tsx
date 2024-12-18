@@ -30,6 +30,15 @@ export default function Message() {
       </div>
     );
 
+  if (loading || error) {
+    return (
+      <section className="w-[934px] mx-auto flex items-center justify-center">
+        {loading && <Loading />}
+        {error && <p className="text-lg font-medium">{error}</p>}
+      </section>
+    );
+  }
+
   return (
     <div className="flex w-full screen-100vh">
       <section className="grow h-full flex flex-col">
