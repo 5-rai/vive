@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import { createNotification } from "../../api/notification";
 import { deleteFollow, postFollow } from "../../api/follow";
+import defaultProfileImg from "../../../public/logo.png";
 
 interface FollowingUser {
   user: Follow;
@@ -64,7 +65,7 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
       onClick={() => navigate(`/user/${user.user}`)}
     >
       <img
-        src={userInfo?.image ?? "/logo.png"}
+        src={userInfo?.image ?? defaultProfileImg}
         alt="프로필 이미지"
         className="w-24 h-24 profile rounded-full"
       />
