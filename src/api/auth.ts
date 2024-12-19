@@ -15,20 +15,13 @@ interface LoginResponse {
 
 // 로그인 API 함수
 export const loginApi = async (userInfo: LoginRequest) => {
+  const login = useAuthStore.getState().login;
   try {
     const { data } = await axiosInstance.post<LoginResponse>(
       "/login",
       userInfo
     );
-    useAuthStore.setState({
-      accessToken: data.token,
-      isLoggedIn: true,
-      user: {
-        _id: data.user._id,
-        image: data.user.image,
-        fullName: data.user.fullName,
-      },
-    });
+    login(data.token, data.user);
     return true;
   } catch (err) {
     if (err instanceof Error) console.error(err);

@@ -2,6 +2,7 @@ import { NavLink, useSearchParams } from "react-router";
 import { useAuthStore } from "../../store/authStore";
 import { twMerge } from "tailwind-merge";
 import formatMessageTime from "../../utils/formatMessageTime";
+import defaultProfileImg from "../../../public/logo.png";
 
 interface MessageListItemProps {
   conversation: Conversation;
@@ -28,9 +29,9 @@ export default function MessageListItem({
       )}
     >
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center items-center">
+        <div className="flex items-center">
           <img
-            src={otherUser?.image || "/logo.png"}
+            src={otherUser?.image || defaultProfileImg}
             alt="프로필 이미지"
             className={twMerge(
               "w-[30px] h-[30px] mr-3 rounded-full profile profile-hover transition-all",

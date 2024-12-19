@@ -1,4 +1,5 @@
 import { NavLink } from "react-router";
+import defaultProfileImg from "../../../public/logo.png";
 
 const UserNavLink = ({ user }: { user: User }) => {
   return (
@@ -10,7 +11,7 @@ const UserNavLink = ({ user }: { user: User }) => {
       <div className="relative w-7 h-7 shrink-0">
         <img
           className="w-7 h-7 rounded-full profile profile-hover transition-all"
-          src={user.image || "/logo.png"}
+          src={user.image || defaultProfileImg}
         />
         {user.isOnline && (
           <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#21e10f] rounded-full border border-white group-hover:border-secondary transition-colors" />
