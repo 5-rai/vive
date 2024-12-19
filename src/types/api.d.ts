@@ -23,20 +23,8 @@ interface User {
   posts: Post[];
   likes: Like[];
   comments: string[];
-  followers: {
-    _id: string;
-    user: string;
-    follower: string;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-  following: {
-    _id: string;
-    user: string;
-    follower: string;
-    createdAt: string;
-    updatedAt: string;
-  }[];
+  followers: Follow[];
+  following: Follow[];
   notifications: Notification[];
   messages: Message[];
   _id: string;
