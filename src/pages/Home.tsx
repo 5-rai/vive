@@ -83,6 +83,7 @@ export default function Home() {
 
       {/* 채널별 섹션 및 광고 */}
       {Object.entries(channelPosts)
+        .sort()
         .filter(([_, { posts }]) => posts.length > 0)
         .map(([channelId, { posts, name }]: [string, ChannelPosts], index) => (
           <Fragment key={`recent-${channelId}`}>
