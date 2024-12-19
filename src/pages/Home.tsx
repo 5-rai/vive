@@ -114,7 +114,7 @@ export default function Home() {
                       return <RecentPosts key={post._id} post={postData} />;
                     })
                 ) : (
-                  <p>등록 되어있는 포스트가 없습니다...🫠</p>
+                  <p className="h-[163px]">아직 작성된 포스트가 없어요...</p>
                 )}
               </div>
             </section>

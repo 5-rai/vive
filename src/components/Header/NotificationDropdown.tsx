@@ -123,7 +123,7 @@ export default function NotificationDropdown({
           ))
         ) : (
           <li className="px-7 py-3 text-center text-gray-500">
-            새로운 알림이 없습니다.
+            아직 새로운 알림이 없어요...
           </li>
         )}
       </ul>
