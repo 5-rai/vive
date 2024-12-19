@@ -83,7 +83,7 @@ export default function Home() {
 
       {/* 채널별 섹션 및 광고 */}
       {Object.entries(channelPosts)
-        .sort()
+        .filter(([_, { posts }]) => posts.length > 0)
         .map(([channelId, { posts, name }]: [string, ChannelPosts], index) => (
           <Fragment key={`recent-${channelId}`}>
             {/* 채널 섹션 */}
@@ -96,27 +96,23 @@ export default function Home() {
                 <span className="text-2xl font-semibold"> 포스트</span>
               </div>
               <div className="flex flex-wrap gap-10">
-                {posts.length > 0 ? (
-                  posts
-                    .filter((post: Post) => post.title.includes("{")) // 중괄호 포함된 title만 필터링
-                    .map((post: Post) => {
-                      const parsedTitle = JSON.parse(post.title);
-                      const postData = {
-                        title: parsedTitle.title,
-                        description: parsedTitle.contents,
-                        imageUrl: parsedTitle.image || defaultProfileImg,
-                        avatarImg: post.author?.image || defaultProfileImg,
-                        channelName: name,
-                        postId: post._id,
-                        userId: post.author?._id ?? "",
-                        userName: post.author?.fullName ?? "",
-                      };
+                {posts
+                  .filter((post: Post) => post.title.includes("{")) // 중괄호 포함된 title만 필터링
+                  .map((post: Post) => {
+                    const parsedTitle = JSON.parse(post.title);
+                    const postData = {
+                      title: parsedTitle.title,
+                      description: parsedTitle.contents,
+                      imageUrl: parsedTitle.image || defaultProfileImg,
+                      avatarImg: post.author?.image || defaultProfileImg,
+                      channelName: name,
+                      postId: post._id,
+                      userId: post.author?._id ?? "",
+                      userName: post.author?.fullName ?? "",
+                    };
 
-                      return <RecentPosts key={post._id} post={postData} />;
-                    })
-                ) : (
-                  <p className="h-[163px]">아직 작성된 포스트가 없어요...</p>
-                )}
+                    return <RecentPosts key={post._id} post={postData} />;
+                  })}
               </div>
             </section>
             {index === 2 && <SucodingAd />}
