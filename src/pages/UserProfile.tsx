@@ -45,7 +45,10 @@ export default function UserProfile() {
   return (
     <section className="w-fit mx-auto flex flex-col items-center">
       <ProfileSection user={profileUser} />
-      <PostCardGridSection posts={profileUser.posts} />
+      <PostCardGridSection
+        fullName={profileUser.fullName}
+        posts={profileUser.posts}
+      />
     </section>
   );
 }

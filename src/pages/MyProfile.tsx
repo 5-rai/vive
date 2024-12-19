@@ -41,8 +41,12 @@ export default function MyProfile() {
 
   return (
     <section className="w-[934px] mx-auto flex flex-col items-center">
-      <ProfileSection user={user} isMyProfile={true} />
-      <PostCardGridSection posts={user.posts} />
+      <ProfileSection user={user} isMyProfile />
+      <PostCardGridSection
+        fullName={user.fullName}
+        posts={user.posts}
+        isMyProfile
+      />
     </section>
   );
 }
