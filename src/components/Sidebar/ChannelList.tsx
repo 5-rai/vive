@@ -19,7 +19,7 @@ export default function ChannelList() {
               twMerge(
                 "flex items-center h-11 px-7 py-1 rounded-lg transition-colors",
                 isActive
-                  ? "bg-primary"
+                  ? "bg-primary dark:text-gray-22"
                   : "hover:bg-secondary dark:hover:text-gray-22"
               )
             }

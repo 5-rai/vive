@@ -46,13 +46,13 @@ export default function Login() {
     <section className="mx-auto flex screen-100vh items-center justify-center p-[70px]">
       <form onSubmit={handleSubmit} className="flex flex-col w-[400px]">
         <Logo className="mx-auto w-[100px] h-[100px] mb-10" />
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-4">
           <InputLabel
             label="이메일"
             id="email"
             type="email"
             value={email.value}
-            message="이메일을 입력해주세요"
+            placeholder="이메일을 입력해주세요"
             isWarning={email.isWarning}
             onChange={(e) =>
               setEmail({ value: e.target.value, isWarning: false })
@@ -63,7 +63,7 @@ export default function Login() {
             id="password"
             type="password"
             value={password.value}
-            message="비밀번호를 입력해주세요"
+            placeholder="비밀번호를 입력해주세요"
             isWarning={password.isWarning}
             onChange={(e) =>
               setPassword({ value: e.target.value, isWarning: false })

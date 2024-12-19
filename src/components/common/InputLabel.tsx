@@ -4,13 +4,13 @@ import Input, { InputProps } from "./Input";
 interface InputLabelProps extends InputProps {
   label: string;
   id: string;
-  message: string;
+  errorMessage?: string;
   isWarning?: boolean;
 }
 export default function InputLabel({
   label,
   id,
-  message,
+  errorMessage,
   isWarning,
   ...props
 }: InputLabelProps) {
@@ -19,14 +19,14 @@ export default function InputLabel({
       <label htmlFor={id} className="text-sm text-gray-22">
         {label}
       </label>
-      <Input id={id} placeholder={message} {...props} />
+      <Input id={id} {...props} />
       <p
         className={twMerge(
-          "text-xs leading-7",
+          "text-xs h-4 mt-1",
           isWarning ? "text-red-accent" : "text-transparent select-none"
         )}
       >
-        {message}
+        {errorMessage ?? props.placeholder + "."}
       </p>
     </fieldset>
   );
