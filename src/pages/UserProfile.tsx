@@ -43,8 +43,9 @@ export default function UserProfile() {
   }
 
   if (checkIsMyUserId(userId!)) return <Navigate to="/mypage" replace />;
+
   return (
-    <section className="w-fit mx-auto flex flex-col items-center gap-10">
+    <section className="w-[934px] mx-auto flex flex-col items-center gap-10">
       <ProfileSection user={profileUser} />
       <FollowingSection
         fullName={profileUser.fullName}

@@ -72,7 +72,7 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
 
   return (
     <article
-      className="w-28 flex flex-col items-center gap-1 cursor-pointer overflow-hidden"
+      className="w-28 shrink-0 flex flex-col items-center gap-1 cursor-pointer overflow-hidden"
       onClick={() => navigate(`/user/${user.user}`)}
     >
       <img
