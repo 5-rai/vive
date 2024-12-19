@@ -72,7 +72,7 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
 
   return (
     <article
-      className="w-28 flex flex-col items-center gap-1 cursor-pointer"
+      className="w-28 flex flex-col items-center gap-1 cursor-pointer overflow-hidden"
       onClick={() => navigate(`/user/${user.user}`)}
     >
       <img
@@ -80,7 +80,9 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
         alt="프로필 이미지"
         className="w-24 h-24 profile rounded-full"
       />
-      <p className="text-base mb-1">{userInfo?.fullName}</p>
+      <p className="text-base text-center mb-1 w-full overflow-hidden text-ellipsis">
+        {userInfo?.fullName}
+      </p>
       <button
         className={twMerge(
           "w-full rounded-lg py-1 text-sm",
