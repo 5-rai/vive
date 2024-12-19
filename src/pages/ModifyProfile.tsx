@@ -51,9 +51,7 @@ export default function ModifyProfile() {
   };
 
   const selectDefaultImage = async () => {
-    const response = await fetch(
-      import.meta.env.DEV ? "/logo.png" : "/project-2/logo.png"
-    );
+    const response = await fetch("/project-2/logo.png");
     const blob = await response.blob();
     const file = new File([blob], "default-profile.png", { type: blob.type });
     setSelectedImage({ src: defaultProfileImg, file });
