@@ -28,7 +28,10 @@ export default function Post() {
 
   const getPost = async () => {
     const fetchedPost = await getOnePost(postId);
-    if (!fetchedPost) return;
+    if (!fetchedPost) {
+      navigate("/not-found");
+      return;
+    }
 
     setPost(fetchedPost);
     setComments(fetchedPost.comments);
