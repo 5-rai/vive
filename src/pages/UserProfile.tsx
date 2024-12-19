@@ -5,6 +5,7 @@ import ProfileSection from "../components/Profile/ProfileSection";
 import { axiosInstance } from "../api/axios";
 import { useAuthStore } from "../store/authStore";
 import Loading from "../components/common/Loading";
+import FollowingSection from "../components/Profile/FollowingSection";
 
 export default function UserProfile() {
   const [profileUser, setProfileUser] = useState<User | null>(null);
@@ -43,8 +44,12 @@ export default function UserProfile() {
 
   if (checkIsMyUserId(userId!)) return <Navigate to="/mypage" replace />;
   return (
-    <section className="w-fit mx-auto flex flex-col items-center">
+    <section className="w-fit mx-auto flex flex-col items-center gap-10">
       <ProfileSection user={profileUser} />
+      <FollowingSection
+        fullName={profileUser.fullName}
+        followingList={profileUser.following}
+      />
       <PostCardGridSection
         fullName={profileUser.fullName}
         posts={profileUser.posts}

@@ -19,11 +19,14 @@ export default function ProfileSection({
   const navigate = useNavigate();
   const [isFollow, setIsFollow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { isLoggedIn } = useAuthStore();
   const [followersCount, setFollowersCount] = useState(
     user?.followers.length || 0
   ); // 팔로워 수 상태 추가
   const [followId, setFollowId] = useState<string | null>(null);
+
+  const deleteFollowing = useAuthStore((state) => state.deleteFollowing);
+  const addFollowing = useAuthStore((state) => state.addFollowing);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const myId = useAuthStore((state) => state.user)?._id;
 
   useEffect(() => {
@@ -52,6 +55,7 @@ export default function ProfileSection({
       setIsFollow(false);
       setFollowersCount((prevCount) => Math.max(prevCount - 1, 0));
       setFollowId(null);
+      deleteFollowing(followId);
     } catch (err) {
       console.error("언팔로우 요청 실패:", err);
       // 실패 시 상태 롤백
@@ -74,6 +78,7 @@ export default function ProfileSection({
       setIsFollow(true);
       setFollowersCount((prevCount) => prevCount + 1);
       setFollowId(data._id);
+      addFollowing(data);
 
       await createNotification({
         notificationType: "FOLLOW",
@@ -93,7 +98,7 @@ export default function ProfileSection({
   };
 
   return (
-    <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
+    <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 p-10 w-full">
       <UserAvatar name={user?.fullName} image={user?.image} />
       <section className="w-max">
         <div className="flex w-[208px] justify-between mb-4">
@@ -135,7 +140,7 @@ export default function ProfileSection({
               type="button"
               className={twMerge(
                 "w-full py-1 rounded-lg text-sm font-medium",
-                isFollow ? "secondary-btn" : "primary-btn",
+                isFollow ? "secondary-btn" : "primary-btn"
               )}
               onClick={isFollow ? handleUnfollow : handleFollow}
               disabled={loading}

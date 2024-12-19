@@ -15,7 +15,7 @@ export default function FollowingSection({
   const myFollowing = useAuthStore((state) => state.user)?.following;
 
   return (
-    <section className="border-b border-gray-ee dark:border-gray-ee/50 w-full py-10">
+    <section className="border-b border-gray-ee dark:border-gray-ee/50 w-full pb-10">
       <h2 className="text-2xl font-semibold mb-6">
         {isMyProfile ? (
           <>나의 팔로잉 목록</>
