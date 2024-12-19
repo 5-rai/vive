@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import ModifyProfileInput from "../components/ModifyProfile/ModifyProfileInput";
 import { updateUser } from "../api/user";
 import { useAuthStore } from "../store/authStore";
-import defaultProfileImg from "../../../public/logo.png";
+import defaultProfileImg from "../../public/logo.png";
 
 export default function ModifyProfile() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage>();

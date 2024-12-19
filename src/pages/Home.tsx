@@ -8,7 +8,7 @@ import { useChannelStore } from "../store/channelStore";
 import SucodingAd from "../components/Home/SucodingAd";
 import IndistreetAd from "../components/Home/IndistreetAd";
 import { useWeekArtistStore } from "../store/weekArtist";
-import defaultProfileImg from "../../../public/logo.png";
+import defaultProfileImg from "../../public/logo.png";
 
 export default function Home() {
   const users = useAllUserStore((state) => state.users);
