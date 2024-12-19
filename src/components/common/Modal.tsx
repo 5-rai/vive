@@ -1,3 +1,5 @@
+import ReactDOM from "react-dom";
+
 interface ModalProps {
   isOpen: boolean;
   children?: React.ReactNode; // children 타입 추가
@@ -17,7 +19,7 @@ export default function Modal({
 }: ModalProps) {
   if (!isOpen) return null; // 모달이 닫힌 상태라면 렌더링하지 않음
 
-  return (
+  return ReactDOM.createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[500px] h-[261px] px-[100px] pt-20 pb-[60px] bg-white rounded-xl shadow flex-col justify-start items-center gap-[49px] inline-flex">
         <div className="self-stretch text-center font-semibold text-[#222222] text-xl uppercase leading-loose">
@@ -38,6 +40,7 @@ export default function Modal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById("modal")!
   );
 }
