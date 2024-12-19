@@ -4,7 +4,7 @@ import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 import Modal from "../common/Modal";
 import { Toast } from "../common/Toast";
-import { useToastStore } from "../../store/isToastVisible";
+import { useToastStore } from "../../store/toastStore";
 import { useState } from "react";
 
 export default function CommentItem({
@@ -15,8 +15,7 @@ export default function CommentItem({
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isToastVisible, toastMessage, showToast, hideToast } =
-    useToastStore();
+  const { isToastVisible, toastMessage, showToast } = useToastStore();
   const loggedInUser = useAuthStore((state) => state.user);
 
   const handleDelete = async () => {
@@ -30,15 +29,12 @@ export default function CommentItem({
           prev!.filter((prevComment) => prevComment._id !== comment._id)
         );
         showToast("댓글이 성공적으로 삭제되었습니다.");
-        setTimeout(hideToast, 1000);
       } else {
         showToast(response.data?.message || "댓글 삭제에 실패했습니다.");
-        setTimeout(hideToast, 1000);
       }
     } catch (error) {
       console.error("댓글 삭제 실패:", error);
       showToast("오류가 발생했습니다. 다시 시도해주세요.");
-      setTimeout(hideToast, 1000);
     } finally {
       setIsModalOpen(false); // 모달 닫기
     }
@@ -83,10 +79,10 @@ export default function CommentItem({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)} // 모달 닫기
         onConfirm={handleDelete} // 삭제 확인 시 실행
+        confirmText={"삭제"}
+        cancelText={"닫기"}
       >
-        <div className="text-center text-[#222222] text-xl font-semibold uppercase leading-loose">
-          댓글을 삭제하시겠습니까?
-        </div>
+        <div>댓글을 삭제하시겠습니까?</div>
       </Modal>
 
       {/* 삭제 완료 토스트 */}
