@@ -78,7 +78,7 @@ export default function NotificationDropdown({
     }
 
     if (notification.message) {
-      return `${authorName}님에게 쪽지가 도착했습니다.`;
+      return `${authorName}님으로부터 메시지가 도착했습니다.`;
     }
 
     return "새로운 알림";
