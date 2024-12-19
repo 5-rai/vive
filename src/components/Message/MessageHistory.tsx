@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MessageContent from "./MessageContent";
 import { useAllUserStore } from "../../store/allUserStore";
+import defaultProfileImg from "../../../public/logo.png";
 
 interface MessageHistoryProps {
   userId: string;
@@ -22,7 +23,7 @@ export default function MessageHistory({
     <div className="pl-10 pr-6 grow flex flex-col overflow-hidden mt-10 mb-5">
       <section className="flex items-center mb-5 mr-4">
         <img
-          src={userInfo?.image || "/logo.png"}
+          src={userInfo?.image || defaultProfileImg}
           alt="프로필 이미지"
           className="w-8 h-8 mr-3 rounded-full profile"
         />

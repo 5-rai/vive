@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import ModifyProfileInput from "../components/ModifyProfile/ModifyProfileInput";
 import { updateUser } from "../api/user";
 import { useAuthStore } from "../store/authStore";
+import defaultProfileImg from "../../../public/logo.png";
 
 export default function ModifyProfile() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage>();
@@ -15,7 +16,6 @@ export default function ModifyProfile() {
   const defaultImgRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const defaultProfileImg = "/logo.png";
 
   // 컴포넌트 마운트 시 사용자 정보 불러오기
   useEffect(() => {
@@ -51,7 +51,9 @@ export default function ModifyProfile() {
   };
 
   const selectDefaultImage = async () => {
-    const response = await fetch("/logo.png");
+    const response = await fetch(
+      import.meta.env.DEV ? "/logo.png" : "/project-2/logo.png"
+    );
     const blob = await response.blob();
     const file = new File([blob], "default-profile.png", { type: blob.type });
     setSelectedImage({ src: defaultProfileImg, file });

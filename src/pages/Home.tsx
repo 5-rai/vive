@@ -8,6 +8,7 @@ import { useChannelStore } from "../store/channelStore";
 import SucodingAd from "../components/Home/SucodingAd";
 import IndistreetAd from "../components/Home/IndistreetAd";
 import { useWeekArtistStore } from "../store/weekArtist";
+import defaultProfileImg from "../../../public/logo.png";
 
 export default function Home() {
   const users = useAllUserStore((state) => state.users);
@@ -103,8 +104,8 @@ export default function Home() {
                       const postData = {
                         title: parsedTitle.title,
                         description: parsedTitle.contents,
-                        imageUrl: parsedTitle.image || "/logo.png",
-                        avatarImg: post.author?.image || "/logo.png",
+                        imageUrl: parsedTitle.image || defaultProfileImg,
+                        avatarImg: post.author?.image || defaultProfileImg,
                         channelName: name,
                         postId: post._id,
                         userId: post.author?._id ?? "",
