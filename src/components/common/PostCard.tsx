@@ -11,6 +11,7 @@ import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import CommentIcon from "../../assets/CommentIcon";
 import { useThemeStore } from "../../store/themeStore";
 import { createNotification } from "../../api/notification";
+import defaultProfileImg from "../../../public/logo.png";
 
 interface PostCardProps {
   post: Post | SearchPost;
@@ -170,7 +171,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
             onClick={handleProfileClick}
           >
             <img
-              src={author?.image || "/logo.png"}
+              src={author?.image || defaultProfileImg}
               alt={`${author?.fullName}-프로필 이미지`}
               className="w-7 h-7 rounded-full mr-2 profile"
             />

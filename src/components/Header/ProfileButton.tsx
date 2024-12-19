@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "../../store/authStore";
 import Dropdown from "../common/Dropdown";
+import defaultProfileImg from "../../../public/logo.png";
 
 interface ProfileButtonProps {
   profileImage?: string | null;
@@ -54,7 +55,7 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
     <section ref={ref} className="relative">
       <img
         className="w-[44px] h-[44px] rounded-full profile-shadow profile cursor-pointer"
-        src={profileImage || "/logo.png"}
+        src={profileImage || defaultProfileImg}
         alt="프로필"
         onClick={(e) => {
           e.stopPropagation();

@@ -1,21 +1,18 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface RequiredUser {
-  _id: string;
-  image: string | null;
-  fullName: string;
-}
-
 interface AuthStore {
   isLoggedIn: boolean;
   accessToken: string | null;
-  user: RequiredUser | null;
+  user: User | null;
   checkIsMyUserId: (id: string) => boolean;
-  login: (accessToken: string, user: RequiredUser) => void;
+  login: (accessToken: string, user: User) => void;
   logout: () => void;
+  updateUser: (user: User) => void;
   updateUserImage: (image: string) => void;
   updateUserFullName: (fullName: string) => void;
+  deleteFollowing: (followId: string) => void;
+  addFollowing: (followInfo: Follow) => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -25,9 +22,14 @@ export const useAuthStore = create<AuthStore>()(
       accessToken: null,
       user: null,
       checkIsMyUserId: (id) => id === get().user?._id,
-      login: (accessToken: string, user: RequiredUser) =>
+      login: (accessToken: string, user: User) =>
         set({ isLoggedIn: true, accessToken, user }),
       logout: () => set({ isLoggedIn: false, accessToken: null, user: null }),
+      updateUser: (user: User) =>
+        set((state) => ({
+          ...state,
+          user,
+        })),
       updateUserImage: (image: string) =>
         set((state) => ({
           user: state.user ? { ...state.user, image } : null,
@@ -35,6 +37,26 @@ export const useAuthStore = create<AuthStore>()(
       updateUserFullName: (fullName: string) =>
         set((state) => ({
           user: state.user ? { ...state.user, fullName } : null,
+        })),
+      deleteFollowing: (followId: string) =>
+        set((state) => ({
+          user: state.user
+            ? {
+                ...state.user,
+                following: state.user.following.filter(
+                  ({ _id }) => _id !== followId
+                ),
+              }
+            : null,
+        })),
+      addFollowing: (followInfo: Follow) =>
+        set((state) => ({
+          user: state.user
+            ? {
+                ...state.user,
+                following: [...state.user.following, followInfo],
+              }
+            : null,
         })),
     }),
     {
