@@ -46,6 +46,24 @@ interface User {
   updatedAt: string;
 }
 
+interface MessageUser {
+  image?: string; // 프로필 이미지
+  role: string;
+  isOnline: boolean;
+  posts: string[];
+  likes: string[];
+  comments: string[];
+  followers: string[];
+  following: string[];
+  notifications: string[];
+  messages: string[];
+  _id: string;
+  fullName: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Post {
   likes: Like[];
   comments: Comment[];
@@ -83,6 +101,7 @@ interface Notification {
   user: User | string;
   post?: string; // 포스트 id
   follow?: string; // 사용자 id
+  like?: string;
   comment?: Comment;
   message?: string; // 메시지 id
   createdAt: string;
@@ -109,8 +128,8 @@ interface Conversation {
 interface Message {
   _id: string;
   message: string;
-  sender: User;
-  receiver: User;
+  sender: MessageUser;
+  receiver: MessageUser;
   seen: boolean;
   createdAt: string;
   updatedAt: string;

@@ -5,6 +5,7 @@ import profileImg from "../../assets/profileImg.jpg";
 import { useAuthStore } from "../../store/authStore";
 import MoreButton from "./MoreButton";
 import LikeIcon from "../../assets/LikeIcon";
+import formatTimeAgo from "../../utils/formatTimeAgo";
 
 export default function PostDetail({
   post,
@@ -24,14 +25,22 @@ export default function PostDetail({
   const parsedUrl = new URL(youtubeUrl);
   const videoId = new URLSearchParams(parsedUrl.search).get("v");
 
+  const createdDate = new Date(post.createdAt).toLocaleDateString("ko-KR");
+  const formattedTimeAgo = formatTimeAgo(post.createdAt);
+
   return (
     <section className="grow p-[60px]">
       <div className="w-[618px]">
         <YouTubeContainer videoId={videoId} />
-        <div className="flex justify-between items-start gap-5 mt-5 mb-4">
+        <div className="flex justify-between items-start gap-5 mt-5">
           <h1 className="font-semibold text-2xl break-all">{title}</h1>
           {checkIsMyUserId(post.author._id) && <MoreButton post={post} />}
         </div>
+        <p className="text-[#888] mb-4">
+          <span className="mr-2">{createdDate}</span>
+          <span>|</span>
+          <span className="ml-2">{formattedTimeAgo}</span>
+        </p>
         <div className="flex justify-between">
           <NavLink
             to={`/user/${post.author._id}`}
@@ -61,7 +70,9 @@ export default function PostDetail({
         </div>
 
         <hr className="bg-gray-22 dark:bg-gray-ee/50 my-5 border-none h-[1px]" />
-        <p className="text-gray-54 dark:text-gray-c8">{contents}</p>
+        <p className="text-gray-54 dark:text-gray-c8 whitespace-pre-wrap">
+          {contents}
+        </p>
       </div>
     </section>
   );

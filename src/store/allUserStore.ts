@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { getAllUsers } from "../api/user";
 
-// TODO: 유저 업데이트 로직 추가
-
 interface AllUserStore {
   users: User[];
   fetchUsers: () => Promise<void>;

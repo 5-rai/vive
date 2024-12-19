@@ -1,31 +1,74 @@
+import { NavLink, useSearchParams } from "react-router";
+import { useAuthStore } from "../../store/authStore";
+import { twMerge } from "tailwind-merge";
+import formatMessageTime from "../../utils/formatMessageTime";
+
 interface MessageListItemProps {
-  user: User | null;
+  conversation: Conversation;
 }
 
-export default function MessageListItem({ user }: MessageListItemProps) {
+export default function MessageListItem({
+  conversation,
+}: MessageListItemProps) {
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get("user");
+  const myId = useAuthStore((state) => state.user)?._id;
+  const otherUser =
+    conversation.sender._id === myId
+      ? conversation.receiver
+      : conversation.sender;
+  const isActive = userId === otherUser?._id;
+
   return (
-    <>
-      <div className="p-3 hover:bg-secondary rounded-lg my-1 transition-colors group">
-        <div className="flex items-center justify-between ">
-          <div className="flex items-center justify-center">
-            <img
-              src={user?.image || "/logo.png"}
-              alt="프로필 이미지"
-              className="w-[30px] h-[30px] mr-3 mb-1 rounded-full profile"
-            />
-            <p className="text-lg dark:group-hover:text-gray-22 font-medium dark:text-white">
-              닉네임{user?.fullName}
-            </p>
-          </div>
-          <p className="text-sm text-gray-6c  dark:text-gray-c8">
-            24.12.25 12:45
+    <NavLink
+      to={`/message?user=${otherUser?._id}`}
+      className={twMerge(
+        "p-3 rounded-lg my-1 group transition-all",
+        isActive ? "bg-primary" : "hover:bg-secondary dark:bg-white/20"
+      )}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center items-center">
+          <img
+            src={otherUser?.image || "/logo.png"}
+            alt="프로필 이미지"
+            className={twMerge(
+              "w-[30px] h-[30px] mr-3 rounded-full profile profile-hover transition-all",
+              isActive && "border-gray-c8 bg-white/80"
+            )}
+          />
+          <p
+            className={twMerge(
+              "text-lg font-medium text-gray-22",
+              isActive
+                ? "dark:text-gray-22"
+                : "dark:text-white dark:group-hover:text-gray-22"
+            )}
+          >
+            {otherUser?.fullName}
           </p>
         </div>
-        <div className="line-clamp-1 text-gray-6c dark:text-gray-c8">
-          마지막 메세지 내용 마지막 메세지 내용 마지막 메세지 마지막 메세지 내용
-          마지막 메세지 내용 마지막 메세
-        </div>
+        <p
+          className={
+            (twMerge("text-sm text-gray-6c"),
+            isActive
+              ? "dark:text-gray-6c"
+              : "dark:text-gray-c8 dark:group-hover:text-gray-6c")
+          }
+        >
+          {formatMessageTime(conversation.createdAt)}
+        </p>
       </div>
-    </>
+      <p
+        className={
+          (twMerge("line-clamp-1 text-gray-6c"),
+          isActive
+            ? "dark:text-gray-6c"
+            : "dark:text-gray-c8 dark:group-hover:text-gray-6c")
+        }
+      >
+        {conversation.message}
+      </p>
+    </NavLink>
   );
 }

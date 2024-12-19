@@ -5,6 +5,7 @@ import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 import UserAvatar from "../common/UserAvatar";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
+import { createNotification } from "../../api/notification";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -65,14 +66,20 @@ export default function ProfileSection({
 
     try {
       setLoading(true);
-      const response = await axiosInstance.post("/follow/create", {
+      const { data } = await axiosInstance.post<Follow>("/follow/create", {
         userId: user!._id,
       });
 
       // 상태 직접 업데이트
       setIsFollow(true);
       setFollowersCount((prevCount) => prevCount + 1);
-      setFollowId(response.data._id);
+      setFollowId(data._id);
+
+      await createNotification({
+        notificationType: "FOLLOW",
+        notificationTypeId: data._id,
+        userId: data.user,
+      });
     } catch (err) {
       console.error("팔로우 요청 실패:", err);
     } finally {
@@ -82,6 +89,7 @@ export default function ProfileSection({
 
   const handleMessage = () => {
     confirmAndNavigateToLogin(navigate);
+    navigate(`/message?user=${user?._id}`);
   };
 
   return (
@@ -139,7 +147,7 @@ export default function ProfileSection({
               className="primary-btn w-full py-1 rounded-lg text-sm"
               onClick={handleMessage}
             >
-              메세지 보내기
+              메시지 보내기
             </button>
           </div>
         )}

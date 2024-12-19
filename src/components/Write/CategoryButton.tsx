@@ -14,7 +14,7 @@ export default function CategoryButton({
   setChannel,
 }: CategoryDropdownProps) {
   const [channels, setChannels] = useState<Channel[]>();
-  const [isOpen, setIsOpen] = useState(!false);
+  const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
 
   const getChannels = async () => {
@@ -61,7 +61,7 @@ export default function CategoryButton({
               : "text-[#777] dark:text-gray-c8"
           )}
         >
-          {channel?.name ?? "카테고리"}
+          {channel?.name ?? "--- 선택 ---"}
         </p>
         <DropdownArrowIcon />
       </button>
@@ -71,7 +71,7 @@ export default function CategoryButton({
         onClose={() => setIsOpen((prev) => !prev)}
       >
         <ul>
-          {channels?.slice(3).map((channel) => (
+          {channels?.map((channel) => (
             <li key={`channels-${channel._id}`} className="w-full">
               <button
                 type="button"
