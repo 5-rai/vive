@@ -49,23 +49,23 @@ export default function MessageListItem({
           </p>
         </div>
         <p
-          className={
-            (twMerge("text-sm text-gray-6c"),
+          className={twMerge(
+            "text-sm text-gray-6c",
             isActive
               ? "dark:text-gray-6c"
-              : "dark:text-gray-c8 dark:group-hover:text-gray-6c")
-          }
+              : "dark:text-gray-c8 dark:group-hover:text-gray-6c"
+          )}
         >
           {formatMessageTime(conversation.createdAt)}
         </p>
       </div>
       <p
-        className={
-          (twMerge("line-clamp-1 text-gray-6c"),
+        className={twMerge(
+          "line-clamp-1 break-all text-gray-6c",
           isActive
             ? "dark:text-gray-6c"
-            : "dark:text-gray-c8 dark:group-hover:text-gray-6c")
-        }
+            : "dark:text-gray-c8 dark:group-hover:text-gray-6c"
+        )}
       >
         {conversation.message}
       </p>
