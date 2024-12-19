@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 import UserAvatar from "../common/UserAvatar";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import { createNotification } from "../../api/notification";
+import { deleteFollow, postFollow } from "../../api/follow";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -24,8 +24,6 @@ export default function ProfileSection({
   ); // 팔로워 수 상태 추가
   const [followId, setFollowId] = useState<string | null>(null);
 
-  const deleteFollowing = useAuthStore((state) => state.deleteFollowing);
-  const addFollowing = useAuthStore((state) => state.addFollowing);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const myId = useAuthStore((state) => state.user)?._id;
 
@@ -39,23 +37,18 @@ export default function ProfileSection({
     setIsFollow(!!foundFollowId);
   }, [user?.followers]); // followers 배열 변경 시에만 실행
 
-  const handleUnfollow = async () => {
-    if (!followId || !isLoggedIn) {
-      console.error("언팔로우 불가: follow ID or access token 없음");
-      return;
-    }
+  const handleUnFollow = async () => {
+    if (!followId || !isLoggedIn) return;
 
     try {
       setLoading(true);
-      await axiosInstance.delete("/follow/delete", {
-        data: { id: followId },
-      });
-
-      // 상태 직접 업데이트
-      setIsFollow(false);
-      setFollowersCount((prevCount) => Math.max(prevCount - 1, 0));
-      setFollowId(null);
-      deleteFollowing(followId);
+      const result = await deleteFollow(followId);
+      if (result) {
+        // 상태 직접 업데이트
+        setIsFollow(false);
+        setFollowersCount((prevCount) => Math.max(prevCount - 1, 0));
+        setFollowId(null);
+      }
     } catch (err) {
       console.error("언팔로우 요청 실패:", err);
       // 실패 시 상태 롤백
@@ -70,21 +63,20 @@ export default function ProfileSection({
 
     try {
       setLoading(true);
-      const { data } = await axiosInstance.post<Follow>("/follow/create", {
-        userId: user!._id,
-      });
+      const result = await postFollow(user!._id);
 
-      // 상태 직접 업데이트
-      setIsFollow(true);
-      setFollowersCount((prevCount) => prevCount + 1);
-      setFollowId(data._id);
-      addFollowing(data);
+      if (result) {
+        // 상태 직접 업데이트
+        setIsFollow(true);
+        setFollowersCount((prevCount) => prevCount + 1);
+        setFollowId(result._id);
 
-      await createNotification({
-        notificationType: "FOLLOW",
-        notificationTypeId: data._id,
-        userId: data.user,
-      });
+        await createNotification({
+          notificationType: "FOLLOW",
+          notificationTypeId: result._id,
+          userId: result.user,
+        });
+      }
     } catch (err) {
       console.error("팔로우 요청 실패:", err);
     } finally {
@@ -142,7 +134,7 @@ export default function ProfileSection({
                 "w-full py-1 rounded-lg text-sm font-medium",
                 isFollow ? "secondary-btn" : "primary-btn"
               )}
-              onClick={isFollow ? handleUnfollow : handleFollow}
+              onClick={isFollow ? handleUnFollow : handleFollow}
               disabled={loading}
             >
               {isFollow ? "언팔로우" : "팔로우"}

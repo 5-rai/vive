@@ -2,10 +2,9 @@ import { twMerge } from "tailwind-merge";
 import { useAllUserStore } from "../../store/allUserStore";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import { useNavigate } from "react-router";
-import { axiosInstance } from "../../api/axios";
 import { useState } from "react";
-import { useAuthStore } from "../../store/authStore";
 import { createNotification } from "../../api/notification";
+import { deleteFollow, postFollow } from "../../api/follow";
 
 interface FollowingUser {
   user: Follow;
@@ -14,8 +13,6 @@ interface FollowingUser {
 
 export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
   const getUser = useAllUserStore((state) => state.getUser);
-  const deleteFollowing = useAuthStore((state) => state.deleteFollowing);
-  const addFollowing = useAuthStore((state) => state.addFollowing);
   const userInfo = getUser(user.user);
   const navigate = useNavigate();
 
@@ -29,17 +26,15 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
 
     try {
       setLoading(true);
-      const { data } = await axiosInstance.post<Follow>("/follow/create", {
-        userId: user.user,
-      });
+      const result = await postFollow(user.user);
 
-      addFollowing(data);
-
-      await createNotification({
-        notificationType: "FOLLOW",
-        notificationTypeId: data._id,
-        userId: data.user,
-      });
+      if (result) {
+        await createNotification({
+          notificationType: "FOLLOW",
+          notificationTypeId: result._id,
+          userId: result.user,
+        });
+      }
     } catch (err) {
       console.error("팔로우 요청 실패:", err);
     } finally {
@@ -51,18 +46,11 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    if (!myFollowInfo) {
-      console.error("언팔로우 불가: follow ID or access token 없음");
-      return;
-    }
+    if (!myFollowInfo) return;
 
     try {
       setLoading(true);
-      await axiosInstance.delete("/follow/delete", {
-        data: { id: myFollowInfo._id },
-      });
-
-      deleteFollowing(myFollowInfo._id);
+      await deleteFollow(myFollowInfo._id);
     } catch (err) {
       console.error("언팔로우 요청 실패:", err);
     } finally {
