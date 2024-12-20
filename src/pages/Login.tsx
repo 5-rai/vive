@@ -37,7 +37,14 @@ export default function Login() {
     if (result) {
       console.log("로그인 성공");
       showToast("로그인 성공", 1000);
-      navigate(-1);
+      const referrer = document.referrer;
+      const currentDomain = window.location.origin;
+
+      if (referrer && referrer.startsWith(currentDomain)) {
+        navigate(-1);
+      } else {
+        navigate("/");
+      }
       return;
     } else {
       showToast("로그인 중 문제가 발생했습니다. 다시 시도해주세요.", 1000);
