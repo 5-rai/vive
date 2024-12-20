@@ -77,19 +77,17 @@ export default function SortButton({
         onClose={() => setIsOpen(false)}
       >
         <ul>
-          {SORT_OPTIONS.filter((option) => option.id !== selectedOption.id).map(
-            (option) => (
-              <li key={option.id} className="w-full">
-                <button
-                  type="button"
-                  onClick={() => handleOptionClick(option)}
-                  className="hover:bg-secondary py-1 w-full text-left px-2 rounded-md hover:dark:text-gray-22"
-                >
-                  {option.name}
-                </button>
-              </li>
-            )
-          )}
+          {SORT_OPTIONS.map((option) => (
+            <li key={option.id} className="w-full">
+              <button
+                type="button"
+                onClick={() => handleOptionClick(option)}
+                className="hover:bg-secondary py-1 w-full text-left px-2 rounded-md hover:dark:text-gray-22"
+              >
+                {option.name}
+              </button>
+            </li>
+          ))}
         </ul>
       </Dropdown>
     </section>
