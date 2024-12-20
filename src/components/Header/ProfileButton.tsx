@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useAuthStore } from "../../store/authStore";
 import Dropdown from "../common/Dropdown";
 import defaultProfileImg from "../../../public/logo.png";
+import { useModalStore } from "../../store/modalStore";
 
 interface ProfileButtonProps {
   profileImage?: string | null;
@@ -12,7 +13,8 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const logout = useAuthStore((state) => state.logout);
+  const setModal = useModalStore((state) => state.setModal);
   const privateRoutes = ["/write", "/mypage", "/message", "/edit"]; // 로그인 상태에서만 접근 가능한 페이지
 
   useEffect(() => {
@@ -38,14 +40,24 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
 
   const handleLogoutClick = () => {
     const currentPath = location.pathname;
-    logout();
-
-    if (
-      privateRoutes.some((route) => currentPath.startsWith(route)) ||
-      currentPath.includes("/edit")
-    ) {
-      // 로그인 상태에서 접근 가능한 경로라면 홈으로 이동
-      navigate("/");
+    console.log(currentPath);
+    if (privateRoutes.some((route) => currentPath.includes(route))) {
+      setModal({
+        isOpen: true,
+        confirmText: "로그아웃",
+        cancelText: "취소",
+        children: (
+          <div>
+            로그아웃하면 이 페이지를 떠나게 됩니다.
+            <br />
+            그래도 로그아웃하시겠습니까?
+          </div>
+        ),
+        onConfirm: async () => {
+          navigate("/");
+          logout(); // 삭제 작업 수행
+        },
+      });
     }
 
     setIsOpen(false);

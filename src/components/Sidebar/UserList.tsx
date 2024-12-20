@@ -49,7 +49,7 @@ export default function UserList() {
   };
 
   return (
-    <section className="grow overflow-y-hidden flex flex-col">
+    <section className="h-1/2 grow overflow-y-hidden flex flex-col">
       <h2 className="border-b border-gray-22 dark:border-gray-ee/50 py-2 mb-4 dark:text-gray-ee">
         유저 {searchResults.length > 0 ? searchResults.length : allUsers.length}{" "}
         명

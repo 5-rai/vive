@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommentItem from "./CommentItem";
 import CommentWrite from "./CommentWrite";
 
@@ -12,15 +12,17 @@ export default function Comment({
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
   const commentsRef = useRef<HTMLDivElement>(null);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   useEffect(() => {
-    if (commentsRef.current) {
+    if (isSubmit && commentsRef.current) {
       commentsRef.current.scrollTo({
         top: commentsRef.current.scrollHeight,
         behavior: "smooth",
       });
+      setIsSubmit(false);
     }
-  }, [comments]);
+  }, [isSubmit]);
 
   return (
     <section className="sticky top-[69px] flex flex-col min-w-[420px] w-[420px] screen-100vh py-[28px] border-l border-gray-ee dark:border-gray-ee/50">
@@ -48,7 +50,11 @@ export default function Comment({
           </div>
         )}
       </div>
-      <CommentWrite postAuthorId={postAuthorId} setComments={setComments} />
+      <CommentWrite
+        postAuthorId={postAuthorId}
+        setComments={setComments}
+        setIsSubmit={setIsSubmit}
+      />
     </section>
   );
 }

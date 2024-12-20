@@ -12,12 +12,14 @@ import { createNotification } from "../api/notification";
 export default function Post() {
   const navigate = useNavigate();
   const { channelName, postId } = useParams();
+
   const [post, setPost] = useState<Post>();
   const [comments, setComments] = useState<Comment[]>();
-  const loggedInUser = useAuthStore((state) => state.user);
-
   const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post?.likes.length || 0);
+
+  const loggedInUser = useAuthStore((state) => state.user);
+  const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
 
   // 좋아요 정보 찾기
   const findLikeInformation = (fetchedPost: Post) => {
@@ -54,12 +56,14 @@ export default function Post() {
       setLikeInformation(result);
       setLikeCount((prev) => prev + 1);
 
-      await createNotification({
-        notificationType: "LIKE",
-        notificationTypeId: result._id,
-        userId: post!.author._id,
-        postId: result.post,
-      });
+      if (!checkIsMyUserId(post?.author._id ?? "")) {
+        await createNotification({
+          notificationType: "LIKE",
+          notificationTypeId: result._id,
+          userId: post!.author._id,
+          postId: result.post,
+        });
+      }
     }
   };
 

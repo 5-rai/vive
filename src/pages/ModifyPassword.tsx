@@ -35,7 +35,7 @@ export default function ModifyPassword() {
 
     try {
       await updatePassword(data.password); // axios로 함수 호출
-      showToast("비밀번호가 변경되었습니다.", 1000);
+      showToast("비밀번호가 변경되었습니다.");
       navigate("/mypage");
     } catch (error) {
       console.error(error);

@@ -4,14 +4,16 @@ import { createNotification } from "../../api/notification";
 
 interface MessageFromProps {
   userId: string;
-  conversationRefetch: () => void;
-  messageListRefetch: () => void;
+  conversationRefetch: () => Promise<void>;
+  messageListRefetch: () => Promise<void>;
+  messageHistoryRef: React.RefObject<HTMLElement>;
 }
 
 export default function MessageForm({
   userId,
   conversationRefetch,
   messageListRefetch,
+  messageHistoryRef,
 }: MessageFromProps) {
   const [newMessage, setNewMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -36,14 +38,24 @@ export default function MessageForm({
     const data = await postMessage(newMessage, userId);
     if (data) {
       setNewMessage("");
+      textareaRef.current!.value = "";
       adjustHeight();
       await createNotification({
         notificationType: "MESSAGE",
         notificationTypeId: data._id,
         userId: userId,
       });
-      conversationRefetch();
-      messageListRefetch();
+      await messageListRefetch();
+      await conversationRefetch();
+
+      setTimeout(() => {
+        if (messageHistoryRef.current) {
+          messageHistoryRef.current.scrollTo({
+            top: messageHistoryRef.current.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+      }, 100); // 100ms 지연
     }
   };
 

@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router";
 import MessageSidebar from "../components/Message/MessageSidebar";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Loading from "../components/common/Loading";
 import MessageHistory from "../components/Message/MessageHistory";
 import MessageForm from "../components/Message/MessageForm";
@@ -9,6 +9,7 @@ import useGetMessageList from "../hooks/useGetMessageList";
 import useGetConversationWithUser from "../hooks/useGetConversationWithUser";
 
 export default function Message() {
+  const messageHistoryRef = useRef<HTMLElement>(null);
   const [searchParams] = useSearchParams();
   const userId = searchParams.get("user") ?? "";
   const {
@@ -57,11 +58,16 @@ export default function Message() {
           </p>
         ) : (
           <>
-            <MessageHistory userId={userId} messages={conversation} />
+            <MessageHistory
+              userId={userId}
+              messages={conversation}
+              ref={messageHistoryRef}
+            />
             <MessageForm
               userId={userId}
               conversationRefetch={conversationRefetch}
               messageListRefetch={messageListRefetch}
+              messageHistoryRef={messageHistoryRef}
             />
           </>
         )}
