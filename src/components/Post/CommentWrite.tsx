@@ -8,9 +8,11 @@ import { useAuthStore } from "../../store/authStore";
 export default function CommentWrite({
   postAuthorId,
   setComments,
+  setIsSubmit,
 }: {
   postAuthorId: string;
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
+  setIsSubmit: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const navigate = useNavigate();
   const { postId } = useParams();
@@ -48,6 +50,7 @@ export default function CommentWrite({
         });
       }
       setComments((prev) => [...prev!, addedComment]);
+      setIsSubmit(true);
       textareaRef.current!.value = "";
     }
   };
