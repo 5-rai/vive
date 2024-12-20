@@ -26,11 +26,11 @@ export default function InputLabel({
       <label htmlFor={id} className="text-sm text-gray-22">
         {label}
       </label>
-      <div className="flex gap-2 items-center w-full py-2 px-6 focus-within:border-primary rounded-full border border-gray-c8 dark:border-gray-c8/50">
+      <div className="flex gap-2 items-center w-full py-2 px-6 focus-within:border-primary rounded-full border border-gray-c8 dark:border-gray-c8/50 dark:bg-white/10">
         <input
           id={id}
           type={password && isShown ? "text" : type}
-          className="w-full text-sm"
+          className="w-full text-sm bg-transparent"
           {...props}
         />
         {password && (
