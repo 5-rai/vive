@@ -3,6 +3,7 @@ import { createComment } from "../../api/comment";
 import { useNavigate, useParams } from "react-router";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import { createNotification } from "../../api/notification";
+import { useAuthStore } from "../../store/authStore";
 
 export default function CommentWrite({
   postAuthorId,
@@ -15,6 +16,7 @@ export default function CommentWrite({
   const { postId } = useParams();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [comment, setComment] = useState("");
+  const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
@@ -37,12 +39,14 @@ export default function CommentWrite({
     const addedComment = await createComment({ comment, postId });
 
     if (addedComment) {
-      await createNotification({
-        notificationType: "COMMENT",
-        notificationTypeId: addedComment._id,
-        userId: postAuthorId,
-        postId: addedComment.post,
-      });
+      if (!checkIsMyUserId(postAuthorId)) {
+        await createNotification({
+          notificationType: "COMMENT",
+          notificationTypeId: addedComment._id,
+          userId: postAuthorId,
+          postId: addedComment.post,
+        });
+      }
       setComments((prev) => [...prev!, addedComment]);
       textareaRef.current!.value = "";
     }

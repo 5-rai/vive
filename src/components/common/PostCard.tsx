@@ -32,10 +32,12 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
   );
-  const getUser = useAllUserStore((state) => state.getUser);
-  const loggedInUser = useAuthStore((state) => state.user);
-  const getNameFromId = useChannelStore((state) => state.getNameFromId);
+
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
+  const loggedInUser = useAuthStore((state) => state.user);
+  const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
+  const getUser = useAllUserStore((state) => state.getUser);
+  const getNameFromId = useChannelStore((state) => state.getNameFromId);
 
   useEffect(() => {
     parsePostTitle();
@@ -132,12 +134,15 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
 
       const postAuthorId =
         typeof post.author === "string" ? post.author : post.author._id;
-      await createNotification({
-        notificationType: "LIKE",
-        notificationTypeId: result._id,
-        userId: postAuthorId,
-        postId: result.post,
-      });
+
+      if (!checkIsMyUserId(postAuthorId)) {
+        await createNotification({
+          notificationType: "LIKE",
+          notificationTypeId: result._id,
+          userId: postAuthorId,
+          postId: result.post,
+        });
+      }
     }
   };
 
