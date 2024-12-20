@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { getOneYoutubeVideoInfo } from "../api/youtube";
 import { createPost, getOnePost, updatePost } from "../api/post";
 import { useNavigate, useParams } from "react-router";
+import { useToastStore } from "../store/toastStore";
 
 const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 
@@ -24,7 +25,7 @@ export default function Write() {
     validUrl: "",
     isWarning: false,
   });
-
+  const { showToast } = useToastStore();
   const handleChange = (value: string) => {
     setYoutubeUrl({
       ...youtubeUrl,
@@ -71,6 +72,7 @@ export default function Write() {
       channelId: selectedChannel!._id,
       postId,
     });
+    showToast("포스팅 수정 완료", 1000);
     navigate(`/channels/${selectedChannel!.name}/${postId}`);
   };
 
