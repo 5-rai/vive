@@ -38,6 +38,7 @@ export default function MessageForm({
     const data = await postMessage(newMessage, userId);
     if (data) {
       setNewMessage("");
+      textareaRef.current!.value = "";
       adjustHeight();
       await createNotification({
         notificationType: "MESSAGE",

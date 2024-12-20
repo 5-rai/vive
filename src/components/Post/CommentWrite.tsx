@@ -50,8 +50,10 @@ export default function CommentWrite({
         });
       }
       setComments((prev) => [...prev!, addedComment]);
+      setComment("");
       setIsSubmit(true);
       textareaRef.current!.value = "";
+      adjustHeight();
     }
   };
 
