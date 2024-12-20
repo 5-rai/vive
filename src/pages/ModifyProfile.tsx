@@ -82,7 +82,7 @@ export default function ModifyProfile() {
       selectedImage.src !== user?.image ? selectedImage : null,
       fullName !== user?.fullName ? fullName.trim() : null
     );
-    if (result) showToast("프로필이 수정되었습니다.", 3000);
+    if (result) showToast("프로필이 수정되었습니다.");
     navigate("/mypage");
   };
 

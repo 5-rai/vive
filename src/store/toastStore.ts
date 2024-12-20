@@ -10,10 +10,13 @@ interface ToastStore {
 export const useToastStore = create<ToastStore>((set) => ({
   isToastVisible: false,
   toastMessage: "",
-  showToast: (message, duration = 1000) => {
+  showToast: (message, duration = 3000) => {
     set({ isToastVisible: true, toastMessage: message });
     // 지정된 시간 후 토스트 자동 숨김
-    setTimeout(() => set({ isToastVisible: false, toastMessage: "" }), duration);
+    setTimeout(
+      () => set({ isToastVisible: false, toastMessage: "" }),
+      duration
+    );
   },
   hideToast: () => set({ isToastVisible: false, toastMessage: "" }),
 }));

@@ -66,11 +66,11 @@ export default function Register() {
         fullName: name.value.trim(),
         password: password.value,
       });
-      showToast("회원가입 완료 🎉", 3000);
+      showToast("회원가입 완료 🎉");
       navigate("/login");
     } catch (error) {
       console.error("Error:", error);
-      showToast("회원가입 실패 ❌ 다시 시도해주세요.", 3000);
+      showToast("회원가입 실패 ❌ 다시 시도해주세요.");
     }
   };
 

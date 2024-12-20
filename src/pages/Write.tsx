@@ -51,7 +51,11 @@ export default function Write() {
       }),
       channelId: selectedChannel!._id,
     });
-    navigate(`/channels/${selectedChannel!.name}/${post!._id}`);
+
+    if (post) {
+      showToast("포스팅 등록 완료");
+      navigate(`/channels/${selectedChannel!.name}/${post._id}`);
+    }
   };
 
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,7 +66,7 @@ export default function Write() {
     const thumbnails = videoInfo!.snippet!.thumbnails;
     const maxResThumbnailURL = getMaxResolutionThumbnail(thumbnails);
 
-    await updatePost({
+    const data = await updatePost({
       title: JSON.stringify({
         title,
         contents,
@@ -72,8 +76,11 @@ export default function Write() {
       channelId: selectedChannel!._id,
       postId,
     });
-    showToast("포스팅 수정 완료", 1000);
-    navigate(`/channels/${selectedChannel!.name}/${postId}`);
+
+    if (data) {
+      showToast("포스팅 수정 완료");
+      navigate(`/channels/${selectedChannel!.name}/${postId}`);
+    }
   };
 
   const getMaxResolutionThumbnail = (thumbnails: ThumbnailsType) => {

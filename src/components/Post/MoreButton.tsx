@@ -26,7 +26,7 @@ export default function MoreButton({ post }: { post: Post }) {
       children: "정말로 포스팅을 삭제하시겠습니까?",
       onConfirm: () => {
         handleDeletePost(); // 삭제 함수 실행
-        showToast("포스팅이 삭제되었습니다.", 1000);
+        showToast("포스팅이 삭제되었습니다.");
       },
     });
   };
