@@ -18,5 +18,17 @@ export const useModalStore = create<ModalStore>((set) => ({
   children: undefined,
   onClose: () => set({ isOpen: false }), // 모달 닫기
   onConfirm: () => set({ isOpen: false }), // 모달 닫기 후 작업 수행
-  setModal: (props) => set({ ...props }), // 상태 동적으로 설정
+  setModal: (props) =>
+    set((state) => ({
+      ...state,
+      ...props,
+      onClose: () => {
+        if (props.onClose) props.onClose();
+        set({ isOpen: false });
+      },
+      onConfirm: () => {
+        if (props.onConfirm) props.onConfirm();
+        set({ isOpen: false });
+      },
+    })), // 상태 동적으로 설정
 }));

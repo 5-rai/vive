@@ -11,8 +11,8 @@ export default function MoreButton({ post }: { post: Post }) {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
   const [isOpen, setIsOpen] = useState(false);
-  const { setModal } = useModalStore();
-  const { showToast } = useToastStore();
+  const setModal = useModalStore((state) => state.setModal);
+  const showToast = useToastStore((state) => state.showToast);
   const handleDeletePost = async () => {
     await deletePost(post._id);
     navigate(`/channels/${post.channel.name}`);
@@ -26,10 +26,8 @@ export default function MoreButton({ post }: { post: Post }) {
       children: "정말로 포스팅을 삭제하시겠습니까?",
       onConfirm: () => {
         handleDeletePost(); // 삭제 함수 실행
-        setModal({ isOpen: false }); // 모달 닫기
         showToast("포스팅이 삭제되었습니다.", 1000);
       },
-      onClose: () => setModal({ isOpen: false }), // 모달 닫기
     });
   };
   return (

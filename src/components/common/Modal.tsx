@@ -4,7 +4,7 @@ import { useModalStore } from "../../store/modalStore";
 export default function Modal() {
   const { isOpen, confirmText, cancelText, children, onClose, onConfirm } =
     useModalStore();
-  if (isOpen) return null; // 모달이 닫힌 상태라면 렌더링하지 않음
+  if (!isOpen) return null; // 모달이 닫힌 상태라면 렌더링하지 않음
 
   return createPortal(
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">

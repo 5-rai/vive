@@ -13,7 +13,8 @@ export default function CommentItem({
   comment: Comment;
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
-  const { showToast } = useToastStore();
+  const showToast = useToastStore((state) => state.showToast);
+  const setModal = useModalStore((state) => state.setModal);
   const loggedInUser = useAuthStore((state) => state.user);
   const formattedTimeAgo = formatTimeAgo(comment.createdAt);
 
@@ -38,17 +39,13 @@ export default function CommentItem({
   };
 
   const openDeleteModal = () => {
-    useModalStore.getState().setModal({
+    setModal({
       isOpen: true,
       confirmText: "삭제",
-      cancelText: "닫기",
+      cancelText: "취소",
       children: <div>댓글을 삭제하시겠습니까?</div>,
       onConfirm: async () => {
         await handleDelete(); // 삭제 작업 수행
-        useModalStore.getState().setModal({ isOpen: false }); // 모달 닫기
-      },
-      onClose: () => {
-        useModalStore.getState().setModal({ isOpen: false }); // 모달 닫기
       },
     });
   };

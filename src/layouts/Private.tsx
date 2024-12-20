@@ -7,11 +7,11 @@ function Private() {
   const navigate = useNavigate();
   const [show, setIsShow] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const modalStore = useModalStore();
+  const setModal = useModalStore((state) => state.setModal);
 
   useEffect(() => {
     if (!isLoggedIn) {
-      modalStore.setModal({
+      setModal({
         isOpen: true,
         confirmText: "로그인",
         cancelText: "취소",
@@ -23,11 +23,9 @@ function Private() {
           </div>
         ),
         onConfirm: () => {
-          modalStore.setModal({ isOpen: false }); // 모달 닫기
           navigate("/login"); // 로그인 페이지로 이동
         },
         onClose: () => {
-          modalStore.setModal({ isOpen: false }); // 모달 닫기
           navigate("/"); // 홈 페이지로 이동
         },
       });
