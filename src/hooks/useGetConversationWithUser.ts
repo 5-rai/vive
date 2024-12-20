@@ -10,7 +10,6 @@ const useGetConversationWithUser = (userId: string) => {
     if (!userId) return;
 
     try {
-      if (!conversation) setLoading(true);
       const { data } = await axiosInstance.get(`/messages`, {
         params: { userId },
       });
@@ -24,6 +23,7 @@ const useGetConversationWithUser = (userId: string) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getConversationWithUser();
   }, [userId]);
 
