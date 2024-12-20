@@ -78,7 +78,7 @@
   }
 
   .profile {
-    @apply bg-white/20 border border-gray-ee dark:border-gray-ee/50;
+    @apply bg-white/20 border border-gray-ee dark:border-gray-ee/50 object-cover;
   }
 
   .profile-hover {
