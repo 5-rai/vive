@@ -1,9 +1,20 @@
 import { NavLink } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { useChannelStore } from "../../store/channelStore";
+import { useEffect, useState } from "react";
 
 export default function ChannelList() {
-  const channels = useChannelStore((state) => state.channels);
+  const getChannels = useChannelStore((state) => state.getChannels);
+  const [channels, setChannels] = useState<Channel[]>([]);
+
+  useEffect(() => {
+    const fetchChannels = async () => {
+      const loadedChannels = await getChannels();
+      setChannels(loadedChannels);
+    };
+
+    fetchChannels();
+  }, [getChannels]);
 
   return (
     <section className="h-1/2 max-h-fit overflow-y-hidden flex flex-col">
