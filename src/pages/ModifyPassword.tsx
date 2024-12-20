@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router";
-import ModifyProfileInput from "../components/ModifyProfile/ModifyProfileInput";
 import { useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import { axiosInstance } from "../api/axios";
 import { useToastStore } from "../store/toastStore";
+import InputLabel from "../components/common/InputLabel";
 
 export default function ModifyPassword() {
   const { showToast } = useToastStore();
@@ -64,26 +64,28 @@ export default function ModifyPassword() {
   return (
     <section className="mx-auto flex flex-col items-center justify-center">
       <form className="mt-8" onSubmit={handleSubmit}>
-        <ModifyProfileInput
+        <InputLabel
           label="비밀번호"
-          type="password"
           id="password"
-          value={data.password}
-          onChange={handleChange}
-          placeholder="비밀번호를 입력해주세요"
-        />
-        <ModifyProfileInput
-          label="비밀번호 확인"
           type="password"
-          id="passwordCheck"
-          value={data.passwordCheck}
+          value={data.password}
+          placeholder="비밀번호를 입력해주세요"
+          password
           onChange={handleChange}
+        />
+        <InputLabel
+          label="비밀번호 확인"
+          id="passwordCheck"
+          type="password"
+          value={data.passwordCheck}
           placeholder="비밀번호를 다시 한번 입력해주세요"
-          message="비밀번호가 일치하지 않습니다."
+          errorMessage="비밀번호가 일치하지 않습니다."
           isWarning={
             data.passwordCheck.length > 0 &&
             data.password !== data.passwordCheck
           }
+          password
+          onChange={handleChange}
         />
         {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         <div className="flex flex-col gap-5 mt-24">

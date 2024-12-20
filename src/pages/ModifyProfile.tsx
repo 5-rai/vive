@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router";
 import { useState, useRef, useEffect } from "react";
-import ModifyProfileInput from "../components/ModifyProfile/ModifyProfileInput";
 import { updateUser } from "../api/user";
 import { useAuthStore } from "../store/authStore";
 import { useToastStore } from "../store/toastStore";
 import defaultProfileImg from "../../public/logo.png";
+import InputLabel from "../components/common/InputLabel";
 
 export default function ModifyProfile() {
   const { showToast } = useToastStore();
@@ -132,15 +132,15 @@ export default function ModifyProfile() {
 
       {/* 프로필 정보 수정 */}
       <form className="mt-8" onSubmit={handleSubmit}>
-        <ModifyProfileInput
+        <InputLabel
           label="이름"
-          type="text"
           id="username"
+          type="text"
           value={fullName}
-          onChange={handleFullNameChange} // 이름 변경 핸들러 연결
           placeholder="이름을 입력해주세요 (7자 이내)"
-          message={warning.errorMessage}
           isWarning={warning.isWarning}
+          errorMessage={warning.errorMessage}
+          onChange={handleFullNameChange}
         />
         <div className="flex flex-col gap-5 mt-24">
           <button
