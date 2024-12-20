@@ -8,9 +8,23 @@ function Private() {
   const [show, setIsShow] = useState(false);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setModal = useModalStore((state) => state.setModal);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    const handleLogout = () => {
+      setIsLoggingOut(true);
+      navigate("/");
+    };
+
+    window.addEventListener("logout", handleLogout);
+
+    return () => {
+      window.removeEventListener("logout", handleLogout);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn && !isLoggingOut) {
       setModal({
         isOpen: true,
         confirmText: "로그인",

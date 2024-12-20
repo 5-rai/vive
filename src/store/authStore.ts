@@ -24,7 +24,10 @@ export const useAuthStore = create<AuthStore>()(
       checkIsMyUserId: (id) => id === get().user?._id,
       login: (accessToken: string, user: User) =>
         set({ isLoggedIn: true, accessToken, user }),
-      logout: () => set({ isLoggedIn: false, accessToken: null, user: null }),
+      logout: () => {
+        set({ isLoggedIn: false, accessToken: null, user: null });
+        window.dispatchEvent(new CustomEvent("logout"));
+      },
       updateUser: (user: User) =>
         set((state) => ({
           ...state,
