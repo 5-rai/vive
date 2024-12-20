@@ -4,11 +4,13 @@ import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
 import { loginApi } from "../api/auth";
 import { useNavigate } from "react-router";
+import { useToastStore } from "../store/toastStore";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState({ value: "", isWarning: false });
   const [password, setPassword] = useState({ value: "", isWarning: false });
+  const { showToast } = useToastStore();
 
   const validate = (): boolean => {
     let isValid = true;
@@ -34,10 +36,11 @@ export default function Login() {
 
     if (result) {
       console.log("로그인 성공");
+      showToast("로그인 성공", 1000);
       navigate(-1);
       return;
     } else {
-      alert("로그인 중 문제가 발생했습니다. 다시 시도해주세요.");
+      showToast("로그인 중 문제가 발생했습니다. 다시 시도해주세요.", 1000);
       return;
     }
   };
