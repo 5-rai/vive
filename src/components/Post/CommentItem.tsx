@@ -2,9 +2,8 @@ import { NavLink } from "react-router";
 import profileImg from "../../assets/profileImg.jpg";
 import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
-import Modal from "../common/Modal";
+import { useModalStore } from "../../store/modalStore";
 import { useToastStore } from "../../store/toastStore";
-import { useState } from "react";
 import formatTimeAgo from "../../utils/formatTimeAgo";
 
 export default function CommentItem({
@@ -14,7 +13,6 @@ export default function CommentItem({
   comment: Comment;
   setComments: React.Dispatch<React.SetStateAction<Comment[] | undefined>>;
 }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { showToast } = useToastStore();
   const loggedInUser = useAuthStore((state) => state.user);
   const formattedTimeAgo = formatTimeAgo(comment.createdAt);
@@ -36,9 +34,23 @@ export default function CommentItem({
     } catch (error) {
       console.error("댓글 삭제 실패:", error);
       showToast("오류가 발생했습니다. 다시 시도해주세요.");
-    } finally {
-      setIsModalOpen(false); // 모달 닫기
     }
+  };
+
+  const openDeleteModal = () => {
+    useModalStore.getState().setModal({
+      isOpen: true,
+      confirmText: "삭제",
+      cancelText: "닫기",
+      children: <div>댓글을 삭제하시겠습니까?</div>,
+      onConfirm: async () => {
+        await handleDelete(); // 삭제 작업 수행
+        useModalStore.getState().setModal({ isOpen: false }); // 모달 닫기
+      },
+      onClose: () => {
+        useModalStore.getState().setModal({ isOpen: false }); // 모달 닫기
+      },
+    });
   };
 
   return (
@@ -68,7 +80,7 @@ export default function CommentItem({
         {loggedInUser?._id === comment.author._id && (
           <div className="flex justify-end mt-2">
             <button
-              onClick={() => setIsModalOpen(true)} // 모달 열기
+              onClick={openDeleteModal} // 모달 열기
               className="text-red-500 text-sm"
             >
               삭제
@@ -76,17 +88,6 @@ export default function CommentItem({
           </div>
         )}
       </div>
-
-      {/* 삭제 확인 모달 */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)} // 모달 닫기
-        onConfirm={handleDelete} // 삭제 확인 시 실행
-        confirmText={"삭제"}
-        cancelText={"닫기"}
-      >
-        <div>댓글을 삭제하시겠습니까?</div>
-      </Modal>
     </div>
   );
 }
