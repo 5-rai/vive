@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 import UserAvatar from "../common/UserAvatar";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import { createNotification } from "../../api/notification";
+import { deleteFollow, postFollow } from "../../api/follow";
 
 interface ProfileSectionProps {
   user: User | null;
@@ -19,11 +19,12 @@ export default function ProfileSection({
   const navigate = useNavigate();
   const [isFollow, setIsFollow] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { isLoggedIn } = useAuthStore();
   const [followersCount, setFollowersCount] = useState(
     user?.followers.length || 0
   ); // 팔로워 수 상태 추가
   const [followId, setFollowId] = useState<string | null>(null);
+
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const myId = useAuthStore((state) => state.user)?._id;
 
   useEffect(() => {
@@ -36,22 +37,18 @@ export default function ProfileSection({
     setIsFollow(!!foundFollowId);
   }, [user?.followers]); // followers 배열 변경 시에만 실행
 
-  const handleUnfollow = async () => {
-    if (!followId || !isLoggedIn) {
-      console.error("언팔로우 불가: follow ID or access token 없음");
-      return;
-    }
+  const handleUnFollow = async () => {
+    if (!followId || !isLoggedIn) return;
 
     try {
       setLoading(true);
-      await axiosInstance.delete("/follow/delete", {
-        data: { id: followId },
-      });
-
-      // 상태 직접 업데이트
-      setIsFollow(false);
-      setFollowersCount((prevCount) => Math.max(prevCount - 1, 0));
-      setFollowId(null);
+      const result = await deleteFollow(followId);
+      if (result) {
+        // 상태 직접 업데이트
+        setIsFollow(false);
+        setFollowersCount((prevCount) => Math.max(prevCount - 1, 0));
+        setFollowId(null);
+      }
     } catch (err) {
       console.error("언팔로우 요청 실패:", err);
       // 실패 시 상태 롤백
@@ -66,20 +63,20 @@ export default function ProfileSection({
 
     try {
       setLoading(true);
-      const { data } = await axiosInstance.post<Follow>("/follow/create", {
-        userId: user!._id,
-      });
+      const result = await postFollow(user!._id);
 
-      // 상태 직접 업데이트
-      setIsFollow(true);
-      setFollowersCount((prevCount) => prevCount + 1);
-      setFollowId(data._id);
+      if (result) {
+        // 상태 직접 업데이트
+        setIsFollow(true);
+        setFollowersCount((prevCount) => prevCount + 1);
+        setFollowId(result._id);
 
-      await createNotification({
-        notificationType: "FOLLOW",
-        notificationTypeId: data._id,
-        userId: data.user,
-      });
+        await createNotification({
+          notificationType: "FOLLOW",
+          notificationTypeId: result._id,
+          userId: result.user,
+        });
+      }
     } catch (err) {
       console.error("팔로우 요청 실패:", err);
     } finally {
@@ -93,7 +90,7 @@ export default function ProfileSection({
   };
 
   return (
-    <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 mb-10 p-10 w-full">
+    <article className="border-b border-gray-ee dark:border-gray-ee/50 flex justify-center items-center gap-20 p-10 w-full">
       <UserAvatar name={user?.fullName} image={user?.image} />
       <section className="w-max">
         <div className="flex w-[208px] justify-between mb-4">
@@ -135,9 +132,9 @@ export default function ProfileSection({
               type="button"
               className={twMerge(
                 "w-full py-1 rounded-lg text-sm font-medium",
-                isFollow ? "secondary-btn" : "primary-btn",
+                isFollow ? "secondary-btn" : "primary-btn"
               )}
-              onClick={isFollow ? handleUnfollow : handleFollow}
+              onClick={isFollow ? handleUnFollow : handleFollow}
               disabled={loading}
             >
               {isFollow ? "언팔로우" : "팔로우"}
