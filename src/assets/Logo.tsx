@@ -21,8 +21,8 @@ export default function Logo({ className }: IconProps) {
           y2="20.6585"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FCC404" />
-          <stop offset="1" stop-color="#F38304" />
+          <stop stopColor="#FCC404" />
+          <stop offset="1" stopColor="#F38304" />
         </linearGradient>
       </defs>
     </svg>
