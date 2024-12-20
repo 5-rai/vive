@@ -1,25 +1,12 @@
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
+import { useModalStore } from "../../store/modalStore";
 
-interface ModalProps {
-  isOpen: boolean;
-  children?: React.ReactNode; // children 타입 추가
-  confirmText: string;
-  cancelText: string;
-  onClose: () => void;
-  onConfirm: () => void;
-}
-
-export default function Modal({
-  isOpen,
-  children,
-  confirmText,
-  cancelText,
-  onClose,
-  onConfirm,
-}: ModalProps) {
+export default function Modal() {
+  const { isOpen, confirmText, cancelText, children, onClose, onConfirm } =
+    useModalStore();
   if (!isOpen) return null; // 모달이 닫힌 상태라면 렌더링하지 않음
 
-  return ReactDOM.createPortal(
+  return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="w-[500px] h-[261px] px-[100px] pt-20 pb-[60px] bg-white rounded-xl shadow flex-col justify-start items-center gap-[49px] inline-flex">
         <div className="self-stretch text-center font-semibold text-[#222222] text-xl uppercase leading-loose">

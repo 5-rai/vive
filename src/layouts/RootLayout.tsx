@@ -3,9 +3,11 @@ import Header from "./Header";
 import ThemeButton from "./ThemeButton";
 import { useToastStore } from "../store/toastStore";
 import { Toast } from "../components/common/Toast";
+import Modal from "../components/common/Modal";
 
 export default function RootLayout() {
   const { isToastVisible, toastMessage } = useToastStore();
+
   return (
     <>
       <Header />
@@ -14,6 +16,7 @@ export default function RootLayout() {
       </main>
       <ThemeButton />
       <Toast isVisible={isToastVisible} message={toastMessage} />
+      <Modal />
     </>
   );
 }

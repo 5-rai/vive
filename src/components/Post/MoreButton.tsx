@@ -4,21 +4,34 @@ import { useThemeStore } from "../../store/themeStore";
 import { deletePost } from "../../api/post";
 import MoreIcon from "../../assets/MoreIcon";
 import Dropdown from "../common/Dropdown";
+import { useModalStore } from "../../store/modalStore";
+import { useToastStore } from "../../store/toastStore";
 
 export default function MoreButton({ post }: { post: Post }) {
   const navigate = useNavigate();
   const isDarkMode = useThemeStore((state) => state.isDarkMode);
-
   const [isOpen, setIsOpen] = useState(false);
-
+  const { setModal } = useModalStore();
+  const { showToast } = useToastStore();
   const handleDeletePost = async () => {
-    const isConfirmed = window.confirm("정말로 포스팅을 삭제하시겠습니까?");
-    if (isConfirmed) {
-      await deletePost(post._id);
-      navigate(`/channels/${post.channel.name}`);
-    }
+    await deletePost(post._id);
+    navigate(`/channels/${post.channel.name}`);
   };
 
+  const openDeleteModal = () => {
+    setModal({
+      isOpen: true,
+      confirmText: "삭제",
+      cancelText: "취소",
+      children: "정말로 포스팅을 삭제하시겠습니까?",
+      onConfirm: () => {
+        handleDeletePost(); // 삭제 함수 실행
+        setModal({ isOpen: false }); // 모달 닫기
+        showToast("포스팅이 삭제되었습니다.", 1000);
+      },
+      onClose: () => setModal({ isOpen: false }), // 모달 닫기
+    });
+  };
   return (
     <div className="relative">
       <button
@@ -45,7 +58,7 @@ export default function MoreButton({ post }: { post: Post }) {
         <button
           type="button"
           className="py-1.5 text-center text-red-accent hover:bg-red-accent dark:hover:bg-red-accent/80 hover:text-white transition-colors"
-          onClick={handleDeletePost}
+          onClick={openDeleteModal}
         >
           삭제
         </button>
