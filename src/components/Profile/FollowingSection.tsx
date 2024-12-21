@@ -44,7 +44,9 @@ export default function FollowingSection({
       </h2>
       {followingList.length === 0 ? (
         <div className="flex items-center justify-center my-20">
-          <p className="text-lg text-center">팔로잉한 사용자가 없습니다.</p>
+          <p className="text-lg text-center text-gray-54">
+            현재 팔로잉한 유저가 없어요...
+          </p>
         </div>
       ) : (
         <section className="relative px-7">
