@@ -77,4 +77,17 @@
   .profile-hover {
     @apply group-hover:border-gray-c8 group-hover:bg-white/80;
   }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .toast {
+    animation: fadeIn 0.3s ease-in-out;
+  }
 }
