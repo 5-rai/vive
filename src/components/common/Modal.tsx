@@ -15,13 +15,13 @@ export default function Modal() {
         <div className="self-stretch flex items-center gap-5">
           <button
             onClick={onConfirm}
-            className="grow shrink basis-0 h-10 bg-primary rounded-full justify-center items-center flex text-gray-22 text-base font-medium"
+            className="grow shrink basis-0 h-10 rounded-full justify-center items-center flex text-base font-medium primary-btn"
           >
             {confirmText}
           </button>
           <button
             onClick={onClose}
-            className="grow shrink basis-0 h-10 bg-gray-c8 rounded-full justify-center items-center flex text-gray-22 text-base font-medium"
+            className="grow shrink basis-0 h-10 rounded-full justify-center items-center flex text-base font-medium cancel-btn"
           >
             {cancelText}
           </button>

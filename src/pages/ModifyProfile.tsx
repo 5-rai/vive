@@ -122,7 +122,7 @@ export default function ModifyProfile() {
           </button>
           <button
             type="button"
-            className="px-5 py-2 rounded-lg bg-[#E7E7E7] hover:bg-gray-c8 dark:text-gray-22 font-medium"
+            className="px-5 py-2 rounded-lg font-medium cancel-btn"
             onClick={handleImageDelete}
           >
             이미지 삭제
