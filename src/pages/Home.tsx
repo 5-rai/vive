@@ -1,14 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
-import { axiosInstance } from "../api/axios";
 import { Link } from "react-router";
 import UserAvatar from "../components/common/UserAvatar";
-import RecentPosts from "../components/Home/RecentPosts";
 import { useAllUserStore } from "../store/allUserStore";
 import { useChannelStore } from "../store/channelStore";
 import SucodingAd from "../components/Home/SucodingAd";
 import IndistreetAd from "../components/Home/IndistreetAd";
 import { useWeekArtistStore } from "../store/weekArtist";
-import defaultProfileImg from "../../public/logo.png";
+import RecentPost from "../components/Home/RecentPost";
+import { getChannelPosts } from "../api/post";
 
 export default function Home() {
   const weekArtists = useWeekArtistStore((state) => state.weekArtists);
@@ -32,11 +31,9 @@ export default function Home() {
       const results: Record<string, ChannelPosts> = {};
       await Promise.all(
         channelIds.map(async (channel) => {
-          try {
-            const response = await axiosInstance.get(
-              `/posts/channel/${channel.id}`
-            );
-            const sortedPosts = response.data
+          const result = await getChannelPosts(channel.id);
+          if (result) {
+            const sortedPosts = result
               .sort(
                 (a: Post, b: Post) =>
                   new Date(b.createdAt).getTime() -
@@ -44,8 +41,7 @@ export default function Home() {
               )
               .slice(0, 4);
             results[channel.id] = { posts: sortedPosts, name: channel.name };
-          } catch (error) {
-            console.error("포스트 가져오기 실패:", error);
+          } else {
             results[channel.id] = { posts: [], name: channel.name };
           }
         })
@@ -67,7 +63,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="mx-auto py-10 flex-col justify-start flex w-[952px] gap-24 overflow-y-auto">
+    <section className="mx-auto py-10 flex-col flex w-[952px] gap-24 overflow-y-auto">
       {/* 금주의 아티스트 */}
       <section>
         <div className="mb-3">
@@ -100,30 +96,18 @@ export default function Home() {
                 </span>
                 <span className="text-2xl font-semibold"> 포스트</span>
               </div>
-              <div className="flex flex-wrap gap-10">
+              <section className="flex flex-wrap gap-10">
                 {posts
                   .filter((post: Post) => post.title.includes("{")) // 중괄호 포함된 title만 필터링
-                  .map((post: Post) => {
-                    const parsedTitle = JSON.parse(post.title);
-                    const postData = {
-                      title: parsedTitle.title,
-                      description: parsedTitle.contents,
-                      imageUrl: parsedTitle.image || defaultProfileImg,
-                      avatarImg: post.author?.image || defaultProfileImg,
-                      channelName: name,
-                      postId: post._id,
-                      userId: post.author?._id ?? "",
-                      userName: post.author?.fullName ?? "",
-                    };
-
-                    return <RecentPosts key={post._id} post={postData} />;
-                  })}
-              </div>
+                  .map((post: Post) => (
+                    <RecentPost key={post._id} post={post} channelName={name} />
+                  ))}
+              </section>
             </section>
             {index === 2 && <SucodingAd />}
           </Fragment>
         ))}
       <IndistreetAd />
-    </div>
+    </section>
   );
 }

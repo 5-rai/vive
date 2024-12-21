@@ -24,6 +24,18 @@ export const getOnePost = async (postId?: string) => {
   }
 };
 
+export const getChannelPosts = async (channelId: string) => {
+  try {
+    const { data } = await axiosInstance.get<Post[]>(
+      `/posts/channel/${channelId}`
+    );
+    return data;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
 interface UpdatePostProps {
   postId: string;
   title: string;
