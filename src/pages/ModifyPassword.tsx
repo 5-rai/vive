@@ -1,8 +1,13 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useToastStore } from "../store/toastStore";
 import InputLabel from "../components/common/InputLabel";
 import { updatePassword } from "../api/user";
+import {
+  PROFILE_ERROR_MESSAGE,
+  PROFILE_PLACEHOLDER,
+  PROFILE_TOAST_MESSAGE,
+} from "../constants/ModifyProfile";
 
 export default function ModifyPassword() {
   const [data, setData] = useState({
@@ -26,10 +31,10 @@ export default function ModifyPassword() {
 
     try {
       await updatePassword(data.password); // axios로 함수 호출
-      showToast("비밀번호가 변경되었습니다.");
+      showToast(PROFILE_TOAST_MESSAGE.password);
       navigate("/mypage");
     } catch {
-      showToast("비밀번호 변경에 실패했습니다.");
+      showToast(PROFILE_TOAST_MESSAGE.passwordErr);
     }
   };
 
@@ -47,7 +52,7 @@ export default function ModifyPassword() {
           id="password"
           type="password"
           value={data.password}
-          placeholder="비밀번호를 입력해주세요"
+          placeholder={PROFILE_PLACEHOLDER.password}
           password
           onChange={handleChange}
         />
@@ -56,8 +61,8 @@ export default function ModifyPassword() {
           id="passwordCheck"
           type="password"
           value={data.passwordCheck}
-          placeholder="비밀번호를 다시 한번 입력해주세요"
-          errorMessage="비밀번호가 일치하지 않습니다."
+          placeholder={PROFILE_PLACEHOLDER.passwordCheck}
+          errorMessage={PROFILE_ERROR_MESSAGE.password}
           isWarning={
             data.passwordCheck.length > 0 &&
             data.password !== data.passwordCheck
@@ -73,14 +78,13 @@ export default function ModifyPassword() {
           >
             비밀번호 변경
           </button>
-          <Link to="/mypage">
-            <button
-              type="button"
-              className="w-[400px] py-2 rounded-[50px] secondary-btn"
-            >
-              취소
-            </button>
-          </Link>
+          <button
+            type="button"
+            className="w-[400px] py-2 rounded-[50px] secondary-btn"
+            onClick={() => navigate("/mypage")}
+          >
+            취소
+          </button>
         </div>
       </form>
     </section>

@@ -6,7 +6,7 @@ export const AUTH_PLACEHOLDERS = {
   password: "비밀번호를 입력해주세요",
 } as const;
 
-export const TOAST_MESSAGE = {
+export const AUTH_TOAST_MESSAGE = {
   login: "로그인이 완료되었습니다.",
   loginErr: "로그인에 실패했습니다. 정보를 확인하고 다시 시도해주세요.",
   register: "회원가입이 완료되었습니다.",

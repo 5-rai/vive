@@ -1,10 +1,15 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useState, useRef, useEffect } from "react";
 import { updateUser } from "../api/user";
 import { useAuthStore } from "../store/authStore";
 import { useToastStore } from "../store/toastStore";
 import defaultProfileImg from "../../public/logo.png";
 import InputLabel from "../components/common/InputLabel";
+import {
+  PROFILE_ERROR_MESSAGE,
+  PROFILE_TOAST_MESSAGE,
+} from "../constants/ModifyProfile";
+import { MAX_NAME_LENGTH } from "../constants/auth";
 
 export default function ModifyProfile() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage>();
@@ -48,14 +53,14 @@ export default function ModifyProfile() {
     if (!fullName.trim()) {
       setWarning({
         isWarning: true,
-        errorMessage: "공백만 있는 이름은 사용할 수 없습니다.",
+        errorMessage: PROFILE_ERROR_MESSAGE.blank,
       });
       return;
     }
-    if (fullName.length > 7) {
+    if (fullName.length > MAX_NAME_LENGTH) {
       setWarning({
         isWarning: true,
-        errorMessage: "이름은 최대 7자까지만 입력할 수 있습니다.",
+        errorMessage: PROFILE_ERROR_MESSAGE.exceed,
       });
       return;
     }
@@ -66,10 +71,10 @@ export default function ModifyProfile() {
       fullName !== user?.fullName ? fullName.trim() : null
     );
     if (result) {
-      showToast("프로필이 수정되었습니다.");
+      showToast(PROFILE_TOAST_MESSAGE.profile);
       navigate("/mypage");
     } else {
-      showToast("프로필 수정에 실패했습니다.");
+      showToast(PROFILE_TOAST_MESSAGE.profileErr);
     }
   };
 
@@ -108,7 +113,7 @@ export default function ModifyProfile() {
             />
           </div>
         </div>
-        <div className="imgModifyBtn gap-5">
+        <div>
           <button
             type="button"
             className="px-5 py-2 mr-5 rounded-lg primary-btn font-medium"
@@ -150,14 +155,13 @@ export default function ModifyProfile() {
           >
             수정
           </button>
-          <Link to="/mypage">
-            <button
-              type="button"
-              className="w-[400px] py-2 rounded-[50px] secondary-btn"
-            >
-              취소
-            </button>
-          </Link>
+          <button
+            type="button"
+            className="w-[400px] py-2 rounded-[50px] secondary-btn"
+            onClick={() => navigate("/mypage")}
+          >
+            취소
+          </button>
         </div>
       </form>
     </section>

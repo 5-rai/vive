@@ -9,7 +9,7 @@ import {
   AUTH_PLACEHOLDERS,
   MAX_NAME_LENGTH,
   REGISTER_ERROR_MESSAGE,
-  TOAST_MESSAGE,
+  AUTH_TOAST_MESSAGE,
 } from "../constants/auth";
 
 export default function Register() {
@@ -74,10 +74,10 @@ export default function Register() {
     });
 
     if (result) {
-      showToast(TOAST_MESSAGE.register);
+      showToast(AUTH_TOAST_MESSAGE.register);
       navigate("/login");
     } else {
-      showToast(TOAST_MESSAGE.registerErr);
+      showToast(AUTH_TOAST_MESSAGE.registerErr);
     }
   };
 

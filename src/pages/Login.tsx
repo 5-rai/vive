@@ -5,7 +5,7 @@ import Logo from "../assets/Logo";
 import { login } from "../api/auth";
 import { useNavigate } from "react-router";
 import { useToastStore } from "../store/toastStore";
-import { AUTH_PLACEHOLDERS, TOAST_MESSAGE } from "../constants/auth";
+import { AUTH_PLACEHOLDERS, AUTH_TOAST_MESSAGE } from "../constants/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function Login() {
     });
 
     if (result) {
-      showToast(TOAST_MESSAGE.login);
+      showToast(AUTH_TOAST_MESSAGE.login);
       const referrer = document.referrer;
       const currentDomain = window.location.origin;
 
@@ -47,7 +47,7 @@ export default function Login() {
       }
       return;
     } else {
-      showToast(TOAST_MESSAGE.loginErr);
+      showToast(AUTH_TOAST_MESSAGE.loginErr);
       return;
     }
   };
