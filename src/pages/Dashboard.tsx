@@ -26,7 +26,7 @@ export default function Dashboard() {
     };
 
     fetchChannelIdAndPosts();
-  }, [channelName, getIdFromName]);
+  }, [channelName]);
 
   // 선택된 채널의 포스트 목록 API 요청
   const fetchPosts = async (channelId: string) => {
