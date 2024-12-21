@@ -12,7 +12,7 @@ const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 export default function Write() {
   const navigate = useNavigate();
   const { postId } = useParams();
-  const debounceTimer = useRef(0);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [videoInfo, setVideoInfo] = useState<Partial<YoutubeVideoType>>();
   const [isDisabled, setIsDisabled] = useState(false);
@@ -27,11 +27,11 @@ export default function Write() {
   });
   const { showToast } = useToastStore();
   const handleChange = (value: string) => {
-    setYoutubeUrl({
-      ...youtubeUrl,
+    setYoutubeUrl((prev) => ({
+      ...prev,
       value,
       isWarning: false,
-    });
+    }));
     createBookmark(value);
   };
 
@@ -101,7 +101,7 @@ export default function Write() {
     debounceTimer.current = setTimeout(async () => {
       url = url.trim();
       if (!youtubeLinkRegex.test(url)) {
-        setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
+        setYoutubeUrl((prev) => ({ ...prev, value: url, isWarning: true }));
         setVideoInfo(undefined);
         return;
       }
@@ -112,15 +112,15 @@ export default function Write() {
 
       if (videoInfo) {
         setVideoInfo(videoInfo);
-        setYoutubeUrl({
-          ...youtubeUrl,
+        setYoutubeUrl((prev) => ({
+          ...prev,
           value: url,
           validUrl: url,
           isWarning: false,
-        });
+        }));
       } else {
         setVideoInfo(undefined);
-        setYoutubeUrl({ ...youtubeUrl, isWarning: true });
+        setYoutubeUrl((prev) => ({ ...prev, isWarning: true }));
       }
     }, 500);
   };
