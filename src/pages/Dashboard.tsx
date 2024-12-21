@@ -18,11 +18,15 @@ export default function Dashboard() {
 
   // 선택된 채널 찾기 및 해당 채널의 포스트 불러오기
   useEffect(() => {
-    if (!channelName) return;
+    const fetchChannelIdAndPosts = async () => {
+      if (!channelName) return;
 
-    const channelId = getIdFromName(channelName);
-    if (channelId) fetchPosts(channelId);
-  }, [channelName, getIdFromName]);
+      const channelId = await getIdFromName(channelName);
+      if (channelId) fetchPosts(channelId);
+    };
+
+    fetchChannelIdAndPosts();
+  }, [channelName]);
 
   // 선택된 채널의 포스트 목록 API 요청
   const fetchPosts = async (channelId: string) => {

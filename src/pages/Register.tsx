@@ -3,8 +3,8 @@ import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
 import { useNavigate } from "react-router";
-import { axiosInstance } from "../api/axios";
 import { useToastStore } from "../store/toastStore";
+import { signup } from "../api/auth";
 
 export default function Register() {
   const [name, setName] = useState({
@@ -57,20 +57,21 @@ export default function Register() {
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
-    try {
-      axiosInstance.post("/signup", {
-        email: email.value,
-        fullName: name.value.trim(),
-        password: password.value,
-      });
-      showToast("회원가입 완료 🎉");
+
+    const result = await signup({
+      email: email.value,
+      fullName: name.value.trim(),
+      password: password.value,
+    });
+
+    if (result) {
+      showToast("회원가입이 완료되었습니다.");
       navigate("/login");
-    } catch (error) {
-      console.error("Error:", error);
-      showToast("회원가입 실패 ❌ 다시 시도해주세요.");
+    } else {
+      showToast("회원가입에 실패했습니다. 다시 시도해주세요.");
     }
   };
 

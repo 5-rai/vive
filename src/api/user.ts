@@ -54,3 +54,14 @@ export const updateUser = async (
     return false;
   }
 };
+
+export const updatePassword = async (password: string) => {
+  try {
+    await axiosInstance.put("/settings/update-password", {
+      password,
+    });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    throw error;
+  }
+};

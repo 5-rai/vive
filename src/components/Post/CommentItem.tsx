@@ -1,10 +1,10 @@
 import { NavLink } from "react-router";
 import profileImg from "../../assets/profileImg.jpg";
-import { axiosInstance } from "../../api/axios";
 import { useAuthStore } from "../../store/authStore";
 import { useModalStore } from "../../store/modalStore";
 import { useToastStore } from "../../store/toastStore";
 import formatTimeAgo from "../../utils/formatTimeAgo";
+import { deleteComment } from "../../api/comment";
 
 export default function CommentItem({
   comment,
@@ -18,36 +18,29 @@ export default function CommentItem({
   const loggedInUser = useAuthStore((state) => state.user);
   const formattedTimeAgo = formatTimeAgo(comment.createdAt);
 
-  const handleDelete = async () => {
-    try {
-      const response = await axiosInstance.delete(`/comments/delete`, {
-        data: { id: comment._id },
-      });
-
-      if (response.status === 200) {
-        setComments((prev) =>
-          prev!.filter((prevComment) => prevComment._id !== comment._id)
-        );
-        showToast("댓글이 성공적으로 삭제되었습니다.");
-      } else {
-        showToast(response.data?.message || "댓글 삭제에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("댓글 삭제 실패:", error);
-      showToast("오류가 발생했습니다. 다시 시도해주세요.");
-    }
-  };
-
   const openDeleteModal = () => {
     setModal({
       isOpen: true,
       confirmText: "삭제",
       cancelText: "취소",
-      children: <div>댓글을 삭제하시겠습니까?</div>,
+      children: "댓글을 삭제하시겠습니까?",
       onConfirm: async () => {
         await handleDelete(); // 삭제 작업 수행
       },
     });
+  };
+
+  const handleDelete = async () => {
+    const response = await deleteComment({ id: comment._id });
+
+    if (response && response.status === 200) {
+      setComments((prev) =>
+        prev!.filter((prevComment) => prevComment._id !== comment._id)
+      );
+      showToast("댓글이 삭제되었습니다.");
+    } else {
+      showToast("댓글 삭제에 실패했습니다.");
+    }
   };
 
   return (

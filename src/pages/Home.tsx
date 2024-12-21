@@ -11,55 +11,59 @@ import { useWeekArtistStore } from "../store/weekArtist";
 import defaultProfileImg from "../../public/logo.png";
 
 export default function Home() {
-  const users = useAllUserStore((state) => state.users);
   const weekArtists = useWeekArtistStore((state) => state.weekArtists);
   const pickedDate = useWeekArtistStore((state) => state.pickedDate);
+  const getUsers = useAllUserStore((state) => state.getUsers);
   const pickWeekArtists = useWeekArtistStore((state) => state.pickWeekArtists);
-  const channels = useChannelStore((state) => state.channels);
+  const getChannels = useChannelStore((state) => state.getChannels);
   const [channelPosts, setChannelPosts] = useState<
     Record<string, ChannelPosts>
   >({}); // 채널별 포스트 저장
 
-  const channelIds = channels.slice(0, 10).map((channel: Channel) => ({
-    id: channel._id,
-    name: channel.name,
-  }));
-
-  // 채널별 포스트 목록 가져오기
-  const fetchPostsForChannels = async () => {
-    const results: Record<string, ChannelPosts> = {};
-    await Promise.all(
-      channelIds.map(async (channel) => {
-        try {
-          const response = await axiosInstance.get(
-            `/posts/channel/${channel.id}`
-          );
-          const sortedPosts = response.data
-            .sort(
-              (a: Post, b: Post) =>
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime()
-            )
-            .slice(0, 4);
-          results[channel.id] = { posts: sortedPosts, name: channel.name };
-        } catch (error) {
-          console.error("포스트 가져오기 실패:", error);
-          results[channel.id] = { posts: [], name: channel.name };
-        }
-      })
-    );
-    setChannelPosts(results);
-  };
-
   useEffect(() => {
-    const diffInMs = new Date().getTime() - new Date(pickedDate).getTime();
-    const diffInWeek = diffInMs / 1000 / 60 / 60 / 24 / 7; // 일주일
-    if (weekArtists.length === 0 || diffInWeek >= 1) {
-      pickWeekArtists(users);
-    }
-    if (channelIds.length > 0) {
-      fetchPostsForChannels();
-    }
+    const fetchPostsForChannels = async () => {
+      const channels = await getChannels();
+
+      const channelIds = channels.slice(0, 10).map((channel: Channel) => ({
+        id: channel._id,
+        name: channel.name,
+      }));
+
+      const results: Record<string, ChannelPosts> = {};
+      await Promise.all(
+        channelIds.map(async (channel) => {
+          try {
+            const response = await axiosInstance.get(
+              `/posts/channel/${channel.id}`
+            );
+            const sortedPosts = response.data
+              .sort(
+                (a: Post, b: Post) =>
+                  new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime()
+              )
+              .slice(0, 4);
+            results[channel.id] = { posts: sortedPosts, name: channel.name };
+          } catch (error) {
+            console.error("포스트 가져오기 실패:", error);
+            results[channel.id] = { posts: [], name: channel.name };
+          }
+        })
+      );
+      setChannelPosts(results);
+    };
+
+    const updateWeekArtists = async () => {
+      const users = await getUsers();
+      const diffInMs = new Date().getTime() - new Date(pickedDate).getTime();
+      const diffInWeek = diffInMs / 1000 / 60 / 60 / 24 / 7; // 일주일
+      if (weekArtists.length === 0 || diffInWeek >= 1) {
+        pickWeekArtists(users);
+      }
+    };
+
+    fetchPostsForChannels();
+    updateWeekArtists();
   }, []);
 
   return (
@@ -84,7 +88,7 @@ export default function Home() {
       {/* 채널별 섹션 및 광고 */}
       {Object.entries(channelPosts)
         .sort()
-        .filter(([_, { posts }]) => posts.length > 0)
+        .filter(([, { posts }]) => posts.length > 0)
         .map(([channelId, { posts, name }]: [string, ChannelPosts], index) => (
           <Fragment key={`recent-${channelId}`}>
             {/* 채널 섹션 */}

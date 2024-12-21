@@ -4,22 +4,15 @@
 
 @layer components {
   .primary-btn {
-    background: #fcc404;
-    color: #222222;
-  }
-  .primary-btn:hover {
-    background: rgba(252, 196, 4, 0.8);
-  }
-  .primary-btn:disabled {
-    background: #c8c8c8;
+    @apply bg-primary text-gray-22 hover:bg-primary/80 disabled:bg-gray-c8;
   }
 
   .secondary-btn {
-    background: #fbefbf;
-    color: #222222;
+    @apply bg-secondary text-gray-22 hover:bg-secondary/80;
   }
-  .secondary-btn:hover {
-    background: rgba(251, 239, 191, 0.8);
+
+  .cancel-btn {
+    @apply bg-[#CCCCCC] text-gray-22 hover:bg-[#CCCCCC]/80;
   }
 
   .profile-shadow {
@@ -83,5 +76,18 @@
 
   .profile-hover {
     @apply group-hover:border-gray-c8 group-hover:bg-white/80;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .toast {
+    animation: fadeIn 0.3s ease-in-out;
   }
 }

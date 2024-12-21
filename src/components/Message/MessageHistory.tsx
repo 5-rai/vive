@@ -15,7 +15,12 @@ const MessageHistory = forwardRef<HTMLElement, MessageHistoryProps>(
     const getUser = useAllUserStore((state) => state.getUser);
 
     useEffect(() => {
-      setUserInfo(getUser(userId));
+      const fetchUserInfo = async () => {
+        const user = await getUser(userId);
+        setUserInfo(user);
+      };
+
+      fetchUserInfo();
     }, [userId]);
 
     return (

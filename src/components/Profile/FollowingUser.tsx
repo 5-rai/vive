@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 import { useAllUserStore } from "../../store/allUserStore";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createNotification } from "../../api/notification";
 import { deleteFollow, postFollow } from "../../api/follow";
 import defaultProfileImg from "../../../public/logo.png";
@@ -13,11 +13,10 @@ interface FollowingUser {
 }
 
 export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
-  const getUser = useAllUserStore((state) => state.getUser);
-  const userInfo = getUser(user.user);
-  const navigate = useNavigate();
-
+  const [userInfo, setUserInfo] = useState<User>();
   const [loading, setLoading] = useState(false);
+  const getUser = useAllUserStore((state) => state.getUser);
+  const navigate = useNavigate();
 
   const handleFollow = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -58,6 +57,15 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const data = await getUser(user.user);
+      setUserInfo(data);
+    };
+
+    fetchUserInfo();
+  }, []);
 
   return (
     <article

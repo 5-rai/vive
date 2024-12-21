@@ -7,7 +7,6 @@ import defaultProfileImg from "../../public/logo.png";
 import InputLabel from "../components/common/InputLabel";
 
 export default function ModifyProfile() {
-  const { showToast } = useToastStore();
   const [selectedImage, setSelectedImage] = useState<SelectedImage>();
   const [fullName, setFullName] = useState("");
   const [warning, setWarning] = useState({
@@ -16,17 +15,10 @@ export default function ModifyProfile() {
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const defaultImgRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
-  const { user } = useAuthStore();
 
-  // 컴포넌트 마운트 시 사용자 정보 불러오기
-  useEffect(() => {
-    if (user) {
-      setFullName(user.fullName);
-      if (user.image) setSelectedImage({ src: user.image, file: null });
-      else selectDefaultImage();
-    }
-  }, []);
+  const user = useAuthStore((state) => state.user);
+  const showToast = useToastStore((state) => state.showToast);
+  const navigate = useNavigate();
 
   // 이름 변경 핸들러
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,15 +33,6 @@ export default function ModifyProfile() {
 
     const fileURL = URL.createObjectURL(file);
     setSelectedImage({ src: fileURL, file }); // 로컬 이미지 미리 보기
-  };
-
-  const handleButtonClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  // 이미지 삭제 핸들러 (logo.png로 설정)
-  const handleImageDelete = () => {
-    selectDefaultImage();
   };
 
   const selectDefaultImage = async () => {
@@ -82,9 +65,22 @@ export default function ModifyProfile() {
       selectedImage.src !== user?.image ? selectedImage : null,
       fullName !== user?.fullName ? fullName.trim() : null
     );
-    if (result) showToast("프로필이 수정되었습니다.");
-    navigate("/mypage");
+    if (result) {
+      showToast("프로필이 수정되었습니다.");
+      navigate("/mypage");
+    } else {
+      showToast("프로필 수정에 실패했습니다.");
+    }
   };
+
+  // 컴포넌트 마운트 시 사용자 정보 불러오기
+  useEffect(() => {
+    if (user) {
+      setFullName(user.fullName);
+      if (user.image) setSelectedImage({ src: user.image, file: null });
+      else selectDefaultImage();
+    }
+  }, []);
 
   return (
     <section className="mx-auto flex flex-col items-center justify-center">
@@ -116,14 +112,18 @@ export default function ModifyProfile() {
           <button
             type="button"
             className="px-5 py-2 mr-5 rounded-lg primary-btn font-medium"
-            onClick={handleButtonClick}
+            onClick={() => {
+              fileInputRef.current?.click();
+            }}
           >
             이미지 선택
           </button>
           <button
             type="button"
-            className="px-5 py-2 rounded-lg bg-[#E7E7E7] hover:bg-gray-c8 dark:text-gray-22 font-medium"
-            onClick={handleImageDelete}
+            className="px-5 py-2 rounded-lg font-medium cancel-btn"
+            onClick={() => {
+              selectDefaultImage();
+            }}
           >
             이미지 삭제
           </button>

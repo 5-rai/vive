@@ -80,7 +80,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     });
   };
 
-  const setSearchPostAuthor = () => {
+  const setSearchPostAuthor = async () => {
     const authorId = post.author as string;
 
     if (authorId === loggedInUser?._id) {
@@ -90,7 +90,7 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
         _id: loggedInUser?._id,
       });
     } else {
-      const author = getUser(authorId);
+      const author = await getUser(authorId);
       setAuthor({
         fullName: author?.fullName || "",
         image: author?.image || "",
@@ -99,9 +99,9 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
     }
   };
 
-  const handleCardClick = () => {
+  const handleCardClick = async () => {
     if (typeof post.channel === "string") {
-      const channelName = getNameFromId(post.channel);
+      const channelName = await getNameFromId(post.channel);
       navigate(`/channels/${channelName}/${post._id}`);
       return;
     }

@@ -4,18 +4,20 @@ import { useAuthStore } from "../../store/authStore";
 import Dropdown from "../common/Dropdown";
 import defaultProfileImg from "../../../public/logo.png";
 import { useModalStore } from "../../store/modalStore";
+import { useToastStore } from "../../store/toastStore";
 
 interface ProfileButtonProps {
   profileImage?: string | null;
 }
 
 export default function ProfileButton({ profileImage }: ProfileButtonProps) {
+  const privateRoutes = ["/write", "/mypage", "/message", "/edit"]; // 로그인 상태에서만 접근 가능한 페이지
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const logout = useAuthStore((state) => state.logout);
   const setModal = useModalStore((state) => state.setModal);
-  const privateRoutes = ["/write", "/mypage", "/message", "/edit"]; // 로그인 상태에서만 접근 가능한 페이지
+  const showToast = useToastStore((state) => state.showToast);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -40,26 +42,24 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
 
   const handleLogoutClick = () => {
     const currentPath = location.pathname;
-    console.log(currentPath);
     if (privateRoutes.some((route) => currentPath.includes(route))) {
       setModal({
         isOpen: true,
         confirmText: "로그아웃",
         cancelText: "취소",
-        children: (
-          <div>
-            로그아웃하면 이 페이지를 떠나게 됩니다.
-            <br />
-            그래도 로그아웃하시겠습니까?
-          </div>
-        ),
+        children:
+          "로그아웃하면 이 페이지를 떠나게 됩니다.\n그래도 로그아웃하시겠습니까?",
         onConfirm: async () => {
-          navigate("/");
           logout(); // 삭제 작업 수행
+          showToast("로그아웃 되었습니다.");
+          navigate("/");
         },
       });
+      return;
     }
 
+    logout(); // 삭제 작업 수행
+    showToast("로그아웃 되었습니다.");
     setIsOpen(false);
   };
 
