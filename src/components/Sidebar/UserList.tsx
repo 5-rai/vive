@@ -22,7 +22,6 @@ export default function UserList() {
     try {
       const response = await axiosInstance.get(`/search/users/${searchName}`);
       setSearchResults(response.data); // 검색 결과 저장
-      console.log("유저 찾기 성공🎉", response.data);
     } catch (error) {
       console.error("Error:", error);
     }

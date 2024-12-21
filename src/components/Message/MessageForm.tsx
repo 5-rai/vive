@@ -34,7 +34,6 @@ export default function MessageForm({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(newMessage);
     const data = await postMessage(newMessage, userId);
     if (data) {
       setNewMessage("");
