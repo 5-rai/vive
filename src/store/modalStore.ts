@@ -1,11 +1,10 @@
 import { create } from "zustand";
-import { ReactNode } from "react";
 
 interface ModalStore {
   isOpen: boolean;
   confirmText: string;
   cancelText: string;
-  children?: ReactNode;
+  children?: string;
   onClose: () => void;
   onConfirm: () => void;
   setModal: (props: Partial<ModalStore>) => void;

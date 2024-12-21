@@ -46,13 +46,8 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
         isOpen: true,
         confirmText: "로그아웃",
         cancelText: "취소",
-        children: (
-          <div>
-            로그아웃하면 이 페이지를 떠나게 됩니다.
-            <br />
-            그래도 로그아웃하시겠습니까?
-          </div>
-        ),
+        children:
+          "로그아웃하면 이 페이지를 떠나게 됩니다.\n그래도 로그아웃하시겠습니까?",
         onConfirm: async () => {
           navigate("/");
           logout(); // 삭제 작업 수행

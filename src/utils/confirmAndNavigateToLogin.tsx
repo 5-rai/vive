@@ -12,13 +12,7 @@ const confirmAndNavigateToLogin = (navigate: NavigateFunction) => {
       isOpen: true,
       confirmText: "확인",
       cancelText: "취소",
-      children: (
-        <div>
-          로그인이 필요합니다
-          <br />
-          로그인 페이지로 이동하시겠습니까?
-        </div>
-      ),
+      children: "로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?",
       onConfirm: () => {
         navigate("/login"); // 로그인 페이지로 이동
       },
