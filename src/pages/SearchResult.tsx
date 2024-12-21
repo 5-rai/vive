@@ -4,6 +4,7 @@ import useGetSearchKeyword from "../hooks/useGetSearchKeyword";
 import PostCard from "../components/common/PostCard";
 import { isCustomTitle } from "../utils/typeGuards";
 import Loading from "../components/common/Loading";
+import { DASHBOARD_TEXT } from "../constants/dashboard";
 
 export default function SearchResult() {
   const [searchParams] = useSearchParams();
@@ -45,7 +46,7 @@ export default function SearchResult() {
         {loading && <Loading />}
         {error && (
           <p className="text-center text-lg font-medium">
-            검색 중 오류가 발생했습니다.
+            {DASHBOARD_TEXT.searchErr}
           </p>
         )}
       </section>
@@ -75,7 +76,7 @@ export default function SearchResult() {
             </div>
           ) : (
             <p className="text-center text-lg pt-10 font-medium text-gray-54">
-              유저 검색 결과가 없어요...
+              {DASHBOARD_TEXT.noSearchUser}
             </p>
           )}
         </article>
@@ -94,7 +95,7 @@ export default function SearchResult() {
             </div>
           ) : (
             <p className="text-center text-lg pt-10 font-medium text-gray-54">
-              포스팅 검색 결과가 없어요...
+              {DASHBOARD_TEXT.noSearchPost}
             </p>
           )}
         </article>
