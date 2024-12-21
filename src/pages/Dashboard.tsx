@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Loading from "../components/common/Loading";
 import SortButton from "../components/Dashboard/SortButton";
 import NewPostButton from "../components/Header/NewPostButton";
-import { DASHBOARD_MESSAGE, SORT_OPTIONS } from "../constants/dashboard";
+import { DASHBOARD_TEXT, SORT_OPTIONS } from "../constants/dashboard";
 import useGetChannelPosts from "../hooks/useGetChannelPosts";
 
 export default function Dashboard() {
@@ -51,9 +51,7 @@ export default function Dashboard() {
     return (
       <section className="w-[934px] mx-auto flex items-center justify-center">
         {loading && <Loading />}
-        {error && (
-          <p className="text-lg font-medium">{DASHBOARD_MESSAGE.error}</p>
-        )}
+        {error && <p className="text-lg font-medium">{DASHBOARD_TEXT.error}</p>}
       </section>
     );
   }
@@ -75,7 +73,7 @@ export default function Dashboard() {
         </section>
       ) : (
         <section className="flex flex-col items-center justify-center text-center gap-4 h-[50vh] text-lg text-gray-54 whitespace-pre-wrap">
-          <p>{DASHBOARD_MESSAGE.none}</p>
+          <p>{DASHBOARD_TEXT.none}</p>
           <NewPostButton />
         </section>
       )}
