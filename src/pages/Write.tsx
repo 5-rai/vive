@@ -53,8 +53,10 @@ export default function Write() {
     });
 
     if (post) {
-      showToast("포스팅 등록 완료");
+      showToast("포스팅이 등록되었습니다.");
       navigate(`/channels/${selectedChannel!.name}/${post._id}`);
+    } else {
+      showToast("포스팅 등록에 실패했습니다.");
     }
   };
 
@@ -78,8 +80,10 @@ export default function Write() {
     });
 
     if (data) {
-      showToast("포스팅 수정 완료");
+      showToast("포스팅이 수정되었습니다.");
       navigate(`/channels/${selectedChannel!.name}/${postId}`);
+    } else {
+      showToast("포스팅 수정에 실패했습니다.");
     }
   };
 
@@ -149,6 +153,7 @@ export default function Write() {
       });
       createBookmark(youtubeUrl);
     };
+
     if (postId) setCurrentPostData();
   }, []);
 
