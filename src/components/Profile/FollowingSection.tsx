@@ -1,8 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useAuthStore } from "../../store/authStore";
 import FollowingUser from "./FollowingUser";
-import ArrowLeftIcon from "../../assets/ArrowLeftIcon";
-import ArrowRightIcon from "../../assets/ArrowRightIcon";
 import { useCarouselButtons } from "../../hooks/useCarouselButtons";
 import ArrowButton from "./ArrowButton";
 
@@ -50,16 +48,14 @@ export default function FollowingSection({
         </div>
       ) : (
         <section className="relative px-7">
-          <ArrowButton
-            className="left-0"
-            onClick={onPrevButtonClick}
-            disabled={prevBtnDisabled}
-          >
-            <ArrowLeftIcon
-              className="w-8 h-8"
-              color={prevBtnDisabled ? "#C8C8C8" : "#222222"}
+          {followingList.length > 6 && (
+            <ArrowButton
+              className="left-0"
+              onClick={onPrevButtonClick}
+              disabled={prevBtnDisabled}
+              left
             />
-          </ArrowButton>
+          )}
           <div ref={emblaRef} className="overflow-hidden">
             <div className="flex gap-10">
               {followingList.map((followingUser) => (
@@ -73,16 +69,14 @@ export default function FollowingSection({
               ))}
             </div>
           </div>
-          <ArrowButton
-            className="right-0"
-            onClick={onNextButtonClick}
-            disabled={nextBtnDisabled}
-          >
-            <ArrowRightIcon
-              className="w-8 h-8"
-              color={nextBtnDisabled ? "#C8C8C8" : "#222222"}
+          {followingList.length > 6 && (
+            <ArrowButton
+              className="right-0"
+              onClick={onNextButtonClick}
+              disabled={nextBtnDisabled}
+              right
             />
-          </ArrowButton>
+          )}
         </section>
       )}
     </section>
