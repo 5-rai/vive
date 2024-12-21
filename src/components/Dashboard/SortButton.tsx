@@ -1,18 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { twMerge } from "tailwind-merge";
 import DropdownArrowIcon from "../../assets/DropdownArrowIcon";
 import Dropdown from "../common/Dropdown";
-
-type SortOption = {
-  id: string;
-  name: string;
-};
-
-const SORT_OPTIONS: SortOption[] = [
-  { id: "latest", name: "최신순" },
-  { id: "popular", name: "인기순" },
-  { id: "comments", name: "댓글순" },
-];
+import { SORT_OPTIONS } from "../../constants/dashboard";
 
 interface SortButtonProps {
   currentSort: string;
@@ -66,9 +55,7 @@ export default function SortButton({
           setIsOpen((prev) => !prev);
         }}
       >
-        <p className={twMerge("text-gray-22 dark:text-gray-ee")}>
-          {selectedOption.name}
-        </p>
+        <p className="text-gray-22 dark:text-gray-ee">{selectedOption.name}</p>
         <DropdownArrowIcon />
       </button>
       <Dropdown
