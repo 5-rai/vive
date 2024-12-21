@@ -72,7 +72,7 @@ export default function Dashboard() {
           ))}
         </section>
       ) : (
-        <section className="flex flex-col items-center justify-center text-center gap-4 h-[50vh] text-lg text-gray-54 whitespace-pre-wrap">
+        <section className="flex flex-col items-center justify-center text-center gap-4 h-[50vh] text-lg text-gray-54 whitespace-pre-wrap leading-10">
           <p>{DASHBOARD_TEXT.none}</p>
           <NewPostButton />
         </section>

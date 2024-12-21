@@ -3,6 +3,7 @@ import MessageContent from "./MessageContent";
 import { useAllUserStore } from "../../store/allUserStore";
 import { NavLink } from "react-router";
 import defaultProfileImg from "../../../public/logo.png";
+import { MESSAGE_TEXT } from "../../constants/message";
 
 interface MessageHistoryProps {
   userId: string;
@@ -29,7 +30,7 @@ const MessageHistory = forwardRef<HTMLElement, MessageHistoryProps>(
           <NavLink to={`/user/${userId}`} className="flex">
             <img
               src={userInfo?.image || defaultProfileImg}
-              alt="프로필 이미지"
+              alt={userInfo?.fullName}
               className="w-8 h-8 mr-3 rounded-full profile"
             />
             <p className="text-xl dark:text-white font-semibold">
@@ -40,7 +41,10 @@ const MessageHistory = forwardRef<HTMLElement, MessageHistoryProps>(
         <section ref={ref} className="grow overflow-y-scroll custom-scrollbar">
           {messages?.length === 0 && (
             <div className="h-full flex items-center justify-center text-gray-54">
-              <p>{userInfo?.fullName}님과 대화를 시작해보세요.</p>
+              <p>
+                {userInfo?.fullName}
+                {MESSAGE_TEXT.startConversation}
+              </p>
             </div>
           )}
           {messages?.map((message) => (
