@@ -74,7 +74,7 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
     >
       <img
         src={userInfo?.image ?? defaultProfileImg}
-        alt="프로필 이미지"
+        alt={userInfo?.fullName}
         className="w-24 h-24 profile rounded-full"
       />
       <p className="text-base text-center mb-1 w-full overflow-hidden text-ellipsis">

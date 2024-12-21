@@ -27,7 +27,6 @@ export default function PostCard({ post, isSearch = false }: PostCardProps) {
   const navigate = useNavigate();
   const [likeInformation, setLikeInformation] = useState<Like | null>(null);
   const [likeCount, setLikeCount] = useState(post.likes.length);
-
   const [author, setAuthor] = useState<Author | null>(null);
   const [postInformation, setPostInformation] = useState<CustomTitle | null>(
     null
