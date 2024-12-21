@@ -5,6 +5,12 @@ import Logo from "../assets/Logo";
 import { useNavigate } from "react-router";
 import { useToastStore } from "../store/toastStore";
 import { signup } from "../api/auth";
+import {
+  AUTH_PLACEHOLDERS,
+  MAX_NAME_LENGTH,
+  REGISTER_ERROR_MESSAGE,
+  TOAST_MESSAGE,
+} from "../constants/auth";
 
 export default function Register() {
   const [name, setName] = useState({
@@ -22,19 +28,19 @@ export default function Register() {
       setName({
         ...name,
         isWarning: true,
-        errorMessage: "이름을 입력해주세요.",
+        errorMessage: REGISTER_ERROR_MESSAGE.none,
       });
     } else if (!name.value.trim()) {
       setName({
         ...name,
         isWarning: true,
-        errorMessage: "공백만 있는 이름은 사용할 수 없습니다.",
+        errorMessage: REGISTER_ERROR_MESSAGE.blank,
       });
-    } else if (name.value.length > 7) {
+    } else if (name.value.length > MAX_NAME_LENGTH) {
       setName({
         ...name,
         isWarning: true,
-        errorMessage: "이름은 최대 7자까지만 입력할 수 있습니다.",
+        errorMessage: REGISTER_ERROR_MESSAGE.exceed,
       });
     }
 
@@ -49,7 +55,7 @@ export default function Register() {
     if (
       !name.value ||
       !name.value.trim() ||
-      name.value.length > 7 ||
+      name.value.length > MAX_NAME_LENGTH ||
       !email.value ||
       !password.value
     )
@@ -68,10 +74,10 @@ export default function Register() {
     });
 
     if (result) {
-      showToast("회원가입이 완료되었습니다.");
+      showToast(TOAST_MESSAGE.register);
       navigate("/login");
     } else {
-      showToast("회원가입에 실패했습니다. 다시 시도해주세요.");
+      showToast(TOAST_MESSAGE.registerErr);
     }
   };
 
@@ -85,7 +91,7 @@ export default function Register() {
             id="name"
             type="text"
             value={name.value}
-            placeholder="이름을 입력해주세요 (7자 이내)"
+            placeholder={AUTH_PLACEHOLDERS.name}
             errorMessage={name.errorMessage}
             isWarning={name.isWarning}
             onChange={(e) =>
@@ -101,7 +107,7 @@ export default function Register() {
             id="email"
             type="email"
             value={email.value}
-            placeholder="이메일을 입력해주세요"
+            placeholder={AUTH_PLACEHOLDERS.email}
             isWarning={email.isWarning}
             onChange={(e) =>
               setEmail((prev) => ({
@@ -116,7 +122,7 @@ export default function Register() {
             id="password"
             type="password"
             value={password.value}
-            placeholder="비밀번호를 입력해주세요"
+            placeholder={AUTH_PLACEHOLDERS.password}
             isWarning={password.isWarning}
             password
             onChange={(e) =>
@@ -130,7 +136,7 @@ export default function Register() {
         </div>
         <div className="flex flex-col gap-5 mt-24">
           <AuthButton type="submit" primary>
-            회원 등록
+            회원가입
           </AuthButton>
           <AuthButton type="button" onClick={() => navigate("/login")}>
             로그인 하러가기

@@ -12,7 +12,7 @@ export default function AuthButton({
   return (
     <button
       className={twMerge(
-        "primary-btn rounded-full py-2",
+        "rounded-full py-2",
         primary ? "primary-btn" : "secondary-btn"
       )}
       {...props}

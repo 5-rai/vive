@@ -20,7 +20,7 @@ interface SignupProps {
 }
 
 // 로그인 API 함수
-export const loginApi = async (userInfo: LoginProps) => {
+export const login = async (userInfo: LoginProps) => {
   const login = useAuthStore.getState().login;
   try {
     const { data } = await axiosInstance.post<LoginResponse>(
