@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useThemeStore } from "../../store/themeStore";
 import { deletePost } from "../../api/post";
@@ -6,6 +6,7 @@ import MoreIcon from "../../assets/MoreIcon";
 import Dropdown from "../common/Dropdown";
 import { useModalStore } from "../../store/modalStore";
 import { useToastStore } from "../../store/toastStore";
+import { POST_TOAST_MESSAGE } from "../../constants/post";
 
 export default function MoreButton({ post }: { post: Post }) {
   const navigate = useNavigate();
@@ -30,10 +31,10 @@ export default function MoreButton({ post }: { post: Post }) {
     const result = await deletePost(post._id);
 
     if (result) {
-      showToast("포스팅이 삭제되었습니다.");
+      showToast(POST_TOAST_MESSAGE.deletePost);
       navigate(`/channels/${post.channel.name}`);
     } else {
-      showToast("포스팅 삭제에 실패했습니다.");
+      showToast(POST_TOAST_MESSAGE.deletePostErr);
     }
   };
 
@@ -54,12 +55,13 @@ export default function MoreButton({ post }: { post: Post }) {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
       >
-        <NavLink
-          to={`/posts/${post?._id}/edit`}
+        <button
+          type="button"
           className="py-1.5 text-center border-b dark:border-gray-ee/50 hover:bg-gray-ee/80 dark:hover:bg-white/10 transition-colors"
+          onClick={() => navigate(`/posts/${post?._id}/edit`)}
         >
           수정
-        </NavLink>
+        </button>
         <button
           type="button"
           className="py-1.5 text-center text-red-accent hover:bg-red-accent dark:hover:bg-red-accent/80 hover:text-white transition-colors"

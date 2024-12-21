@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import confirmAndNavigateToLogin from "../../utils/confirmAndNavigateToLogin";
 import { createNotification } from "../../api/notification";
 import { useAuthStore } from "../../store/authStore";
+import { POST_PLACEHOLDER } from "../../constants/post";
 
 export default function CommentWrite({
   postAuthorId,
@@ -73,12 +74,13 @@ export default function CommentWrite({
           className="block w-full h-[47px] bg-transparent resize-none custom-scrollbar overflow-y-scroll"
           onChange={handleChange}
           onClick={() => confirmAndNavigateToLogin(navigate)}
-          placeholder="댓글을 적어주세요"
+          placeholder={POST_PLACEHOLDER.comment}
         ></textarea>
       </div>
       <button
+        type="submit"
         disabled={!comment}
-        className="bg-primary primary-btn rounded-[15px] w-[67px] py-1"
+        className="bg-primary primary-btn rounded-lg w-[67px] py-1"
       >
         등록
       </button>

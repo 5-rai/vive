@@ -5,6 +5,7 @@ import { useModalStore } from "../../store/modalStore";
 import { useToastStore } from "../../store/toastStore";
 import formatTimeAgo from "../../utils/formatTimeAgo";
 import { deleteComment } from "../../api/comment";
+import { POST_TOAST_MESSAGE } from "../../constants/post";
 
 export default function CommentItem({
   comment,
@@ -37,14 +38,14 @@ export default function CommentItem({
       setComments((prev) =>
         prev!.filter((prevComment) => prevComment._id !== comment._id)
       );
-      showToast("댓글이 삭제되었습니다.");
+      showToast(POST_TOAST_MESSAGE.deleteComment);
     } else {
-      showToast("댓글 삭제에 실패했습니다.");
+      showToast(POST_TOAST_MESSAGE.deleteCommentErr);
     }
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <article className="flex flex-col gap-2 mr-1">
       {/* 유저 정보 */}
       <div className="flex items-center gap-2.5">
         <NavLink
@@ -54,7 +55,7 @@ export default function CommentItem({
           <img
             className="w-7 h-7 rounded-full object-cover profile"
             src={comment.author?.image ?? profileImg}
-            alt="유저 프로필 이미지"
+            alt={comment.author.fullName}
           />
           <span className="dark:text-white">{comment.author.fullName}</span>
         </NavLink>
@@ -71,13 +72,13 @@ export default function CommentItem({
           <div className="flex justify-end mt-2">
             <button
               onClick={openDeleteModal} // 모달 열기
-              className="text-red-500 text-sm"
+              className="text-red-accent text-sm"
             >
               삭제
             </button>
           </div>
         )}
       </div>
-    </div>
+    </article>
   );
 }

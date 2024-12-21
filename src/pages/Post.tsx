@@ -77,8 +77,9 @@ export default function Post() {
 
   if (!post || !comments) return;
   if (channelName !== post?.channel?.name) return <NotFound />;
+
   return (
-    <div className="flex">
+    <>
       <PostDetail
         post={post}
         likeCount={likeCount}
@@ -90,6 +91,6 @@ export default function Post() {
         comments={comments}
         setComments={setComments}
       />
-    </div>
+    </>
   );
 }

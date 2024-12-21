@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import CommentItem from "./CommentItem";
 import CommentWrite from "./CommentWrite";
+import { POST_TEXT } from "../../constants/post";
 
 export default function Comment({
   postAuthorId,
@@ -31,14 +32,13 @@ export default function Comment({
       </p>
       <div className="flex flex-col w-full grow overflow-hidden">
         {comments.length === 0 ? (
-          <div className="flex flex-col justify-center items-center gap-3 h-full text-gray-54 mb-[115px]">
-            <p>댓글이 아직 없어요...</p>
-            <p>이 포스팅의 첫 번째 댓글을 달아주세요!</p>
-          </div>
+          <p className="flex items-center justify-center text-center h-full text-gray-54 mb-[115px] whitespace-pre-wrap leading-10">
+            {POST_TEXT.noComment}
+          </p>
         ) : (
           <div
             ref={commentsRef}
-            className="flex flex-col gap-5 overflow-y-scroll custom-scrollbar ml-6 mr-2"
+            className="flex flex-col gap-5 overflow-y-scroll custom-scrollbar ml-6 mr-1"
           >
             {comments.map((comment) => (
               <CommentItem
