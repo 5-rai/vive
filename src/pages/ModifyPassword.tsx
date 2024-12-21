@@ -7,7 +7,7 @@ import {
   PROFILE_ERROR_MESSAGE,
   PROFILE_PLACEHOLDER,
   PROFILE_TOAST_MESSAGE,
-} from "../constants/ModifyProfile";
+} from "../constants/profile";
 
 export default function ModifyPassword() {
   const [data, setData] = useState({

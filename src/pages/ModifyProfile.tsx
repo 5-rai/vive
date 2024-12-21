@@ -5,11 +5,11 @@ import { useAuthStore } from "../store/authStore";
 import { useToastStore } from "../store/toastStore";
 import defaultProfileImg from "../../public/logo.png";
 import InputLabel from "../components/common/InputLabel";
+import { MAX_NAME_LENGTH } from "../constants/auth";
 import {
   PROFILE_ERROR_MESSAGE,
   PROFILE_TOAST_MESSAGE,
-} from "../constants/ModifyProfile";
-import { MAX_NAME_LENGTH } from "../constants/auth";
+} from "../constants/profile";
 
 export default function ModifyProfile() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage>();
