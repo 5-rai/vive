@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { createNotification } from "../../api/notification";
 import { deleteFollow, postFollow } from "../../api/follow";
 import defaultProfileImg from "../../../public/logo.png";
+import { useAuthStore } from "../../store/authStore";
 
 interface FollowingUser {
   user: Follow;
@@ -16,6 +17,7 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
   const [userInfo, setUserInfo] = useState<User>();
   const [loading, setLoading] = useState(false);
   const getUser = useAllUserStore((state) => state.getUser);
+  const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
   const navigate = useNavigate();
 
   const handleFollow = async (
@@ -66,6 +68,8 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
 
     fetchUserInfo();
   }, []);
+
+  if (checkIsMyUserId(user.user)) return null;
 
   return (
     <article
