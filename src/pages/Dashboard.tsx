@@ -68,8 +68,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="mx-auto w-[934px]">
-      <div className="flex items-center justify-between my-10">
+    <div className="mx-auto w-[934px] my-10">
+      <div className="flex items-center justify-between mb-10">
         <h2 className="text-[32px] font-bold">{channelName}</h2>
         <SortButton
           currentSort={sortOption}
