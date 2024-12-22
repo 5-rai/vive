@@ -168,7 +168,7 @@ export default function Write() {
   if (postId && error)
     return (
       <section className="w-full px-16 py-7 flex items-center justify-center">
-        <p className="text-gray-54">포스트 정보를 가져오는데 실패했습니다.</p>
+        <p className="text-gray-54">포스트 정보를 가져오는 데 실패했습니다.</p>
       </section>
     );
 
