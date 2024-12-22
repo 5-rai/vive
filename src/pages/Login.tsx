@@ -36,14 +36,7 @@ export default function Login() {
 
     if (result) {
       showToast("로그인이 완료되었습니다.");
-      const referrer = document.referrer;
-      const currentDomain = window.location.origin;
-
-      if (referrer && referrer.startsWith(currentDomain)) {
-        navigate(-1);
-      } else {
-        navigate("/");
-      }
+      navigate(-1);
       return;
     } else {
       showToast("로그인에 실패했습니다. 정보를 확인하고 다시 시도해주세요.");
