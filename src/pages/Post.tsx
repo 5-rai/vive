@@ -30,7 +30,6 @@ export default function Post() {
 
   const getPost = async () => {
     const fetchedPost = await getOnePost(postId);
-    console.log(postId, fetchedPost);
     if (!fetchedPost) {
       navigate("/not-found");
       return;
