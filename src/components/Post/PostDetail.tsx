@@ -6,6 +6,7 @@ import { useAuthStore } from "../../store/authStore";
 import MoreButton from "./MoreButton";
 import LikeIcon from "../../assets/LikeIcon";
 import formatTimeAgo from "../../utils/formatTimeAgo";
+import TimeIcon from "../../assets/TimeIcon";
 
 export default function PostDetail({
   post,
@@ -36,7 +37,8 @@ export default function PostDetail({
           <h1 className="font-semibold text-2xl break-all">{title}</h1>
           {checkIsMyUserId(post.author._id) && <MoreButton post={post} />}
         </div>
-        <p className="text-[#888] mb-4">
+        <p className="text-[#888] mb-4 flex items-center">
+          <TimeIcon className="w-4 h-4 mr-1" color="#888" />
           <span className="mr-2">{createdDate}</span>
           <span>|</span>
           <span className="ml-2">{formattedTimeAgo}</span>

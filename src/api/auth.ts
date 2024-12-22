@@ -2,7 +2,7 @@ import { axiosInstance } from "./axios";
 import { useAuthStore } from "../store/authStore";
 
 // 로그인 요청에 필요한 데이터의 타입 정의
-interface LoginRequest {
+interface LoginProps {
   email: string;
   password: string;
 }
@@ -13,8 +13,14 @@ interface LoginResponse {
   token: string;
 }
 
+interface SignupProps {
+  email: string;
+  fullName: string;
+  password: string;
+}
+
 // 로그인 API 함수
-export const loginApi = async (userInfo: LoginRequest) => {
+export const loginApi = async (userInfo: LoginProps) => {
   const login = useAuthStore.getState().login;
   try {
     const { data } = await axiosInstance.post<LoginResponse>(
@@ -22,6 +28,16 @@ export const loginApi = async (userInfo: LoginRequest) => {
       userInfo
     );
     login(data.token, data.user);
+    return true;
+  } catch (err) {
+    if (err instanceof Error) console.error(err);
+    return false;
+  }
+};
+
+export const signup = async (body: SignupProps) => {
+  try {
+    await axiosInstance.post("/signup", body);
     return true;
   } catch (err) {
     if (err instanceof Error) console.error(err);

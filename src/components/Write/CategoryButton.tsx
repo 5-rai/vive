@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import DropdownArrowIcon from "../../assets/DropdownArrowIcon";
-import { getAllChannels } from "../../api/write";
 import Dropdown from "../common/Dropdown";
+import { useChannelStore } from "../../store/channelStore";
 
 interface CategoryDropdownProps {
   channel?: Channel;
@@ -16,14 +16,15 @@ export default function CategoryButton({
   const [channels, setChannels] = useState<Channel[]>();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLElement>(null);
-
-  const getChannels = async () => {
-    const channels = await getAllChannels();
-    setChannels(channels);
-  };
+  const getChannels = useChannelStore((state) => state.getChannels);
 
   useEffect(() => {
-    getChannels();
+    const fetchChannelList = async () => {
+      const channelList = await getChannels();
+      setChannels(channelList ?? []);
+    };
+
+    fetchChannelList();
   }, []);
 
   useEffect(() => {

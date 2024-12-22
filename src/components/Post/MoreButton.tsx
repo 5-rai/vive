@@ -13,23 +13,30 @@ export default function MoreButton({ post }: { post: Post }) {
   const [isOpen, setIsOpen] = useState(false);
   const setModal = useModalStore((state) => state.setModal);
   const showToast = useToastStore((state) => state.showToast);
-  const handleDeletePost = async () => {
-    await deletePost(post._id);
-    navigate(`/channels/${post.channel.name}`);
-  };
 
   const openDeleteModal = () => {
     setModal({
       isOpen: true,
       confirmText: "삭제",
       cancelText: "취소",
-      children: "정말로 포스팅을 삭제하시겠습니까?",
-      onConfirm: () => {
-        handleDeletePost(); // 삭제 함수 실행
-        showToast("포스팅이 삭제되었습니다.");
+      children: "포스팅을 삭제하시겠습니까?",
+      onConfirm: async () => {
+        await handleDeletePost(); // 삭제 함수 실행
       },
     });
   };
+
+  const handleDeletePost = async () => {
+    const result = await deletePost(post._id);
+
+    if (result) {
+      showToast("포스팅이 삭제되었습니다.");
+      navigate(`/channels/${post.channel.name}`);
+    } else {
+      showToast("포스팅 삭제에 실패했습니다.");
+    }
+  };
+
   return (
     <div className="relative">
       <button

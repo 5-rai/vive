@@ -1,8 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useAuthStore } from "../../store/authStore";
 import FollowingUser from "./FollowingUser";
-import ArrowLeftIcon from "../../assets/ArrowLeftIcon";
-import ArrowRightIcon from "../../assets/ArrowRightIcon";
 import { useCarouselButtons } from "../../hooks/useCarouselButtons";
 import ArrowButton from "./ArrowButton";
 
@@ -44,20 +42,20 @@ export default function FollowingSection({
       </h2>
       {followingList.length === 0 ? (
         <div className="flex items-center justify-center my-20">
-          <p className="text-lg text-center">팔로잉한 사용자가 없습니다.</p>
+          <p className="text-lg text-center text-gray-54">
+            현재 팔로잉한 유저가 없어요...
+          </p>
         </div>
       ) : (
         <section className="relative px-7">
-          <ArrowButton
-            className="left-0"
-            onClick={onPrevButtonClick}
-            disabled={prevBtnDisabled}
-          >
-            <ArrowLeftIcon
-              className="w-8 h-8"
-              color={prevBtnDisabled ? "#C8C8C8" : "#222222"}
+          {followingList.length > 6 && (
+            <ArrowButton
+              className="left-0"
+              onClick={onPrevButtonClick}
+              disabled={prevBtnDisabled}
+              left
             />
-          </ArrowButton>
+          )}
           <div ref={emblaRef} className="overflow-hidden">
             <div className="flex gap-10">
               {followingList.map((followingUser) => (
@@ -71,16 +69,14 @@ export default function FollowingSection({
               ))}
             </div>
           </div>
-          <ArrowButton
-            className="right-0"
-            onClick={onNextButtonClick}
-            disabled={nextBtnDisabled}
-          >
-            <ArrowRightIcon
-              className="w-8 h-8"
-              color={nextBtnDisabled ? "#C8C8C8" : "#222222"}
+          {followingList.length > 6 && (
+            <ArrowButton
+              className="right-0"
+              onClick={onNextButtonClick}
+              disabled={nextBtnDisabled}
+              right
             />
-          </ArrowButton>
+          )}
         </section>
       )}
     </section>

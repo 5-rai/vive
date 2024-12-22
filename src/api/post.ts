@@ -47,5 +47,6 @@ export const deletePost = async (id: string) => {
     return data;
   } catch (err) {
     console.error(err);
+    return false;
   }
 };

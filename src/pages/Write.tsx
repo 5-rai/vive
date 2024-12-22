@@ -12,7 +12,7 @@ const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 export default function Write() {
   const navigate = useNavigate();
   const { postId } = useParams();
-  const debounceTimer = useRef(0);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [videoInfo, setVideoInfo] = useState<Partial<YoutubeVideoType>>();
   const [isDisabled, setIsDisabled] = useState(false);
@@ -27,11 +27,11 @@ export default function Write() {
   });
   const { showToast } = useToastStore();
   const handleChange = (value: string) => {
-    setYoutubeUrl({
-      ...youtubeUrl,
+    setYoutubeUrl((prev) => ({
+      ...prev,
       value,
       isWarning: false,
-    });
+    }));
     createBookmark(value);
   };
 
@@ -53,8 +53,10 @@ export default function Write() {
     });
 
     if (post) {
-      showToast("포스팅 등록 완료");
+      showToast("포스팅이 등록되었습니다.");
       navigate(`/channels/${selectedChannel!.name}/${post._id}`);
+    } else {
+      showToast("포스팅 등록에 실패했습니다.");
     }
   };
 
@@ -78,8 +80,10 @@ export default function Write() {
     });
 
     if (data) {
-      showToast("포스팅 수정 완료");
+      showToast("포스팅이 수정되었습니다.");
       navigate(`/channels/${selectedChannel!.name}/${postId}`);
+    } else {
+      showToast("포스팅 수정에 실패했습니다.");
     }
   };
 
@@ -97,7 +101,7 @@ export default function Write() {
     debounceTimer.current = setTimeout(async () => {
       url = url.trim();
       if (!youtubeLinkRegex.test(url)) {
-        setYoutubeUrl({ ...youtubeUrl, value: url, isWarning: true });
+        setYoutubeUrl((prev) => ({ ...prev, value: url, isWarning: true }));
         setVideoInfo(undefined);
         return;
       }
@@ -108,15 +112,15 @@ export default function Write() {
 
       if (videoInfo) {
         setVideoInfo(videoInfo);
-        setYoutubeUrl({
-          ...youtubeUrl,
+        setYoutubeUrl((prev) => ({
+          ...prev,
           value: url,
           validUrl: url,
           isWarning: false,
-        });
+        }));
       } else {
         setVideoInfo(undefined);
-        setYoutubeUrl({ ...youtubeUrl, isWarning: true });
+        setYoutubeUrl((prev) => ({ ...prev, isWarning: true }));
       }
     }, 500);
   };
@@ -149,6 +153,7 @@ export default function Write() {
       });
       createBookmark(youtubeUrl);
     };
+
     if (postId) setCurrentPostData();
   }, []);
 

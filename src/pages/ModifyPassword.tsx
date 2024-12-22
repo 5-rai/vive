@@ -1,19 +1,16 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
-import { useAuthStore } from "../store/authStore";
-import { axiosInstance } from "../api/axios";
 import { useToastStore } from "../store/toastStore";
 import InputLabel from "../components/common/InputLabel";
+import { updatePassword } from "../api/user";
 
 export default function ModifyPassword() {
-  const { showToast } = useToastStore();
-  const navigate = useNavigate();
-  const { isLoggedIn } = useAuthStore.getState();
   const [data, setData] = useState({
     password: "",
     passwordCheck: "",
   });
-  const [errorMessage, setErrorMessage] = useState("");
+  const showToast = useToastStore((state) => state.showToast);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -27,31 +24,12 @@ export default function ModifyPassword() {
     e.preventDefault();
     if (data.password !== data.passwordCheck) return;
 
-    // 비밀번호 변경 시도
-    if (!isLoggedIn) {
-      setErrorMessage("사용자가 인증되지 않았습니다.");
-      return;
-    }
-
     try {
       await updatePassword(data.password); // axios로 함수 호출
       showToast("비밀번호가 변경되었습니다.");
       navigate("/mypage");
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("비밀번호를 변경하는 중 오류가 발생했습니다.");
-    }
-  };
-
-  // 비밀번호 업데이트 함수 (axios)
-  const updatePassword = async (password: string) => {
-    try {
-      await axiosInstance.put("/settings/update-password", {
-        password,
-      });
-    } catch (error) {
-      console.error("Error updating password:", error);
-      throw error;
+    } catch {
+      showToast("비밀번호 변경에 실패했습니다.");
     }
   };
 
@@ -87,7 +65,6 @@ export default function ModifyPassword() {
           password
           onChange={handleChange}
         />
-        {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         <div className="flex flex-col gap-5 mt-24">
           <button
             type="submit"
