@@ -32,7 +32,7 @@ export default function Comment({
       </p>
       <div className="flex flex-col w-full grow overflow-hidden">
         {comments.length === 0 ? (
-          <p className="flex items-center justify-center text-center h-full text-gray-54 mb-[115px] whitespace-pre-wrap leading-10">
+          <p className="flex items-center justify-center text-center h-full text-gray-54 dark:text-gray-c8 mb-[115px] whitespace-pre-wrap leading-10">
             {POST_TEXT.noComment}
           </p>
         ) : (

@@ -18,7 +18,11 @@ export default function UserProfile() {
     return (
       <section className="w-[934px] mx-auto flex items-center justify-center">
         {loading && <Loading />}
-        {error && <p className="text-lg font-medium">{PROFILE_TEXT.error}</p>}
+        {error && (
+          <p className="text-lg font-medium text-gray-54 dark:text-gray-c8">
+            {PROFILE_TEXT.error}
+          </p>
+        )}
       </section>
     );
 

@@ -18,7 +18,7 @@ export default function MessageSidebar({
       <h2 className="font-semibold text-2xl mt-10 mb-5">메시지함</h2>
       {loading && <Loading />}
       {!loading && error && (
-        <p className="text-center mt-10 text-lg">
+        <p className="text-center mt-10 text-lg text-gray-54 dark:text-gray-c8">
           {MESSAGE_TEXT.messageListErr}
         </p>
       )}
@@ -31,7 +31,7 @@ export default function MessageSidebar({
             />
           ))
         ) : (
-          <div className="text-center gap-3 mt-10 text-lg text-gray-54 whitespace-pre-wrap leading-10">
+          <div className="text-center gap-3 mt-10 text-lg text-gray-54 dark:text-gray-c8 whitespace-pre-wrap leading-10">
             {MESSAGE_TEXT.noMessageList}
           </div>
         )}

@@ -8,6 +8,7 @@ interface AuthStore {
   checkIsMyUserId: (id: string) => boolean;
   login: (accessToken: string, user: User) => void;
   logout: () => void;
+  getMyInfo: () => User | null;
   updateUser: (user: User) => void;
   updateUserImage: (image: string) => void;
   updateUserFullName: (fullName: string) => void;
@@ -28,6 +29,7 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoggedIn: false, accessToken: null, user: null });
         window.dispatchEvent(new CustomEvent("logout"));
       },
+      getMyInfo: () => get().user,
       updateUser: (user: User) =>
         set((state) => ({
           ...state,

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { createNotification } from "../../api/notification";
 import { deleteFollow, postFollow } from "../../api/follow";
 import defaultProfileImg from "../../../public/logo.png";
+import { useAuthStore } from "../../store/authStore";
 
 interface FollowingUser {
   user: Follow;
@@ -16,7 +17,10 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
   const [userInfo, setUserInfo] = useState<User>();
   const [loading, setLoading] = useState(false);
   const getUser = useAllUserStore((state) => state.getUser);
+  const getMyInfo = useAuthStore((state) => state.getMyInfo);
+  const checkIsMyUserId = useAuthStore((state) => state.checkIsMyUserId);
   const navigate = useNavigate();
+  const isMine = checkIsMyUserId(user.user);
 
   const handleFollow = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -64,7 +68,12 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
       setUserInfo(data);
     };
 
-    fetchUserInfo();
+    if (isMine) {
+      const myInfo = getMyInfo();
+      setUserInfo(myInfo ?? undefined);
+    } else {
+      fetchUserInfo();
+    }
   }, []);
 
   return (
@@ -80,16 +89,25 @@ export default function FollowingUser({ user, myFollowInfo }: FollowingUser) {
       <p className="text-base text-center mb-1 w-full overflow-hidden text-ellipsis">
         {userInfo?.fullName}
       </p>
-      <button
-        className={twMerge(
-          "w-full rounded-lg py-1 text-sm",
-          myFollowInfo ? "secondary-btn" : "primary-btn"
-        )}
-        disabled={loading}
-        onClick={myFollowInfo ? handleUnFollow : handleFollow}
-      >
-        {myFollowInfo ? "언팔로우" : "팔로우"}
-      </button>
+      {isMine ? (
+        <button
+          className="w-full rounded-lg py-1 text-sm primary-btn"
+          onClick={() => navigate("/mypage")}
+        >
+          마이페이지
+        </button>
+      ) : (
+        <button
+          className={twMerge(
+            "w-full rounded-lg py-1 text-sm",
+            myFollowInfo ? "secondary-btn" : "primary-btn"
+          )}
+          disabled={loading}
+          onClick={myFollowInfo ? handleUnFollow : handleFollow}
+        >
+          {myFollowInfo ? "언팔로우" : "팔로우"}
+        </button>
+      )}
     </article>
   );
 }

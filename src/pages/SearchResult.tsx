@@ -45,7 +45,7 @@ export default function SearchResult() {
       <section className="w-full flex items-center justify-center">
         {loading && <Loading />}
         {error && (
-          <p className="text-center text-lg font-medium">
+          <p className="text-center text-lg font-medium text-gray-54 dark:text-gray-c8">
             {DASHBOARD_TEXT.searchErr}
           </p>
         )}
@@ -75,7 +75,7 @@ export default function SearchResult() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-lg pt-10 font-medium text-gray-54">
+            <p className="text-center text-lg pt-10 font-medium text-gray-54 dark:text-gray-c8">
               {DASHBOARD_TEXT.noSearchUser}
             </p>
           )}
@@ -94,7 +94,7 @@ export default function SearchResult() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-lg pt-10 font-medium text-gray-54">
+            <p className="text-center text-lg pt-10 font-medium text-gray-54 dark:text-gray-c8">
               {DASHBOARD_TEXT.noSearchPost}
             </p>
           )}

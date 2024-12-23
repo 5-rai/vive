@@ -37,14 +37,7 @@ export default function Login() {
 
     if (result) {
       showToast(AUTH_TOAST_MESSAGE.login);
-      const referrer = document.referrer;
-      const currentDomain = window.location.origin;
-
-      if (referrer && referrer.startsWith(currentDomain)) {
-        navigate(-1);
-      } else {
-        navigate("/");
-      }
+      navigate(-1);
       return;
     } else {
       showToast(AUTH_TOAST_MESSAGE.loginErr);
@@ -69,7 +62,7 @@ export default function Login() {
             }
           />
           <InputLabel
-            label="비밀번호"
+            label="변경할 비밀번호"
             id="password"
             type="password"
             value={password.value}

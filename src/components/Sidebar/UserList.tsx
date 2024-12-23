@@ -13,7 +13,7 @@ export default function UserList() {
   const [searchName, setSearchName] = useState(""); // 검색할 이름 상태 관리
   const [searchResults, setSearchResults] = useState<User[]>([]); // 검색한 이름의 결과값 상태 관리
   const allUsers = useAllUserStore((state) => state.users);
-  const debounceTimeout = useRef<number | null>(null); // 디바운스 타이머 관리
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const toggledInputFocused = () => setIsInputFocused((prev) => !prev);
 
@@ -86,7 +86,7 @@ export default function UserList() {
                 <UserNavLink key={user._id} user={user} />
               ))
             ) : searchName.length > 0 ? (
-              <p className="text-center text-gray-6c">
+              <p className="text-center text-gray-54 dark:text-gray-c8 mt-10">
                 검색된 유저가 없어요...
               </p>
             ) : (

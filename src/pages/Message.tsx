@@ -35,7 +35,7 @@ export default function Message() {
       <div className="flex w-full screen-100vh">
         <section className="grow h-full flex flex-col">
           {!userId && (
-            <p className="w-full text-lg text-center text-gray-54 mt-36">
+            <p className="w-full text-lg text-center text-gray-54 dark:text-gray-c8 mt-36">
               {MESSAGE_TEXT.noSelected}
             </p>
           )}
@@ -54,7 +54,7 @@ export default function Message() {
         {conversationLoading ? (
           <Loading />
         ) : conversationError ? (
-          <p className="w-full text-lg text-center mt-36">
+          <p className="w-full text-lg text-center mt-36 text-gray-54 dark:text-gray-c8">
             {MESSAGE_TEXT.conversationErr}
           </p>
         ) : (

@@ -33,11 +33,11 @@ export default function Write() {
   const { showToast } = useToastStore();
 
   const handleChange = (value: string) => {
-    setYoutubeUrl({
-      ...youtubeUrl,
+    setYoutubeUrl((prev) => ({
+      ...prev,
       value,
       isWarning: false,
-    });
+    }));
     createBookmark(value);
   };
 
@@ -174,7 +174,7 @@ export default function Write() {
   if (postId && error)
     return (
       <section className="w-full px-16 py-7 flex items-center justify-center">
-        <p className="text-gray-54">{POST_TEXT.postErr}</p>
+        <p className="text-gray-54 dark:text-gray-c8">{POST_TEXT.postErr}</p>
       </section>
     );
 

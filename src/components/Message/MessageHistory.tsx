@@ -40,7 +40,7 @@ const MessageHistory = forwardRef<HTMLElement, MessageHistoryProps>(
         </section>
         <section ref={ref} className="grow overflow-y-scroll custom-scrollbar">
           {messages?.length === 0 && (
-            <div className="h-full flex items-center justify-center text-gray-54">
+            <div className="h-full flex items-center justify-center text-gray-54 dark:text-gray-c8">
               <p>
                 {userInfo?.fullName}
                 {MESSAGE_TEXT.startConversation}
