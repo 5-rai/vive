@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useAuthStore } from "../../store/authStore";
@@ -8,7 +8,7 @@ import { createNotification } from "../../api/notification";
 import { deleteFollow, postFollow } from "../../api/follow";
 
 interface ProfileSectionProps {
-  user: User | null;
+  user: User | undefined;
   isMyProfile?: boolean;
 }
 
@@ -51,8 +51,6 @@ export default function ProfileSection({
       }
     } catch (err) {
       console.error("언팔로우 요청 실패:", err);
-      // 실패 시 상태 롤백
-      setIsFollow(true);
     } finally {
       setLoading(false);
     }
@@ -107,47 +105,47 @@ export default function ProfileSection({
             <p className="text-lg">팔로잉</p>
           </div>
         </div>
-        {isMyProfile ? (
-          <div className="flex gap-[10px]">
-            <Link to="/mypage/edit" className="w-full">
+        <div className="flex gap-[10px]">
+          {isMyProfile ? (
+            <>
               <button
                 type="button"
                 className="primary-btn w-full py-1 rounded-lg text-sm"
+                onClick={() => navigate("/mypage/edit")}
               >
                 프로필 수정
               </button>
-            </Link>
-            <Link to="/mypage/edit/password" className="w-full">
               <button
                 type="button"
                 className="primary-btn w-full py-1 rounded-lg text-sm"
+                onClick={() => navigate("/mypage/edit/password")}
               >
                 비밀번호 변경
               </button>
-            </Link>
-          </div>
-        ) : (
-          <div className="flex gap-[10px]">
-            <button
-              type="button"
-              className={twMerge(
-                "w-full py-1 rounded-lg text-sm font-medium",
-                isFollow ? "secondary-btn" : "primary-btn"
-              )}
-              onClick={isFollow ? handleUnFollow : handleFollow}
-              disabled={loading}
-            >
-              {isFollow ? "언팔로우" : "팔로우"}
-            </button>
-            <button
-              type="button"
-              className="primary-btn w-full py-1 rounded-lg text-sm"
-              onClick={handleMessage}
-            >
-              메시지 보내기
-            </button>
-          </div>
-        )}
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                className={twMerge(
+                  "w-full py-1 rounded-lg text-sm",
+                  isFollow ? "secondary-btn" : "primary-btn"
+                )}
+                onClick={isFollow ? handleUnFollow : handleFollow}
+                disabled={loading}
+              >
+                {isFollow ? "언팔로우" : "팔로우"}
+              </button>
+              <button
+                type="button"
+                className="primary-btn w-full py-1 rounded-lg text-sm"
+                onClick={handleMessage}
+              >
+                메시지 보내기
+              </button>
+            </>
+          )}
+        </div>
       </section>
     </article>
   );

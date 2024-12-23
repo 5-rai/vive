@@ -1,10 +1,10 @@
 import { twMerge } from "tailwind-merge";
 
 interface EyeIconProps extends IconProps {
-  isShown?: boolean;
+  isShown: boolean;
 }
 
-export default function EyeIcon({ className, isShown = false }: EyeIconProps) {
+export default function EyeIcon({ className, isShown }: EyeIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

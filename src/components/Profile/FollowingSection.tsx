@@ -3,6 +3,7 @@ import { useAuthStore } from "../../store/authStore";
 import FollowingUser from "./FollowingUser";
 import { useCarouselButtons } from "../../hooks/useCarouselButtons";
 import ArrowButton from "./ArrowButton";
+import { FOLLOWING_DEFAULT_COUNT, PROFILE_TEXT } from "../../constants/profile";
 
 interface FollowingSectionProps {
   fullName: string;
@@ -43,12 +44,12 @@ export default function FollowingSection({
       {followingList.length === 0 ? (
         <div className="flex items-center justify-center my-20">
           <p className="text-lg text-center text-gray-54 dark:text-gray-c8">
-            현재 팔로잉한 유저가 없어요...
+            {PROFILE_TEXT.noFollowing}
           </p>
         </div>
       ) : (
         <section className="relative px-7">
-          {followingList.length > 6 && (
+          {followingList.length > FOLLOWING_DEFAULT_COUNT && (
             <ArrowButton
               className="left-0"
               onClick={onPrevButtonClick}
@@ -69,7 +70,7 @@ export default function FollowingSection({
               ))}
             </div>
           </div>
-          {followingList.length > 6 && (
+          {followingList.length > FOLLOWING_DEFAULT_COUNT && (
             <ArrowButton
               className="right-0"
               onClick={onNextButtonClick}

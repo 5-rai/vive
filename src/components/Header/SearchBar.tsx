@@ -29,7 +29,10 @@ export default function SearchBar() {
         onFocus={toggledInputFocused}
         onBlur={toggledInputFocused}
       />
-      <button className="flex items-center justify-center w-[36px] h-[36px]">
+      <button
+        type="submit"
+        className="flex items-center justify-center w-[36px] h-[36px]"
+      >
         <SearchIcon
           className="w-[19px] h-[19px]"
           color={isInputFocused ? "#FCC404" : undefined}

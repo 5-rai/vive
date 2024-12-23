@@ -23,11 +23,8 @@ export default function CategoryButton({
       const channelList = await getChannels();
       setChannels(channelList ?? []);
     };
-
     fetchChannelList();
-  }, []);
 
-  useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as HTMLElement)) {
         setIsOpen(false);

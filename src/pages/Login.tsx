@@ -2,9 +2,10 @@ import { useState } from "react";
 import InputLabel from "../components/common/InputLabel";
 import AuthButton from "../components/common/AuthButton";
 import Logo from "../assets/Logo";
-import { loginApi } from "../api/auth";
+import { login } from "../api/auth";
 import { useNavigate } from "react-router";
 import { useToastStore } from "../store/toastStore";
+import { AUTH_PLACEHOLDERS, AUTH_TOAST_MESSAGE } from "../constants/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -29,17 +30,17 @@ export default function Login() {
     e.preventDefault();
     if (!validate()) return;
 
-    const result = await loginApi({
+    const result = await login({
       email: email.value,
       password: password.value,
     });
 
     if (result) {
-      showToast("로그인이 완료되었습니다.");
+      showToast(AUTH_TOAST_MESSAGE.login);
       navigate(-1);
       return;
     } else {
-      showToast("로그인에 실패했습니다. 정보를 확인하고 다시 시도해주세요.");
+      showToast(AUTH_TOAST_MESSAGE.loginErr);
       return;
     }
   };
@@ -54,7 +55,7 @@ export default function Login() {
             id="email"
             type="email"
             value={email.value}
-            placeholder="이메일을 입력해주세요"
+            placeholder={AUTH_PLACEHOLDERS.email}
             isWarning={email.isWarning}
             onChange={(e) =>
               setEmail({ value: e.target.value, isWarning: false })
@@ -65,7 +66,7 @@ export default function Login() {
             id="password"
             type="password"
             value={password.value}
-            placeholder="비밀번호를 입력해주세요"
+            placeholder={AUTH_PLACEHOLDERS.password}
             isWarning={password.isWarning}
             password
             onChange={(e) =>

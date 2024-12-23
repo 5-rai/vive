@@ -34,7 +34,7 @@ export default function PostDetail({
       <div className="w-[618px]">
         <YouTubeContainer videoId={videoId} />
         <div className="flex justify-between items-start gap-5 mt-5">
-          <h1 className="font-semibold text-2xl break-all">{title}</h1>
+          <h2 className="font-semibold text-2xl break-all">{title}</h2>
           {checkIsMyUserId(post.author._id) && <MoreButton post={post} />}
         </div>
         <p className="text-[#888] mb-4 flex items-center">
@@ -51,7 +51,7 @@ export default function PostDetail({
             <img
               className="w-[30px] h-[30px] rounded-full profile"
               src={post.author.image ?? profileImg}
-              alt="유저 프로필 이미지"
+              alt={post.author.fullName}
             />
             <p className="font-medium">{post.author.fullName}</p>
           </NavLink>

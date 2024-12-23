@@ -80,6 +80,7 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
         onClose={() => setIsOpen(false)}
       >
         <button
+          type="button"
           className="flex justify-center items-center self-stretch relative gap-2.5 px-5 py-2.5 rounded-lg hover:bg-[#fbefbf] hover:dark:bg-gray-44 group"
           onClick={handleMyPageClick}
         >
@@ -88,6 +89,7 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
           </p>
         </button>
         <button
+          type="button"
           className="flex justify-center items-center self-stretch relative gap-2.5 px-5 py-2.5 rounded-lg hover:bg-[#fbefbf] hover:dark:bg-gray-44 group"
           onClick={handleMessageClick}
         >
@@ -96,6 +98,7 @@ export default function ProfileButton({ profileImage }: ProfileButtonProps) {
           </p>
         </button>
         <button
+          type="button"
           className="flex justify-center items-center self-stretch relative gap-2.5 px-5 py-2.5 rounded-lg hover:bg-[#fbefbf] hover:dark:bg-gray-44 group"
           onClick={handleLogoutClick}
         >

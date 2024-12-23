@@ -20,6 +20,7 @@ export default function ThemeButton() {
 
   return (
     <button
+      type="button"
       className="flex justify-center items-center w-12 h-12 fixed bottom-10 right-10 bg-secondary rounded-full"
       onClick={toggleTheme}
     >

@@ -2,44 +2,33 @@ import { useParams } from "react-router";
 import PostCard from "../components/common/PostCard";
 import { useChannelStore } from "../store/channelStore";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../api/axios";
 import Loading from "../components/common/Loading";
 import SortButton from "../components/Dashboard/SortButton";
 import NewPostButton from "../components/Header/NewPostButton";
+import { DASHBOARD_TEXT, SORT_OPTIONS } from "../constants/dashboard";
+import useGetChannelPosts from "../hooks/useGetChannelPosts";
 
 export default function Dashboard() {
   const { channelName } = useParams();
   const getIdFromName = useChannelStore((state) => state.getIdFromName);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
   const [sortedPosts, setSortedPosts] = useState<Post[]>([]);
-  const [sortOption, setSortOption] = useState<string>("latest");
+  const [sortOption, setSortOption] = useState<string>(SORT_OPTIONS[0].id);
+  const [channelId, setChannelId] = useState<string>();
+
+  const { data: posts, loading, error } = useGetChannelPosts(channelId);
 
   // 선택된 채널 찾기 및 해당 채널의 포스트 불러오기
   useEffect(() => {
-    const fetchChannelIdAndPosts = async () => {
+    const fetchChannelId = async () => {
       if (!channelName) return;
 
-      const channelId = await getIdFromName(channelName);
-      if (channelId) fetchPosts(channelId);
+      const id = await getIdFromName(channelName);
+      setChannelId(id);
     };
 
-    fetchChannelIdAndPosts();
+    fetchChannelId();
   }, [channelName]);
-
-  // 선택된 채널의 포스트 목록 API 요청
-  const fetchPosts = async (channelId: string) => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.get(`/posts/channel/${channelId}`);
-      setPosts(response.data);
-    } catch {
-      setError("카테고리의 포스트를 불러오는 데 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // 포스트 정렬 로직
   useEffect(() => {
@@ -62,15 +51,19 @@ export default function Dashboard() {
     return (
       <section className="w-[934px] mx-auto flex items-center justify-center">
         {loading && <Loading />}
-        {error && <p className="text-lg font-medium">{error}</p>}
+        {error && (
+          <p className="text-lg font-medium text-gray-54 dark:text-gray-c8">
+            {DASHBOARD_TEXT.error}
+          </p>
+        )}
       </section>
     );
   }
 
   return (
-    <div className="mx-auto w-[934px] my-10">
+    <section className="mx-auto w-[934px] my-10">
       <div className="flex items-center justify-between mb-10">
-        <h2 className="text-[32px] font-bold">{channelName}</h2>
+        <h2 className="text-3xl font-bold">{channelName}</h2>
         <SortButton
           currentSort={sortOption}
           onSortChange={(option) => setSortOption(option)}
@@ -83,12 +76,11 @@ export default function Dashboard() {
           ))}
         </section>
       ) : (
-        <div className="flex flex-col items-center justify-center gap-3 h-[50vh] text-lg text-gray-54 dark:text-gray-c8">
-          <p>아직 작성된 포스트가 없어요...</p>
-          <p className="mb-1">이 카테고리의 첫 포스팅을 올려보세요!</p>
+        <section className="flex flex-col items-center justify-center text-center gap-4 h-[50vh] text-lg text-gray-54 dark:text-gray-c8 whitespace-pre-wrap leading-10">
+          <p>{DASHBOARD_TEXT.none}</p>
           <NewPostButton />
-        </div>
+        </section>
       )}
-    </div>
+    </section>
   );
 }

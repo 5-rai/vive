@@ -6,6 +6,11 @@ import { getOneYoutubeVideoInfo } from "../api/youtube";
 import { createPost, getOnePost, updatePost } from "../api/post";
 import { useNavigate, useParams } from "react-router";
 import { useToastStore } from "../store/toastStore";
+import {
+  POST_PLACEHOLDER,
+  POST_TEXT,
+  POST_TOAST_MESSAGE,
+} from "../constants/post";
 
 const youtubeLinkRegex = /^https:\/\/www\.youtube\.com.*\bv\b/;
 
@@ -26,6 +31,7 @@ export default function Write() {
     isWarning: false,
   });
   const { showToast } = useToastStore();
+
   const handleChange = (value: string) => {
     setYoutubeUrl((prev) => ({
       ...prev,
@@ -53,10 +59,10 @@ export default function Write() {
     });
 
     if (post) {
-      showToast("포스팅이 등록되었습니다.");
+      showToast(POST_TOAST_MESSAGE.createPost);
       navigate(`/channels/${selectedChannel!.name}/${post._id}`);
     } else {
-      showToast("포스팅 등록에 실패했습니다.");
+      showToast(POST_TOAST_MESSAGE.createPostErr);
     }
   };
 
@@ -80,10 +86,10 @@ export default function Write() {
     });
 
     if (data) {
-      showToast("포스팅이 수정되었습니다.");
+      showToast(POST_TOAST_MESSAGE.editPost);
       navigate(`/channels/${selectedChannel!.name}/${postId}`);
     } else {
-      showToast("포스팅 수정에 실패했습니다.");
+      showToast(POST_TOAST_MESSAGE.editPostErr);
     }
   };
 
@@ -168,7 +174,7 @@ export default function Write() {
   if (postId && error)
     return (
       <section className="w-full px-16 py-7 flex items-center justify-center">
-        <p className="text-gray-54">포스트 정보를 가져오는 데 실패했습니다.</p>
+        <p className="text-gray-54 dark:text-gray-c8">{POST_TEXT.postErr}</p>
       </section>
     );
 
@@ -185,14 +191,14 @@ export default function Write() {
         <input
           value={title}
           className="border px-6 py-3 focus:border-primary text-xl border-gray-c8 dark:border-gray-c8/50 rounded-lg"
-          placeholder="제목을 입력해주세요"
+          placeholder={POST_PLACEHOLDER.title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="border focus-within:border-primary rounded-lg border-gray-c8 dark:border-gray-c8/50 overflow-hidden p-6 pr-2 bg-white dark:bg-white/10">
           <textarea
             value={contents}
             className="w-full h-[280px] resize-none bg-transparent overflow-y-scroll custom-scrollbar"
-            placeholder="내용을 입력해주세요"
+            placeholder={POST_PLACEHOLDER.content}
             onChange={(e) => setContents(e.target.value)}
           />
         </div>
@@ -204,14 +210,14 @@ export default function Write() {
               "border focus:border-primary rounded-lg w-full py-3 px-5 dark:border-gray-c8/50",
               youtubeUrl.isWarning ? "border-red-accent" : "border-gray-c8"
             )}
-            placeholder="유튜브 URL을 입력해주세요"
+            placeholder={POST_PLACEHOLDER.youtube}
             autoCorrect="off"
             onPaste={(e) => createBookmark(e.clipboardData.getData("text"))}
             onChange={(e) => handleChange(e.target.value)}
           />
           {youtubeUrl.isWarning && (
             <p className="text-xs leading-7 text-red-accent">
-              올바른 유튜브 URL을 입력해주세요.
+              {POST_TEXT.youtubeErr}
             </p>
           )}
         </div>
@@ -224,6 +230,7 @@ export default function Write() {
           />
         )}
         <button
+          type="submit"
           disabled={isDisabled}
           className="primary-btn self-end h-[50px] w-[157px] rounded-lg flex justify-center items-center"
         >

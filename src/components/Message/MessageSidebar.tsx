@@ -1,3 +1,4 @@
+import { MESSAGE_TEXT } from "../../constants/message";
 import Loading from "../common/Loading";
 import MessageListItem from "./MessageListItem";
 
@@ -17,8 +18,8 @@ export default function MessageSidebar({
       <h2 className="font-semibold text-2xl mt-10 mb-5">메시지함</h2>
       {loading && <Loading />}
       {!loading && error && (
-        <p className="text-center mt-10 text-lg">
-          메시지 목록을 불러오는 데 실패했습니다.
+        <p className="text-center mt-10 text-lg text-gray-54 dark:text-gray-c8">
+          {MESSAGE_TEXT.messageListErr}
         </p>
       )}
       <section className="overflow-y-scroll custom-scrollbar mb-5 flex flex-col">
@@ -30,9 +31,8 @@ export default function MessageSidebar({
             />
           ))
         ) : (
-          <div className="flex flex-col items-center gap-3 mt-10 text-lg text-gray-54 dark:text-gray-c8">
-            <p>아직 주고받은 메시지가 없어요...</p>
-            <p>유저 프로필을 통해 메시지를 보내보세요!</p>
+          <div className="text-center gap-3 mt-10 text-lg text-gray-54 dark:text-gray-c8 whitespace-pre-wrap leading-10">
+            {MESSAGE_TEXT.noMessageList}
           </div>
         )}
       </section>
