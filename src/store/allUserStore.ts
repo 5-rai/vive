@@ -14,7 +14,7 @@ export const useAllUserStore = create<AllUserStore>((set, get, api) => ({
     try {
       const data = await getAllUsers();
       data?.sort((a) => (a.isOnline ? -1 : 1));
-      set({ users: data });
+      set({ users: data ?? [] });
     } catch (err) {
       console.error(err);
     }
