@@ -23,8 +23,10 @@ export default function PostCardGridSection({
         )}
       </h2>
       {posts.length === 0 ? (
-        <div className="flex items-center justify-center mt-20 text-lg text-gray-54">
-          <p className="text-lg text-center">현재 작성된 포스트가 없어요...</p>
+        <div className="flex items-center justify-center mt-20">
+          <p className="text-lg text-center text-gray-54 dark:text-gray-c8">
+            현재 작성된 포스트가 없어요...
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-10">

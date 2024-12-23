@@ -83,7 +83,7 @@ export default function Dashboard() {
           ))}
         </section>
       ) : (
-        <div className="flex flex-col items-center justify-center gap-3 h-[50vh] text-lg text-gray-54">
+        <div className="flex flex-col items-center justify-center gap-3 h-[50vh] text-lg text-gray-54 dark:text-gray-c8">
           <p>아직 작성된 포스트가 없어요...</p>
           <p className="mb-1">이 카테고리의 첫 포스팅을 올려보세요!</p>
           <NewPostButton />

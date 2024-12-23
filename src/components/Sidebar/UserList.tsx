@@ -86,7 +86,7 @@ export default function UserList() {
                 <UserNavLink key={user._id} user={user} />
               ))
             ) : searchName.length > 0 ? (
-              <p className="text-center text-gray-6c">
+              <p className="text-center text-gray-54 dark:text-gray-c8 mt-10">
                 검색된 유저가 없어요...
               </p>
             ) : (
