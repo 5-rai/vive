@@ -42,7 +42,7 @@ export default function FollowingSection({
       </h2>
       {followingList.length === 0 ? (
         <div className="flex items-center justify-center my-20">
-          <p className="text-lg text-center text-gray-54">
+          <p className="text-lg text-center text-gray-54 dark:text-gray-c8">
             현재 팔로잉한 유저가 없어요...
           </p>
         </div>

@@ -74,7 +74,7 @@ export default function SearchResult() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-lg pt-10 font-medium text-gray-54">
+            <p className="text-center text-lg pt-10 font-medium text-gray-54 dark:text-gray-c8">
               유저 검색 결과가 없어요...
             </p>
           )}
@@ -93,7 +93,7 @@ export default function SearchResult() {
               ))}
             </div>
           ) : (
-            <p className="text-center text-lg pt-10 font-medium text-gray-54">
+            <p className="text-center text-lg pt-10 font-medium text-gray-54 dark:text-gray-c8">
               포스팅 검색 결과가 없어요...
             </p>
           )}

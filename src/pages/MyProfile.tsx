@@ -37,7 +37,9 @@ export default function MyProfile() {
         {loading && <Loading />}
         {error && <p className="text-lg font-medium">{error}</p>}
         {!loading && !user && (
-          <p className="text-lg font-medium">사용자 정보를 찾을 수 없어요...</p>
+          <p className="text-lg font-medium text-gray-54 dark:text-gray-c8">
+            사용자 정보를 찾을 수 없어요...
+          </p>
         )}
       </section>
     );

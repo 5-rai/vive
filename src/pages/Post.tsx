@@ -73,7 +73,7 @@ export default function Post() {
     const intervalId = setInterval(getPost, 1000 * 60); // 1분
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [postId]);
 
   if (!post || !comments) return;
   if (channelName !== post?.channel?.name) return <NotFound />;

@@ -31,7 +31,7 @@ export default function Comment({
       </p>
       <div className="flex flex-col w-full grow overflow-hidden">
         {comments.length === 0 ? (
-          <div className="flex flex-col justify-center items-center gap-3 h-full text-gray-54 mb-[115px]">
+          <div className="flex flex-col justify-center items-center gap-3 h-full text-gray-54 dark:text-gray-c8 mb-[115px]">
             <p>댓글이 아직 없어요...</p>
             <p>이 포스팅의 첫 번째 댓글을 달아주세요!</p>
           </div>

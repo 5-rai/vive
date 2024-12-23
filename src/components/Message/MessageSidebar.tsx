@@ -18,7 +18,7 @@ export default function MessageSidebar({
       {loading && <Loading />}
       {!loading && error && (
         <p className="text-center mt-10 text-lg">
-          메시지 목록을 불러오는데 실패했습니다.
+          메시지 목록을 불러오는 데 실패했습니다.
         </p>
       )}
       <section className="overflow-y-scroll custom-scrollbar mb-5 flex flex-col">
@@ -30,7 +30,7 @@ export default function MessageSidebar({
             />
           ))
         ) : (
-          <div className="flex flex-col items-center gap-3 mt-10 text-lg text-gray-54">
+          <div className="flex flex-col items-center gap-3 mt-10 text-lg text-gray-54 dark:text-gray-c8">
             <p>아직 주고받은 메시지가 없어요...</p>
             <p>유저 프로필을 통해 메시지를 보내보세요!</p>
           </div>
