@@ -62,7 +62,7 @@ export default function Login() {
             }
           />
           <InputLabel
-            label="변경할 비밀번호"
+            label="비밀번호"
             id="password"
             type="password"
             value={password.value}
