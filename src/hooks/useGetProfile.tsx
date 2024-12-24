@@ -26,7 +26,7 @@ const useGetProfile = (userId: string | undefined, isMine: boolean) => {
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [userId]);
 
   return { data, error, loading };
 };
