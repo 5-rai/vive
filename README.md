@@ -3,7 +3,7 @@
 ## 🔥 Developers
 |Frontend|Frontend|Frontend|Frontend|Frontend|
 |:----:|:----:|:----:|:----:|:----:|
-|<img src="https://github.com/user-attachments/assets/2cb6874c-dbf9-499d-bcb0-6f3de778948d"  width="100"/> | <img src="https://github.com/user-attachments/assets/253a3b9c-b4ca-4a09-8ad1-67d8b461e63a"  width="100"/> | <img src="https://github.com/user-attachments/assets/2cb6874c-dbf9-499d-bcb0-6f3de778948d"  width="100"/> | <img src="https://github.com/user-attachments/assets/eed376b4-883c-4ce6-9a9b-0efb3b85e007"  width="100"/> | <img src="https://github.com/user-attachments/assets/f20f463d-5e1a-47c7-828f-43a98cc3f4f9" width="100"/>
+|<img src="https://github.com/user-attachments/assets/2cb6874c-dbf9-499d-bcb0-6f3de778948d"  width="100"/> | <img src="https://github.com/user-attachments/assets/253a3b9c-b4ca-4a09-8ad1-67d8b461e63a"  width="100"/> | <img src="https://github.com/user-attachments/assets/c80ea5bc-2e04-4cf3-b9b2-57ae23d09a4d"  width="100"/> | <img src="https://github.com/user-attachments/assets/eed376b4-883c-4ce6-9a9b-0efb3b85e007"  width="100"/> | <img src="https://github.com/user-attachments/assets/f20f463d-5e1a-47c7-828f-43a98cc3f4f9" width="100"/>
 |현용재|안민하|왕정훈|정다윤|이예지|
 
 |[@YongJaeHyun](https://github.com/YongJaeHyun)|[@AAminha](https://github.com/AAminha)|[@wjh1010](https://github.com/wjh1010)|[@dilma01](https://github.com/dilma01)|[@y-yeji](https://github.com/y-yeji)
