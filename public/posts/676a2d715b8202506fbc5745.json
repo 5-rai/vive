@@ -1,0 +1,368 @@
+{
+    "likes": [
+        {
+            "_id": "676a2d755b8202506fbc5753",
+            "user": "676a2d135b8202506fbc5549",
+            "post": "676a2d715b8202506fbc5745",
+            "createdAt": "2024-12-24T03:41:41.335Z",
+            "updatedAt": "2024-12-24T03:41:41.335Z",
+            "__v": 0
+        },
+        {
+            "_id": "676a2f5c5b8202506fbc62c8",
+            "user": "6767c2e51a4f780b4696a8d9",
+            "post": "676a2d715b8202506fbc5745",
+            "createdAt": "2024-12-24T03:49:48.830Z",
+            "updatedAt": "2024-12-24T03:49:48.830Z",
+            "__v": 0
+        },
+        {
+            "_id": "676a2f6a5b8202506fbc6387",
+            "user": "676a2f5c5b8202506fbc62c3",
+            "post": "676a2d715b8202506fbc5745",
+            "createdAt": "2024-12-24T03:50:02.879Z",
+            "updatedAt": "2024-12-24T03:50:02.879Z",
+            "__v": 0
+        }
+    ],
+    "comments": [],
+    "_id": "676a2d715b8202506fbc5745",
+    "title": "{\"title\":\"운이 좋았지\",\"contents\":\"권진아 - 운이 좋았지\",\"youtubeUrl\":\"https://www.youtube.com/watch?v=BFYjjFkrTNQ\",\"image\":\"https://i.ytimg.com/vi/BFYjjFkrTNQ/maxresdefault.jpg\"}",
+    "channel": {
+        "authRequired": false,
+        "posts": [
+            "676287db3d017d2513f6b14c",
+            "6762888a3d017d2513f6b187",
+            "67628a5e3d017d2513f6b257",
+            "67628af93d017d2513f6b2ac",
+            "6763c650a1e8d734872d7220",
+            "6763cf38a1e8d734872d76d0",
+            "6764d4ee4024ee5f12669c3e",
+            "67651ec2a257b76e1e4b71f8",
+            "67652259a257b76e1e4b742f",
+            "676525d8a257b76e1e4b76d0",
+            "6767b1c8a257b76e1e4bb817",
+            "676a2bfe5b8202506fbc515c",
+            "676a2d715b8202506fbc5745"
+        ],
+        "_id": "67627cc03d017d2513f6ae4f",
+        "name": "발라드",
+        "createdAt": "2024-12-18T07:41:52.303Z",
+        "updatedAt": "2024-12-24T03:41:37.268Z",
+        "__v": 0
+    },
+    "author": {
+        "role": "Regular",
+        "emailVerified": false,
+        "banned": false,
+        "isOnline": false,
+        "posts": [
+            "676a2d715b8202506fbc5745"
+        ],
+        "likes": [
+            "676a2d755b8202506fbc5753"
+        ],
+        "comments": [],
+        "followers": [
+            "676a30c85b8202506fbc6725",
+            "676a31025b8202506fbc6786"
+        ],
+        "following": [],
+        "notifications": [
+            {
+                "seen": false,
+                "_id": "676a2f5c5b8202506fbc62cd",
+                "author": {
+                    "role": "Regular",
+                    "emailVerified": false,
+                    "banned": false,
+                    "isOnline": false,
+                    "posts": [
+                        "676991341a4f780b46976c58"
+                    ],
+                    "likes": [
+                        "6767c2f31a4f780b4696a956",
+                        "6767c6611a4f780b4696ad81",
+                        "6767c66a1a4f780b4696ada3",
+                        "6767c6741a4f780b4696adc4",
+                        "6767c6841a4f780b4696ade9",
+                        "6767c6da1a4f780b4696aec8",
+                        "6767c7a01a4f780b4696b10e",
+                        "6767c7ab1a4f780b4696b160",
+                        "6767c9d21a4f780b4696b798",
+                        "6767c9ef1a4f780b4696b7c2",
+                        "6767cb1e1a4f780b4696b90e",
+                        "6767cbeb1a4f780b4696ba31",
+                        "6767cca51a4f780b4696bb27",
+                        "6767cced1a4f780b4696bc10",
+                        "6767cdb61a4f780b4696bdcd",
+                        "6767cf171a4f780b4696bf55",
+                        "6767cf9a1a4f780b4696c030",
+                        "6767cfbe1a4f780b4696c099",
+                        "6767cffc1a4f780b4696c0db",
+                        "6767d25e1a4f780b4696c405",
+                        "6767d29b1a4f780b4696c503",
+                        "6767d5201a4f780b4696ca30",
+                        "6767d6ce1a4f780b4696cbe7",
+                        "6767da701a4f780b4696cf10",
+                        "676a2f5c5b8202506fbc62c8",
+                        "676a31115b8202506fbc67e3",
+                        "676a31f35b8202506fbc6c3a",
+                        "676a350f5b8202506fbc70fe",
+                        "676a357d5b8202506fbc722a",
+                        "676a4bd65b8202506fbc7bc1"
+                    ],
+                    "comments": [
+                        "6767c6531a4f780b4696ad6c",
+                        "6767c78c1a4f780b4696b0c8",
+                        "6767c89e1a4f780b4696b3e3",
+                        "6767c9681a4f780b4696b528",
+                        "6767ca881a4f780b4696b87c",
+                        "6767cc901a4f780b4696bac7",
+                        "6767cce01a4f780b4696bbe9",
+                        "6767cdaa1a4f780b4696bdab",
+                        "6767cf101a4f780b4696bf36",
+                        "6767cff11a4f780b4696c0b8",
+                        "6767d2b41a4f780b4696c57a",
+                        "6767da691a4f780b4696cef7",
+                        "676a31685b8202506fbc6a51"
+                    ],
+                    "followers": [],
+                    "following": [
+                        "6767c55c1a4f780b4696ac47",
+                        "6767c55e1a4f780b4696ac5b",
+                        "6767c5641a4f780b4696ac86",
+                        "6767c5671a4f780b4696ac91",
+                        "676a039b5b8202506fbc1d81",
+                        "676a039d5b8202506fbc1d8e",
+                        "676a03a85b8202506fbc1dae",
+                        "676a05b45b8202506fbc2327",
+                        "676a05b75b8202506fbc2334",
+                        "676a05d35b8202506fbc242b",
+                        "676a05d35b8202506fbc2436",
+                        "676a05d45b8202506fbc2441",
+                        "676a31025b8202506fbc6786"
+                    ],
+                    "notifications": [
+                        "676a0edd5b8202506fbc3597",
+                        "676a103a5b8202506fbc3b62",
+                        "676a2dfb5b8202506fbc598e"
+                    ],
+                    "messages": [
+                        "6764dde0a257b76e1e4b56f5",
+                        "676a10085b8202506fbc3a69",
+                        "676a2dde5b8202506fbc5872"
+                    ],
+                    "_id": "6767c2e51a4f780b4696a8d9",
+                    "fullName": "용용죽겠지",
+                    "email": "dltjrrbs1010@gmail.com",
+                    "createdAt": "2024-12-22T07:42:29.744Z",
+                    "updatedAt": "2024-12-24T05:51:18.202Z",
+                    "__v": 0,
+                    "image": "https://res.cloudinary.com/learnprogrammers/image/upload/v1734853962/user/573cf4fc-2f35-4fe8-b8cf-27068b6f26f9.png",
+                    "imagePublicId": "user/573cf4fc-2f35-4fe8-b8cf-27068b6f26f9"
+                },
+                "user": "676a2d135b8202506fbc5549",
+                "post": "676a2d715b8202506fbc5745",
+                "like": {
+                    "_id": "676a2f5c5b8202506fbc62c8",
+                    "user": "6767c2e51a4f780b4696a8d9",
+                    "post": "676a2d715b8202506fbc5745",
+                    "createdAt": "2024-12-24T03:49:48.830Z",
+                    "updatedAt": "2024-12-24T03:49:48.830Z",
+                    "__v": 0
+                },
+                "createdAt": "2024-12-24T03:49:48.858Z",
+                "updatedAt": "2024-12-24T03:49:48.858Z",
+                "__v": 0
+            },
+            {
+                "seen": false,
+                "_id": "676a2f6a5b8202506fbc638c",
+                "author": {
+                    "role": "Regular",
+                    "emailVerified": false,
+                    "banned": false,
+                    "isOnline": false,
+                    "posts": [],
+                    "likes": [
+                        "676a2f6a5b8202506fbc6387"
+                    ],
+                    "comments": [],
+                    "followers": [],
+                    "following": [],
+                    "notifications": [],
+                    "messages": [],
+                    "_id": "676a2f5c5b8202506fbc62c3",
+                    "fullName": "hyunw00",
+                    "email": "hyunw00@gmail.com",
+                    "createdAt": "2024-12-24T03:49:48.308Z",
+                    "updatedAt": "2024-12-24T03:50:16.584Z",
+                    "__v": 0
+                },
+                "user": "676a2d135b8202506fbc5549",
+                "post": "676a2d715b8202506fbc5745",
+                "like": {
+                    "_id": "676a2f6a5b8202506fbc6387",
+                    "user": "676a2f5c5b8202506fbc62c3",
+                    "post": "676a2d715b8202506fbc5745",
+                    "createdAt": "2024-12-24T03:50:02.879Z",
+                    "updatedAt": "2024-12-24T03:50:02.879Z",
+                    "__v": 0
+                },
+                "createdAt": "2024-12-24T03:50:02.913Z",
+                "updatedAt": "2024-12-24T03:50:02.913Z",
+                "__v": 0
+            },
+            {
+                "seen": false,
+                "_id": "676a30c85b8202506fbc672a",
+                "author": {
+                    "role": "Regular",
+                    "emailVerified": false,
+                    "banned": false,
+                    "isOnline": false,
+                    "posts": [
+                        "676a30f35b8202506fbc6769"
+                    ],
+                    "likes": [
+                        "676a32605b8202506fbc6ccb"
+                    ],
+                    "comments": [
+                        "676a31075b8202506fbc6798"
+                    ],
+                    "followers": [],
+                    "following": [
+                        "676a30c85b8202506fbc6725"
+                    ],
+                    "notifications": [
+                        "676a31115b8202506fbc67e8"
+                    ],
+                    "messages": [],
+                    "_id": "676a30a75b8202506fbc6679",
+                    "fullName": "루루",
+                    "email": "lulu@gmail.com",
+                    "createdAt": "2024-12-24T03:55:19.284Z",
+                    "updatedAt": "2024-12-24T04:02:40.662Z",
+                    "__v": 0,
+                    "image": "https://res.cloudinary.com/learnprogrammers/image/upload/v1735012542/user/e005aba8-730a-459f-b19a-66797a001787.jpg",
+                    "imagePublicId": "user/e005aba8-730a-459f-b19a-66797a001787"
+                },
+                "user": "676a2d135b8202506fbc5549",
+                "follow": "676a30c85b8202506fbc6725",
+                "createdAt": "2024-12-24T03:55:52.521Z",
+                "updatedAt": "2024-12-24T03:55:52.521Z",
+                "__v": 0
+            },
+            {
+                "seen": false,
+                "_id": "676a31025b8202506fbc678b",
+                "author": {
+                    "role": "Regular",
+                    "emailVerified": false,
+                    "banned": false,
+                    "isOnline": false,
+                    "posts": [
+                        "676991341a4f780b46976c58"
+                    ],
+                    "likes": [
+                        "6767c2f31a4f780b4696a956",
+                        "6767c6611a4f780b4696ad81",
+                        "6767c66a1a4f780b4696ada3",
+                        "6767c6741a4f780b4696adc4",
+                        "6767c6841a4f780b4696ade9",
+                        "6767c6da1a4f780b4696aec8",
+                        "6767c7a01a4f780b4696b10e",
+                        "6767c7ab1a4f780b4696b160",
+                        "6767c9d21a4f780b4696b798",
+                        "6767c9ef1a4f780b4696b7c2",
+                        "6767cb1e1a4f780b4696b90e",
+                        "6767cbeb1a4f780b4696ba31",
+                        "6767cca51a4f780b4696bb27",
+                        "6767cced1a4f780b4696bc10",
+                        "6767cdb61a4f780b4696bdcd",
+                        "6767cf171a4f780b4696bf55",
+                        "6767cf9a1a4f780b4696c030",
+                        "6767cfbe1a4f780b4696c099",
+                        "6767cffc1a4f780b4696c0db",
+                        "6767d25e1a4f780b4696c405",
+                        "6767d29b1a4f780b4696c503",
+                        "6767d5201a4f780b4696ca30",
+                        "6767d6ce1a4f780b4696cbe7",
+                        "6767da701a4f780b4696cf10",
+                        "676a2f5c5b8202506fbc62c8",
+                        "676a31115b8202506fbc67e3",
+                        "676a31f35b8202506fbc6c3a",
+                        "676a350f5b8202506fbc70fe",
+                        "676a357d5b8202506fbc722a",
+                        "676a4bd65b8202506fbc7bc1"
+                    ],
+                    "comments": [
+                        "6767c6531a4f780b4696ad6c",
+                        "6767c78c1a4f780b4696b0c8",
+                        "6767c89e1a4f780b4696b3e3",
+                        "6767c9681a4f780b4696b528",
+                        "6767ca881a4f780b4696b87c",
+                        "6767cc901a4f780b4696bac7",
+                        "6767cce01a4f780b4696bbe9",
+                        "6767cdaa1a4f780b4696bdab",
+                        "6767cf101a4f780b4696bf36",
+                        "6767cff11a4f780b4696c0b8",
+                        "6767d2b41a4f780b4696c57a",
+                        "6767da691a4f780b4696cef7",
+                        "676a31685b8202506fbc6a51"
+                    ],
+                    "followers": [],
+                    "following": [
+                        "6767c55c1a4f780b4696ac47",
+                        "6767c55e1a4f780b4696ac5b",
+                        "6767c5641a4f780b4696ac86",
+                        "6767c5671a4f780b4696ac91",
+                        "676a039b5b8202506fbc1d81",
+                        "676a039d5b8202506fbc1d8e",
+                        "676a03a85b8202506fbc1dae",
+                        "676a05b45b8202506fbc2327",
+                        "676a05b75b8202506fbc2334",
+                        "676a05d35b8202506fbc242b",
+                        "676a05d35b8202506fbc2436",
+                        "676a05d45b8202506fbc2441",
+                        "676a31025b8202506fbc6786"
+                    ],
+                    "notifications": [
+                        "676a0edd5b8202506fbc3597",
+                        "676a103a5b8202506fbc3b62",
+                        "676a2dfb5b8202506fbc598e"
+                    ],
+                    "messages": [
+                        "6764dde0a257b76e1e4b56f5",
+                        "676a10085b8202506fbc3a69",
+                        "676a2dde5b8202506fbc5872"
+                    ],
+                    "_id": "6767c2e51a4f780b4696a8d9",
+                    "fullName": "용용죽겠지",
+                    "email": "dltjrrbs1010@gmail.com",
+                    "createdAt": "2024-12-22T07:42:29.744Z",
+                    "updatedAt": "2024-12-24T05:51:18.202Z",
+                    "__v": 0,
+                    "image": "https://res.cloudinary.com/learnprogrammers/image/upload/v1734853962/user/573cf4fc-2f35-4fe8-b8cf-27068b6f26f9.png",
+                    "imagePublicId": "user/573cf4fc-2f35-4fe8-b8cf-27068b6f26f9"
+                },
+                "user": "676a2d135b8202506fbc5549",
+                "follow": "676a31025b8202506fbc6786",
+                "createdAt": "2024-12-24T03:56:50.085Z",
+                "updatedAt": "2024-12-24T03:56:50.085Z",
+                "__v": 0
+            }
+        ],
+        "messages": [],
+        "_id": "676a2d135b8202506fbc5549",
+        "fullName": "이준영",
+        "email": "junyoung@gmail.com",
+        "createdAt": "2024-12-24T03:40:03.711Z",
+        "updatedAt": "2024-12-24T03:56:50.087Z",
+        "__v": 0
+    },
+    "createdAt": "2024-12-24T03:41:37.260Z",
+    "updatedAt": "2024-12-24T03:50:02.880Z",
+    "__v": 0
+}

@@ -20,8 +20,8 @@ export default function UserList() {
   // API GET 함수 (검색값 가져오기)
   const searchUsers = async (searchName: string) => {
     try {
-      const response = await axiosInstance.get(`/search/users/${searchName}`);
-      setSearchResults(response.data); // 검색 결과 저장
+      const { data } = await axiosInstance.get(`/search/users/${searchName}`);
+      if (typeof data === "object") setSearchResults(data); // 검색 결과 저장
     } catch (error) {
       console.error("Error:", error);
     }

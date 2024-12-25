@@ -12,7 +12,7 @@ const useGetChannelPosts = (channelId: string | undefined) => {
     try {
       setLoading(true);
       const { data } = await axiosInstance.get<Post[]>(
-        `/posts/channel/${channelId}`
+        `/posts/channel/${channelId}.json`
       );
       setData(data);
     } catch (err) {
