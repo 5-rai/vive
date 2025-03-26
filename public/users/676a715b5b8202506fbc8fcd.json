@@ -1,0 +1,39 @@
+{
+    "role": "Regular",
+    "emailVerified": false,
+    "banned": false,
+    "isOnline": false,
+    "posts": [],
+    "likes": [],
+    "comments": [],
+    "followers": [],
+    "following": [
+        {
+            "_id": "676a7363f6d9a37372088eb7",
+            "user": "6767b9751a4f780b469696ae",
+            "follower": "676a715b5b8202506fbc8fcd",
+            "createdAt": "2024-12-24T08:40:03.818Z",
+            "updatedAt": "2024-12-24T08:40:03.818Z",
+            "__v": 0
+        },
+        {
+            "_id": "676a7366f6d9a37372088ece",
+            "user": "6764dde0a257b76e1e4b56f5",
+            "follower": "676a715b5b8202506fbc8fcd",
+            "createdAt": "2024-12-24T08:40:06.976Z",
+            "updatedAt": "2024-12-24T08:40:06.976Z",
+            "__v": 0
+        }
+    ],
+    "notifications": [],
+    "messages": [],
+    "_id": "676a715b5b8202506fbc8fcd",
+    "fullName": "우사기",
+    "email": "abc@gmail.com",
+    "createdAt": "2024-12-24T08:31:23.515Z",
+    "updatedAt": "2024-12-24T08:42:04.684Z",
+    "__v": 0,
+    "image": "https://res.cloudinary.com/learnprogrammers/image/upload/v1735029593/user/17463d20-f5df-4248-9745-fba1e3e9bb6e.png",
+    "imagePublicId": "user/17463d20-f5df-4248-9745-fba1e3e9bb6e",
+    "username": null
+}

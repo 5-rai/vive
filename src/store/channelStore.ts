@@ -19,7 +19,7 @@ export const useChannelStore = create<ChannelStore>()(
       isLoaded: false,
       fetchChannels: async () => {
         try {
-          const { data } = await axiosInstance.get("/channels");
+          const { data } = await axiosInstance.get("/channels.json");
           set({ channels: data, isLoaded: true });
         } catch (error) {
           console.error("채널 정보를 가져오는데 실패했습니다", error);

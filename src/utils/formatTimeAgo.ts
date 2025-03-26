@@ -7,8 +7,10 @@ const formatTimeAgo = (dateString: string) => {
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInMinutes / 60);
   const diffInDays = Math.floor(diffInHours / 24);
-  const diffInMonths = now.getMonth() - targetDate.getMonth();
-  const diffInYears = now.getFullYear() - targetDate.getFullYear();
+  const diffInMonths =
+    (now.getFullYear() - targetDate.getFullYear()) * 12 +
+    (now.getMonth() - targetDate.getMonth());
+  const diffInYears = Math.floor(diffInMonths / 12);
 
   if (diffInYears >= 1) return `${diffInYears}년 전`;
   else if (diffInMonths >= 1) return `${diffInMonths}개월 전`;

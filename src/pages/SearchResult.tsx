@@ -11,7 +11,7 @@ export default function SearchResult() {
   const keyword = searchParams.get("keyword") ?? "";
   const { data, error, loading } = useGetSearchKeyword(keyword);
 
-  const { userResult, postResult } = data?.reduce(
+  const { userResult, postResult } = data.reduce(
     (
       acc: { userResult: User[]; postResult: SearchPost[] },
       item: User | SearchPost
@@ -24,7 +24,7 @@ export default function SearchResult() {
       return acc;
     },
     { userResult: [], postResult: [] }
-  ) || { userResult: [], postResult: [] };
+  );
 
   const filteredPostResult = postResult.filter((post) => {
     try {

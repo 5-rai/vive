@@ -13,7 +13,7 @@ const useGetProfile = (userId: string | undefined, isMine: boolean) => {
 
     try {
       setLoading(true);
-      const { data } = await axiosInstance.get<User>(`/users/${userId}`);
+      const { data } = await axiosInstance.get<User>(`/users/${userId}.json`);
       setData(data);
       if (isMine) updateUser(data);
     } catch (err) {

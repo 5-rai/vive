@@ -3,7 +3,7 @@ import { axiosInstance } from "./axios";
 
 export const getAllUsers = async () => {
   try {
-    const { data } = await axiosInstance.get<User[]>("/users/get-users");
+    const { data } = await axiosInstance.get<User[]>("/users/get-users.json");
     return data;
   } catch (error) {
     console.error(error);
